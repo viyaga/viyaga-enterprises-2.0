@@ -1,8 +1,7 @@
+import AffiliateLandingPage from "@/components/pages/affiliate";
 
 const page = () => {
-  return (
-    <h1>Affiliate</h1>
-  )
-}
+  return <AffiliateLandingPage />;
+};
 
-export default page
+export default page;
