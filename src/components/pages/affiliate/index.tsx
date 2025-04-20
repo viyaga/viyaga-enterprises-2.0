@@ -7,18 +7,19 @@ import ProgramHighlights from "./program-highlights";
 import HowItWorks from "./how-it-works";
 import Testimonials from "./testimonials";
 import SignupForm from "./signup-form";
-import Footer from "./footer";
+import AffiliateLandingPageLayout from "@/components/layouts/affiliate/landing-page";
 
 export default function AffiliateLandingPage() {
   return (
     <div className="bg-background text-foreground">
-      <HeroSection />
-      <ProductOverview />
-      <ProgramHighlights />
-      <HowItWorks />
-      <Testimonials />
-      <SignupForm />
-      <Footer />
+      <AffiliateLandingPageLayout>
+        <HeroSection />
+        <ProductOverview />
+        <ProgramHighlights />
+        <HowItWorks />
+        <Testimonials />
+        <SignupForm />
+      </AffiliateLandingPageLayout>
     </div>
   );
 }
