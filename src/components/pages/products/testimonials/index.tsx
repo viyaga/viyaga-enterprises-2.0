@@ -21,7 +21,7 @@ export default function Testimonials() {
                   </div>
                 </div>
               </div>
-              <p>"Amazing product! Helped speed up our development massively."</p>
+              <p>&quot;Amazing product! Helped speed up our development massively.&quot;</p>
             </CardContent>
           </Card>
         ))}
