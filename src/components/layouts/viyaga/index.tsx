@@ -1,6 +1,6 @@
 import React from "react";
-import { Footer } from "./footer";
-import { TopBar } from "./top-bar";
+import Footer from "./footer";
+import TopBar from "./top-bar";
 
 const ViyagaLayout = ({ children }: { children: React.ReactNode }) => {
   return (

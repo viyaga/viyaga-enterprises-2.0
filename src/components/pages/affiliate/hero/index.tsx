@@ -7,7 +7,7 @@ import { textVariant, zoomIn, staggerContainer } from "@/constants/motion";
 export default function HeroSection() {
   return (
     <motion.section
-      className="py-20 text-center px-4 md:px-10 mx-auto bg-gradient-accent text-foreground rounded-xl shadow-xl"
+      className="py-20 text-center px-4 md:px-10 mx-auto bg-gradient-1-accent text-foreground rounded-xl shadow-xl"
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
