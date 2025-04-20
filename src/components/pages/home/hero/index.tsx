@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { fadeIn, slideIn, staggerContainer, textVariant } from "@/constants/motion";
+import { staggerContainer, textVariant } from "@/constants/motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -52,7 +52,7 @@ export default function Hero() {
           </Link>
           <Link href="/contact-us">
             <Button variant="outline" size="lg" className="gap-2">
-              Let's Talk
+              Let&apos;s Talk
             </Button>
           </Link>
         </motion.div>

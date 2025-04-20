@@ -49,7 +49,7 @@ export default function ServicesSection() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="relative py-28 px-6 md:px-10 text-white overflow-hidden"
+      className="relative py-28 px-6 md:px-10 text-white overflow-hidden min-h-screen"
     >
       {/* Background video with gradient overlay */}
       <div className="absolute inset-0 -z-10">
