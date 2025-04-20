@@ -2,11 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import { useState } from "react";
 import ThemeToggle from "../../theme-toggle";
 
