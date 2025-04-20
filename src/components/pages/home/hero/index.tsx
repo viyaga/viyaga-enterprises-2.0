@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <motion.section
       className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden text-foreground bg-background"
-      variants={staggerContainer}
+      variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
     >

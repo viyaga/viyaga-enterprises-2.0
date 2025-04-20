@@ -37,7 +37,7 @@ export const slideIn = (direction: 'left' | 'right' | 'up' | 'down', type: strin
   },
 });
 
-export const staggerContainer: unknown = (staggerChildren: unknown, delayChildren: unknown) => ({
+export const staggerContainer = (staggerChildren: number, delayChildren: number) => ({
   hidden: {},
   show: {
     transition: {
