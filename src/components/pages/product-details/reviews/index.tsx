@@ -30,7 +30,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
                   </div>
                 </div>
               </div>
-              <p className="text-lg">"{review.comment}"</p>
+              <p className="text-lg">&quot;{review.comment}&quot;</p>
             </CardContent>
           </Card>
         ))}
