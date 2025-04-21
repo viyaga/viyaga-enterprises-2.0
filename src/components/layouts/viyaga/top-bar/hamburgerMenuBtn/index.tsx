@@ -6,7 +6,7 @@ import { SheetTrigger } from '@/components/ui/sheet'
 const HamburgerMenuBtn = () => {
   return (
     <SheetTrigger className='md:hidden' asChild>
-      <button aria-label="Open menu" className="text-black hover:text-green-600 transition">
+      <button aria-label="Open menu" className="text-black dark:text-white transition">
         <Menu size={24} />
       </button>
     </SheetTrigger>

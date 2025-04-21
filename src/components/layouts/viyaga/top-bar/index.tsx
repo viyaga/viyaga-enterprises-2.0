@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
@@ -9,80 +9,72 @@ import { Sheet } from "@/components/ui/sheet";
 import HamburgerMenuBtn from "./hamburgerMenuBtn";
 import Link from "next/link";
 import Sidebar from "./sidebar";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 
 const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    setIsDark(theme === "dark");
+  }, [theme]);
 
   return (
     <motion.header
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="absolute top-0 left-0 w-full bg-white dark:bg-black py-3 md:py-5 z-50 border-b"
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+        className="fixed top-0 left-0 w-full p-0 bg-white/70 text-black dark:bg-gray-900/80 dark:text-white z-50 shadow-md backdrop-blur-md"
     >
-      <div className="flex justify-between items-center px-4 md:px-8 lg:px-12 max-w-screen-xl mx-auto">
+      <div className="flex justify-between items-center px-4 md:px-8 lg:px-12 py-3 md:py-4 max-w-screen-xl mx-auto">
+        {/* Logo */}
         <Link href="/" className="flex-shrink-0 mr-4">
-          <img
-            src="/logo/logo-viyaga-bold.svg"
+          <Image
+            src={
+              isDark
+                ? "/logo/logo-viyaga-bold-light.svg"
+                : "/logo/logo-viyaga-bold.svg"
+            }
             width={162}
             height={50}
             alt="Viyaga logo"
           />
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 lg:gap-10">
-          <Link
-            href="/"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Home
-          </Link>
-          <Link
-            href="/portfolio"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Portfolio
-          </Link>
-          <Link
-            href="/demo-designs"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Designs
-          </Link>
-          <Link
-            href="/services"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Services
-          </Link>
-          <Link
-            href="/about-us"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            About
-          </Link>
-          <Link
-            href="https://take.app/viyaga"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Learn
-          </Link>
-          <Link
-            href="/contact-us"
-            className="text-base font-medium hover:text-green-600 transition dark:text-white"
-          >
-            Contact
-          </Link>
-        </div>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-5 lg:gap-10">
+          {[
+            { href: "/", label: "Home" },
+            { href: "/portfolio", label: "Portfolio" },
+            { href: "/demo-designs", label: "Designs" },
+            { href: "/services", label: "Services" },
+            { href: "/about-us", label: "About" },
+            { href: "https://take.app/viyaga", label: "Learn" },
+            { href: "/contact-us", label: "Contact" },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-sm font-medium transition-colors text-gray-800 dark:text-white"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
-        <div className="flex items-center gap-4">
+        {/* Right Section */}
+        <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Button variant="ghost" size="icon">
-            <Languages className="w-4 h-4" />
-          </Button>
-          <Button asChild variant="default" className="hidden md:inline-flex">
-            <Link href="/contact-us">Book a Demo</Link>
+
+          {/* Book a Demo Button */}
+          <Button
+            asChild
+            variant="default"
+            className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
+          >
+            <Link href="/hire-us">Hire Us</Link>
           </Button>
 
           {/* Mobile Drawer */}

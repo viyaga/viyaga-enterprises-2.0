@@ -12,7 +12,7 @@ export default {
                 'bg-start': '#0f172a',
                 'bg-mid': '#1e293b',
                 'bg-end': '#0f172a',
-                'primary': 'oklch(0.21 0.006 285.885)',
+                'primary': '#2fb97d',
             },
         },
     },

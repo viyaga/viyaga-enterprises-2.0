@@ -1,56 +1,108 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { X } from 'lucide-react'
-import { SheetContent } from '@/components/ui/sheet'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { X } from "lucide-react";
+import { SheetContent } from "@/components/ui/sheet";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
 const Sidebar = ({ onClose }: { onClose: () => void }) => {
+  const pathname = usePathname();
+  const [isDark, setIsDark] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    setIsDark(theme === "dark");
+  }, [theme]);
+
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/demo-designs', label: 'Designs' },
-    { href: '/services', label: 'Services' },
-    { href: '/about-us', label: 'About' },
-    { href: 'https://take.app/viyaga', label: 'Learn' },
-    { href: '/contact-us', label: 'Contact' },
-  ]
+    { href: "/", label: "Home" },
+    { href: "/products", label: "Products" },
+    { href: "/services", label: "Services" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/about-us", label: "About" },
+    { href: "https://take.app/viyaga", label: "Learn" },
+    { href: "/contact-us", label: "Contact" },
+  ];
+
+  const socialLinks = [
+    { href: "https://twitter.com/yourhandle", icon: X, label: "Twitter" },
+    { href: "https://instagram.com/yourhandle", icon: X, label: "Instagram" },
+    { href: "https://linkedin.com/in/yourhandle", icon: X, label: "LinkedIn" },
+    { href: "https://github.com/yourhandle", icon: X, label: "GitHub" },
+  ];
 
   return (
     <SheetContent
       side="left"
       hideCloseBtn
-      className="w-80 p-0 bg-sidebar text-sidebar-foreground border-r border-sidebar-border dark:bg-sidebar-dark dark:text-sidebar-foreground-dark"
+      className="w-80 p-0 bg-white text-black dark:bg-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between"
     >
-      <div className="flex justify-between items-center p-4 border-b border-sidebar-border dark:border-sidebar-border-dark">
-        <Link href="/" onClick={onClose}>
-          <img
-            src="/logo/logo-viyaga-bold.svg"
-            width={162}
-            height={50}
-            alt="Viyaga logo"
-          />
-        </Link>
-        <button onClick={onClose} aria-label="Close">
-          <X size={28} className="text-sidebar-foreground hover:text-primary transition-colors dark:text-sidebar-foreground-dark hover:dark:text-primary" />
-        </button>
+      {/* Header */}
+      <div>
+        <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+          <Link href="/" onClick={onClose}>
+            <Image
+              src={
+                isDark
+                  ? "/logo/logo-viyaga-bold-light.svg"
+                  : "/logo/logo-viyaga-bold.svg"
+              }
+              width={162}
+              height={50}
+              alt="Viyaga logo"
+            />
+          </Link>
+          <button onClick={onClose} aria-label="Close">
+            <X
+              size={28}
+              className="text-black hover:text-primary dark:text-white dark:hover:text-primary transition-colors"
+            />
+          </button>
+        </div>
+
+        {/* Nav Links */}
+        <ul className="px-4 py-6 space-y-3">
+          {navLinks.map(({ href, label }) => (
+            <li key={href}>
+                <Link
+                href={href}
+                onClick={onClose}
+                className={`block px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 text-black dark:text-white
+                ${
+                  pathname === href
+                  ? "underline underline-offset-4 text-primary dark:text-primary"
+                  : ""
+                }`}
+                >
+                {label}
+                </Link>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <ul className="px-4 py-4 space-y-2">
-        {navLinks.map(({ href, label }, index) => (
-          <li key={href}>
+      {/* Footer Social Icons */}
+      <div className="px-4 py-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex justify-center space-x-4">
+          {socialLinks.map(({ href, icon: Icon, label }) => (
             <Link
+              key={label}
               href={href}
-              onClick={onClose}
-              className={`block w-full px-3 py-2 rounded-xl font-medium transition-all duration-200
-              hover:text-primary-foreground hover:bg-gradient-${(index % 6) + 7}-accent dark:hover:text-primary-foreground-dark dark:hover:bg-gradient-${(index % 6) + 7}-accent-dark`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="text-gray-500 hover:text-primary dark:hover:text-primary transition-colors"
             >
-              {label}
+              <Icon size={22} />
             </Link>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+      </div>
     </SheetContent>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

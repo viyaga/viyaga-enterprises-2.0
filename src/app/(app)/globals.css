@@ -119,7 +119,10 @@
 
   a {
     @apply underline-offset-4 hover:underline transition;
-    color: var(--text-primary);
+  }
+
+  bg-primary {
+    background-color: var(--primary);
   }
 
   button:focus-visible,
