@@ -1,4 +1,5 @@
   import HeroSection from './hero';
+import Services from './services-2';
   import ServicesSection from './services';
   import TechStackSection from './tech-stack';
   import PortfolioSection from './portfolio';
@@ -9,6 +10,7 @@
     return (
       <div className="flex flex-col">
         <HeroSection />
+        <Services />
         <ServicesSection />
         <TechStackSection />
         <PortfolioSection />
