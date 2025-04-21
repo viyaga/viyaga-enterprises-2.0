@@ -25,7 +25,7 @@ const TopBar = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full p-0 bg-white/70 text-black dark:bg-gray-900/80 dark:text-white z-50 shadow-md backdrop-blur-md"
+        className="fixed top-0 left-0 w-full p-0 bg-white text-black dark:bg-gray-900/80 dark:text-white z-50 shadow-md backdrop-blur-md"
     >
       <div className="flex justify-between items-center px-4 md:px-8 lg:px-12 py-3 md:py-4 max-w-screen-xl mx-auto">
         {/* Logo */}
@@ -56,7 +56,7 @@ const TopBar = () => {
             <Link
               key={href}
               href={href}
-              className="text-sm font-medium transition-colors text-gray-800 dark:text-white"
+              className="text-md font-medium transition-colors text-gray-800 dark:text-white"
             >
               {label}
             </Link>

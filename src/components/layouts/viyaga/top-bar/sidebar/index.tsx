@@ -70,7 +70,7 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
                 <Link
                 href={href}
                 onClick={onClose}
-                className={`block px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 text-black dark:text-white
+                className={`block px-4 py-2 rounded-xl font-medium text-md transition-all duration-200 text-black dark:text-white
                 ${
                   pathname === href
                   ? "underline underline-offset-4 text-primary dark:text-primary"
