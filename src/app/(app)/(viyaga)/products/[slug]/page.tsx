@@ -1,9 +1,7 @@
 import ProductDetailsPage from "@/components/pages/product-details";
 
-const page = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = await params;
-  console.log({slug});
-  
+const page = async () => {
+   
   return <ProductDetailsPage />;
 };
 
