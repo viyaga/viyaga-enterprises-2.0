@@ -69,10 +69,6 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export const viewport = {
-  themeColor: "#2fb97d",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
