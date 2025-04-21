@@ -14,6 +14,18 @@ export default function Hero() {
       initial="hidden"
       animate="show"
     >
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-5"
+        autoPlay
+        muted
+        loop
+        playsInline
+      >
+        <source src="/videos/hero-bg-1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       {/* Background Glow Layer */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-500/10 via-transparent to-gray-100 pointer-events-none dark:from-blue-600/30 dark:via-transparent dark:to-gray-800" />
 
