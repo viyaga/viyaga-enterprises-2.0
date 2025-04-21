@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 
 const techStack = [
@@ -46,39 +47,61 @@ const techStack = [
     type: 'Database',
     desc: 'Reliable and scalable relational database.',
   },
+  {
+    name: 'MongoDB',
+    logo: '/logos/mongodb.svg',
+    type: 'Database',
+    desc: 'Flexible, scalable NoSQL database for modern apps.',
+  },
 ];
 
 export default function TechStackSection() {
+  const { ref, inView } = useInView({
+    triggerOnce: true, // Trigger animation only once
+    threshold: 0.3, // Trigger when 30% of the section is in view
+  });
+
   return (
-    <section className="py-20 px-4 bg-black text-white min-h-screen">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-6">Technologies We Use</h2>
-        <p className="text-center text-white/70 mb-14 max-w-2xl mx-auto">
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+      transition={{ duration: 1, ease: 'easeInOut' }}
+      className="py-24 px-4 min-h-screen flex items-center justify-center text-black bg-gradient-to-br from-[#f8fafc] via-[#e2e8f0] to-[#cbd5e1] dark:from-[#2d3748] dark:via-[#4a5568] dark:to-[#2b2d31]"
+    >
+      <div className="max-w-6xl mx-auto w-full">
+        <h2 className="text-4xl font-bold text-center mb-6 drop-shadow-md text-black dark:text-white">
+          Technologies We Use
+        </h2>
+        <p className="text-center text-muted-foreground mb-14 max-w-2xl mx-auto text-black dark:text-white">
           We use industry-leading technologies to deliver fast, scalable, and secure applications tailored to your needs.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-8 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
           {techStack.map((tech, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.1 }}
-              className="text-center group"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * i, duration: 0.6 }}
+              className="w-full h-full"
             >
-              <div className="bg-white/10 rounded-xl p-4 hover:bg-white/20 transition-all duration-300 backdrop-blur-sm">
+              <div className="h-full min-h-[220px] flex flex-col justify-between items-center text-center p-4 rounded-lg shadow-lg transition-all duration-300 bg-white dark:bg-[#1a202c] dark:text-white">
                 <Image
                   src={tech.logo}
                   alt={tech.name}
                   width={48}
                   height={48}
-                  className="mx-auto mb-3"
+                  className="mb-4"
                 />
-                <p className="text-sm font-semibold text-white">{tech.name}</p>
-                <p className="text-xs text-white/60 group-hover:text-white mt-1">{tech.desc}</p>
+                <p className="text-sm font-semibold">{tech.name}</p>
+                <p className="text-xs opacity-80 mt-2">{tech.desc}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

@@ -14,28 +14,28 @@ import Image from 'next/image';
 const services = [
   {
     title: 'Web Development',
-    icon: <Globe className="w-6 h-6 text-primary" />,
+    icon: <Globe className="w-6 h-6 text-primary drop-shadow-glow" />,
     image: '/images/services/web.png',
     description:
       'Crafting modern, responsive websites with stunning user experiences using the latest technologies.',
   },
   {
     title: 'Mobile Apps',
-    icon: <Star className="w-6 h-6 text-primary" />,
+    icon: <Star className="w-6 h-6 text-primary drop-shadow-glow" />,
     image: '/images/services/mobile.png',
     description:
       'Building performant, native-like mobile applications for both Android and iOS platforms.',
   },
   {
     title: 'SaaS Solutions',
-    icon: <CheckCircle className="w-6 h-6 text-primary" />,
+    icon: <CheckCircle className="w-6 h-6 text-primary drop-shadow-glow" />,
     image: '/images/services/saas.png',
     description:
       'Developing scalable SaaS platforms to power your business and automate processes.',
   },
   {
     title: 'AI Integrations',
-    icon: <Cpu className="w-6 h-6 text-primary" />,
+    icon: <Cpu className="w-6 h-6 text-primary drop-shadow-glow" />,
     image: '/images/services/ai.png',
     description:
       'Embedding AI capabilities into your systems for automation, personalization, and prediction.',
@@ -49,25 +49,15 @@ export default function ServicesSection() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="relative py-28 px-6 md:px-10 text-white overflow-hidden min-h-screen"
+      className="relative py-28 px-6 md:px-10 text-black dark:text-white overflow-hidden min-h-screen
+                 bg-gradient-to-b from-[#f0f4ff] via-[#e2e8f0] to-[#cbd5e1] dark:from-[#1e293b] dark:via-[#334155] dark:to-[#4e5b6e]"
     >
-      {/* Background video with gradient overlay */}
-      <div className="absolute inset-0 -z-10">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-        >
-          <source src="/videos/bg-services.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+      {/* Optional Glow Overlay */}
+      <div className="absolute inset-0 bg-gradient-radial from-white/10 via-transparent to-transparent dark:from-white/5 pointer-events-none" />
 
       <motion.h2
         variants={textVariant(0.2)}
-        className="text-4xl md:text-5xl font-extrabold text-center relative z-10 mb-16"
+        className="text-4xl md:text-5xl font-extrabold text-center relative z-10 mb-16 drop-shadow-title"
       >
         Our Services
       </motion.h2>
@@ -78,7 +68,7 @@ export default function ServicesSection() {
             key={i}
             variants={zoomIn(0.2 + i * 0.2, 0.6)}
           >
-            <Card className="bg-white/5 border border-white/10 backdrop-blur-md rounded-3xl shadow-xl p-6 text-center hover:shadow-2xl transition-all duration-300 h-full">
+            <Card className="bg-white/90 dark:bg-white/5 border border-white/20 backdrop-blur-md rounded-3xl shadow-xl p-6 text-center hover:shadow-2xl transition-all duration-300 h-full">
               <CardContent className="flex flex-col items-center space-y-4">
                 <Image
                   src={s.image}
@@ -88,8 +78,8 @@ export default function ServicesSection() {
                   className="rounded-lg object-contain"
                 />
                 <div className="text-primary">{s.icon}</div>
-                <CardTitle className="text-white text-lg">{s.title}</CardTitle>
-                <p className="text-sm text-white/80">{s.description}</p>
+                <CardTitle className="text-lg drop-shadow-sm">{s.title}</CardTitle>
+                <p className="text-sm text-black/80 dark:text-white/80">{s.description}</p>
               </CardContent>
             </Card>
           </motion.div>
