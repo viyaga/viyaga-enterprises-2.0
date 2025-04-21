@@ -1,5 +1,5 @@
 // payload/collections/customers.js
-import { CollectionConfig } from 'payload';
+import { CollectionConfig, CollectionSlug } from 'payload';
 
 const Customers: CollectionConfig = {
     slug: 'customers',
@@ -29,7 +29,7 @@ const Customers: CollectionConfig = {
         {
             name: 'orders',
             type: 'relationship',
-            relationTo: 'orders',
+            relationTo: 'orders' as CollectionSlug,
             hasMany: true,
             admin: {
                 position: 'sidebar',
