@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import Link from 'next/link'
 import { X } from 'lucide-react'
@@ -19,9 +19,9 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
     <SheetContent
       side="left"
       hideCloseBtn
-      className="w-80 p-0 bg-sidebar text-sidebar-foreground border-r border-sidebar-border"
+      className="w-80 p-0 bg-sidebar text-sidebar-foreground border-r border-sidebar-border dark:bg-sidebar-dark dark:text-sidebar-foreground-dark"
     >
-      <div className="flex justify-between items-center p-4 border-b border-sidebar-border">
+      <div className="flex justify-between items-center p-4 border-b border-sidebar-border dark:border-sidebar-border-dark">
         <Link href="/" onClick={onClose}>
           <img
             src="/logo/logo-viyaga-bold.svg"
@@ -31,7 +31,7 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
           />
         </Link>
         <button onClick={onClose} aria-label="Close">
-          <X size={28} className="text-sidebar-foreground hover:text-primary transition-colors" />
+          <X size={28} className="text-sidebar-foreground hover:text-primary transition-colors dark:text-sidebar-foreground-dark hover:dark:text-primary" />
         </button>
       </div>
 
@@ -42,7 +42,7 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
               href={href}
               onClick={onClose}
               className={`block w-full px-3 py-2 rounded-xl font-medium transition-all duration-200
-              hover:text-primary-foreground hover:bg-gradient-${(index % 6) + 7}-accent`}
+              hover:text-primary-foreground hover:bg-gradient-${(index % 6) + 7}-accent dark:hover:text-primary-foreground-dark dark:hover:bg-gradient-${(index % 6) + 7}-accent-dark`}
             >
               {label}
             </Link>

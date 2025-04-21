@@ -22,7 +22,18 @@ export default function Hero() {
         loop
         playsInline
       >
-        <source src="/videos/hero-bg-1.mp4" type="video/mp4" />
+        {/* Mobile video first for smaller devices */}
+        <source
+          src="/videos/hero-bg-mobile.mp4"
+          type="video/mp4"
+          media="(max-width: 768px)"
+        />
+        {/* Fallback/desktop video */}
+        <source
+          src="/videos/hero-bg-1.mp4"
+          type="video/mp4"
+          media="(min-width: 769px)"
+        />
         Your browser does not support the video tag.
       </video>
 
@@ -33,14 +44,14 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl text-center">
         <motion.h1
           variants={textVariant(1.1)}
-          className="text-balance text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-xl"
+          className="text-balance text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-xl text-white"
         >
-          Turning Bold Ideas Into <span className="text-blue-600">Digital Impact</span>
+          Turning Bold Ideas Into Digital Impact
         </motion.h1>
 
         <motion.p
           variants={textVariant(1.3)}
-          className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-8 drop-shadow-sm text-pretty"
+          className="text-muted-foreground text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 drop-shadow-sm text-pretty text-white"
         >
           We craft high-performance software for ambitious businesses.
         </motion.p>
@@ -58,7 +69,7 @@ export default function Hero() {
             </Button>
           </Link>
           <Link href="/contact-us" aria-label="Contact us to start your project">
-            <Button variant="outline" size="lg" className="gap-2">
+            <Button variant="outline" size="lg" className="gap-2 text-black bg-white">
               Let&apos;s Talk
             </Button>
           </Link>
