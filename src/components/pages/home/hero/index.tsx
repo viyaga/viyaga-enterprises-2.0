@@ -24,7 +24,7 @@ export default function Hero() {
       >
         {/* Mobile video first for smaller devices */}
         <source
-          src="/videos/hero-bg-mobile.mp4"
+          src="/videos/hero-bg-1-mobile.mp4"
           type="video/mp4"
           media="(max-width: 768px)"
         />
@@ -38,7 +38,7 @@ export default function Hero() {
       </video>
 
       {/* Background Glow Layer */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-blue-500/10 via-transparent to-gray-100 pointer-events-none dark:from-blue-600/30 dark:via-transparent dark:to-gray-800" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-br pointer-events-none from-blue-600/30 k:via-transparent to-gray-800" />
 
       {/* Hero Content */}
       <div className="relative z-10 max-w-5xl text-center">
