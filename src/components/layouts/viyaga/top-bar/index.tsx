@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Languages } from "lucide-react";
 import ThemeToggle from "./theme-toggle";
 import { Sheet } from "@/components/ui/sheet";
 import HamburgerMenuBtn from "./hamburgerMenuBtn";
