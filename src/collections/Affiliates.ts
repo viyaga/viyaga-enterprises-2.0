@@ -1,5 +1,6 @@
 import { CollectionSlug } from 'payload';
 import { CollectionConfig } from 'payload';
+import { updateRank } from '@/lib/hooks/affiliate'
 
 const Affiliates: CollectionConfig = {
     slug: 'affiliates',
@@ -7,6 +8,9 @@ const Affiliates: CollectionConfig = {
         useAsTitle: 'referral_code',
         defaultColumns: ['customer', 'referral_code', 'commission_rate', 'total_earned'],
     },
+    hooks: {
+  beforeChange: [updateRank],
+},
     fields: [
         {
             name: 'customer',
