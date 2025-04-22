@@ -9,7 +9,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react';
 export default function Hero() {
   return (
     <motion.section
-      className="relative min-h-[100svh] w-full flex flex-col justify-center items-center overflow-hidden text-black dark:text-white bg-background px-4"
+      className="relative min-h-[100svh] w-full flex flex-col justify-center items-center overflow-hidden text-black dark:text-white px-4"
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
@@ -24,13 +24,13 @@ export default function Hero() {
       >
         {/* Mobile video first for smaller devices */}
         <source
-          src="/videos/hero-bg-1-mobile.mp4"
+          src="/videos/hero-bg-1-mobiles.mp4"
           type="video/mp4"
           media="(max-width: 768px)"
         />
         {/* Fallback/desktop video */}
         <source
-          src="/videos/hero-bg-1.mp4"
+          src="/videos/hero-bg-1s.mp4"
           type="video/mp4"
           media="(min-width: 769px)"
         />
