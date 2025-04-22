@@ -5,7 +5,6 @@ import { motion, useInView } from "framer-motion";
 import ComputerModelContainer from "./computer/ComputerModelContainer";
 import Counter from "./Counter";
 import Image from "next/image";
-import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const services = [
   { id: 1, img: "/service1.png", title: "Web Development", counter: 35 },
@@ -16,7 +15,6 @@ const services = [
 const Services = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-200px" });
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const textVariants = {
     initial: { x: -100, y: -100, opacity: 0 },
@@ -92,8 +90,8 @@ const Services = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center">
-          {isDesktop ? <ComputerModelContainer /> : <ComputerModelContainer />}
+        <div className="w-full lg:w-1/2 h-full lg:h-auto flex justify-center items-center">
+          <ComputerModelContainer />
         </div>
       </div>
     </section>
