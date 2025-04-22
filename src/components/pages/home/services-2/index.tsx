@@ -84,7 +84,7 @@ const Services = () => {
             ))}
           </motion.div>
 
-          <div className="flex flex-wrap gap-6 mt-6">
+          <div className="flex gap-6 mt-6">
             <Counter from={0} to={104} text="Projects Completed" />
             <Counter from={0} to={72} text="Happy Clients" />
           </div>
