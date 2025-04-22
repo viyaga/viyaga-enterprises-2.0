@@ -90,7 +90,7 @@ const Services = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-1/2 h-full lg:h-auto flex justify-center items-center">
+        <div className="w-screen lg:w-full lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center">
           <ComputerModelContainer />
         </div>
       </div>
