@@ -16,7 +16,7 @@ const services = [
 const Services = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: '-200px' });
-  const isDesktop = useMediaQuery('(min-width: 1024px)'); // lg breakpoint
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   const textVariants = {
     initial: { x: -100, y: -100, opacity: 0 },
@@ -29,7 +29,7 @@ const Services = () => {
   };
 
   return (
-    <section ref={ref} className="flex flex-col lg:flex-row w-full h-full px-6 py-12 gap-12 overflow-hidden">
+    <section ref={ref} className="flex flex-col lg:flex-row w-full h-full px-6 py-12 gap-12 overflow-hidden max-w-6xl mx-auto">
       <div className="w-full lg:w-1/2 flex flex-col justify-center gap-10">
         <motion.h1
           variants={textVariants}
@@ -79,13 +79,7 @@ const Services = () => {
         {isDesktop ? (
           <ComputerModelContainer />
         ) : (
-          <Image
-            src="/computer-model-static.png"
-            alt="Computer Model"
-            width={300}
-            height={200}
-            className="rounded-xl shadow-md"
-          />
+          <ComputerModelContainer />
         )}
       </div>
     </section>
