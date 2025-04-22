@@ -26,9 +26,14 @@ const Counter: React.FC<CounterProps> = ({ from, to, text }) => {
   }, [from, to]);
 
   return (
-    <div ref={ref} className="flex flex-col gap-2">
-      <h1 className="text-[48px] text-[#dd4c62]">{display}+</h1>
-      <p className="text-[13px] w-[120px]">{text}</p>
+    <div
+      ref={ref}
+      className="flex flex-col items-start gap-1 bg-white/5 p-4 rounded-xl backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300"
+    >
+      <h1 className="text-[56px] lg:text-[64px] font-extrabold text-pink-400 drop-shadow-lg">
+        {display}+
+      </h1>
+      <p className="text-sm text-white/80 font-medium">{text}</p>
     </div>
   );
 };
