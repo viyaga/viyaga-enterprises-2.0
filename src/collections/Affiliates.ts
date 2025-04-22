@@ -9,8 +9,8 @@ const Affiliates: CollectionConfig = {
         defaultColumns: ['customer', 'referral_code', 'commission_rate', 'total_earned'],
     },
     hooks: {
-  beforeChange: [updateRank],
-},
+        beforeOperation: [updateRank],
+    },
     fields: [
         {
             name: 'customer',
