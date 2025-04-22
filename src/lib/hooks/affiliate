@@ -1,0 +1,19 @@
+import { BeforeChangeHook } from 'payload';
+
+const updateRank: BeforeChangeHook = async ({ data }) => {
+  const earned = data.total_earned || 0;
+
+  if (earned >= 10000) {
+    data.current_rank = 'Platinum';
+  } else if (earned >= 5000) {
+    data.current_rank = 'Gold';
+  } else if (earned >= 1000) {
+    data.current_rank = 'Silver';
+  } else if (earned >= 100) {
+    data.current_rank = 'Bronze';
+  } else {
+    data.current_rank = 'Starter';
+  }
+
+  return data;
+};
