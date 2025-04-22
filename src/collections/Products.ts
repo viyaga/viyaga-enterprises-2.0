@@ -10,8 +10,6 @@ const Products: CollectionConfig = {
     { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'description', type: 'richText' },
     { name: 'features', type: 'richText' },
-
-    // Country-wise pricing
     {
       name: 'pricing',
       type: 'array',

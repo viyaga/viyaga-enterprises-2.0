@@ -1,21 +1,21 @@
 import { CollectionSlug } from 'payload';
 import { CollectionConfig } from 'payload';
-import { updateRank } from '@/lib/hooks/affiliate'
+import { updateRank } from '@/lib/hooks/affiliate';
 
 const Affiliates: CollectionConfig = {
     slug: 'affiliates',
     admin: {
         useAsTitle: 'referral_code',
-        defaultColumns: ['customer', 'referral_code', 'commission_rate', 'total_earned'],
+        defaultColumns: ['referral_code', 'commission_rate', 'total_earned'],
     },
+    auth: true,
     hooks: {
         beforeOperation: [updateRank],
     },
     fields: [
         {
-            name: 'customer',
-            type: 'relationship',
-            relationTo: 'customers' as CollectionSlug,
+            name: 'name',
+            type: 'text',
             required: true,
         },
         {
@@ -23,14 +23,52 @@ const Affiliates: CollectionConfig = {
             type: 'text',
             required: true,
             unique: true,
+            admin: {
+                readOnly: true,
+                description: 'Unique code for referral tracking',
+            },
         },
         {
-            name: 'commission_rate',
-            type: 'number',
+            name: 'address',
+            type: 'group',
+            fields: [
+                {
+                    name: 'house_number',
+                    type: 'text',
+                },
+                {
+                    name: 'street_and_area',
+                    type: 'text',
+                },
+                {
+                    name: 'city',
+                    type: 'text',
+                },
+                {
+                    name: 'state',
+                    type: 'text',
+                },
+                {
+                    name: 'country',
+                    type: 'text',
+                },
+                {
+                    name: 'postal_code',
+                    type: 'text',
+                }
+            ],
+        },
+        {
+            name: 'phone_number',
+            type: 'text',
+            admin: {
+                description: 'Phone number in international format',
+            },
+        },
+        {
+            name: 'country_code',
+            type: 'text',
             required: true,
-            defaultValue: 10, // % commission
-            min: 0,
-            max: 100,
         },
         {
             name: 'total_earned',
@@ -41,36 +79,79 @@ const Affiliates: CollectionConfig = {
             },
         },
         {
-            name: 'isActive',
-            type: 'checkbox',
-            defaultValue: true,
+            name: 'wallet_balance',
+            type: 'number',
+            defaultValue: 0,
         },
         {
-            name: 'notes',
-            type: 'textarea',
+            name: 'bonus_balance',
+            type: 'number',
+            defaultValue: 0,
+        },
+        {
+            name: 'current_rank',
+            type: 'text',
+            admin: {
+                placeholder: 'e.g. Bronze, Silver, Gold',
+            },
+        },
+        {
+            name: 'referral_tree_ids',
+            type: 'array',
+            fields: [
+                {
+                    name: 'id',
+                    type: 'text',
+                }
+            ],
+            maxRows: 3
+        },
+        {
+            name: 'referred_by',
+            type: 'text',
+            required: false,
+        },
+        {
+            name: 'bank_accounts',
+            type: 'relationship',
+            relationTo: 'bank-details' as CollectionSlug,
+            hasMany: true,
+        },
+        {
+            name: 'status',
+            type: 'radio',
+            required: true,
+            defaultValue: 1,
+            options: [
+                {
+                    label: 'Active',
+                    value: "1",
+                },
+                {
+                    label: 'Inactive',
+                    value: "0",
+                },
+                {
+                    label: 'Deleted',
+                    value: "-1",
+                },
+            ],
+            admin: {
+                layout: 'horizontal',
+            },
         },
     ],
     access: {
-        read: ({ req: { user } }) => {
-            if (!user) return false;
-            // Allow users to view their own affiliate record
-            return {
-                customer: {
-                    equals: user.id,
-                },
-            };
-        },
-        update: ({ req: { user } }) => {
-            if (!user) return false;
-            // Only allow updating your own affiliate account
-            return {
-                customer: {
-                    equals: user.id,
-                },
-            };
-        },
+        // No general access to admin panel
+        admin: () => false,
         delete: () => false,
     },
+    indexes: [
+        {
+            fields: ['status'],
+            unique: false,
+        },
+    ],
 };
 
 export default Affiliates;
