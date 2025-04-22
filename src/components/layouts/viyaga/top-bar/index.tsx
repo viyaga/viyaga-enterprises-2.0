@@ -17,15 +17,26 @@ const TopBar = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    setIsDark(theme === "dark");
+    if (theme) {
+      setIsDark(theme === "dark");
+    }
   }, [theme]);
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/products", label: "Products" },
+    { href: "/services", label: "Services" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/about-us", label: "About" },
+    { href: "https://take.app/viyaga", label: "Learn" },
+  ];
 
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full p-0 bg-white text-black dark:bg-gray-900/80 dark:text-white z-50 shadow-md backdrop-blur-md"
+      className="fixed top-0 left-0 w-full p-0 bg-white text-black dark:bg-gray-900/80 dark:text-white z-50 shadow-md backdrop-blur-md"
     >
       <div className="flex justify-between items-center px-4 md:px-8 lg:px-12 py-3 md:py-4 max-w-screen-xl mx-auto">
         {/* Logo */}
@@ -44,15 +55,7 @@ const TopBar = () => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-5 lg:gap-10">
-          {[
-            { href: "/", label: "Home" },
-            { href: "/portfolio", label: "Portfolio" },
-            { href: "/demo-designs", label: "Designs" },
-            { href: "/services", label: "Services" },
-            { href: "/about-us", label: "About" },
-            { href: "https://take.app/viyaga", label: "Learn" },
-            { href: "/contact-us", label: "Contact" },
-          ].map(({ href, label }) => (
+          {navLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
@@ -67,7 +70,6 @@ const TopBar = () => {
         <div className="flex items-center gap-3">
           <ThemeToggle />
 
-          {/* Book a Demo Button */}
           <Button
             asChild
             variant="default"

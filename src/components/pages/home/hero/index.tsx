@@ -9,7 +9,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react';
 export default function Hero() {
   return (
     <motion.section
-      className="relative min-h-[100svh] w-full flex flex-col justify-center items-center overflow-hidden text-black dark:text-white px-4"
+      className="relative min-h-[100svh] w-full flex flex-col justify-center items-center overflow-hidden text-black dark:text-white px-4 bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65]"
       variants={staggerContainer(0.2, 0.3)}
       initial="hidden"
       animate="show"
@@ -83,7 +83,7 @@ export default function Hero() {
         transition={{ delay: 2, duration: 0.6, repeat: Infinity, repeatType: 'reverse' }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
       >
-        <ArrowDown className="w-6 h-6 text-muted-foreground animate-bounce" />
+        <ArrowDown className="w-6 h-6 text-white animate-bounce" />
       </motion.div>
     </motion.section>
   );

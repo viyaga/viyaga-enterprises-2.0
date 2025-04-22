@@ -7,6 +7,7 @@ import { SheetContent } from "@/components/ui/sheet";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
 
 const Sidebar = ({ onClose }: { onClose: () => void }) => {
   const pathname = usePathname();
@@ -24,7 +25,6 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
     { href: "/portfolio", label: "Portfolio" },
     { href: "/about-us", label: "About" },
     { href: "https://take.app/viyaga", label: "Learn" },
-    { href: "/contact-us", label: "Contact" },
   ];
 
   const socialLinks = [
@@ -67,20 +67,27 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
         <ul className="px-4 py-6 space-y-3">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
-                <Link
+              <Link
                 href={href}
                 onClick={onClose}
                 className={`block px-4 py-2 rounded-xl font-medium text-md transition-all duration-200 text-black dark:text-white
                 ${
                   pathname === href
-                  ? "underline underline-offset-4 text-primary dark:text-primary"
-                  : ""
+                    ? "underline underline-offset-4 text-primary dark:text-primary"
+                    : ""
                 }`}
-                >
+              >
                 {label}
-                </Link>
+              </Link>
             </li>
           ))}
+          <Button
+            asChild
+            variant="default"
+            className="inline-flex md:hidden text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-12 py-4 mt-5"
+          >
+            <Link href="/hire-us">Hire Us</Link>
+          </Button>
         </ul>
       </div>
 
