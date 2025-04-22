@@ -34,7 +34,7 @@ const Services = () => {
     <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white">
       <div
         ref={ref}
-        className="flex flex-col lg:flex-row w-full h-full px-6 py-12 gap-12 max-w-6xl mx-auto"
+        className="flex flex-col lg:flex-row w-full h-full px-6 py-12 gap-12 md:gap-6 max-w-6xl mx-auto"
       >
         <div className="w-full lg:w-1/2 flex flex-col justify-center gap-10">
           <motion.h1
