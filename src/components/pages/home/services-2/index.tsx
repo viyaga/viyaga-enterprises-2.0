@@ -31,7 +31,7 @@ const Services = () => {
   };
 
   return (
-    <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white">
+    <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white py-3 lg:py-5">
       <div
         ref={ref}
         className="flex flex-col lg:flex-row w-full h-full px-6 py-12 gap-12 md:gap-6 max-w-6xl mx-auto"
@@ -90,7 +90,7 @@ const Services = () => {
           </div>
         </div>
 
-        <div className="w-screen lg:w-full lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center">
+        <div className="w-screen lg:w-full lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center mx-auto">
           <ComputerModelContainer />
         </div>
       </div>
