@@ -58,22 +58,22 @@ const ListItem: React.FC<ListItemProps> = ({ item, index }) => {
       ref={ref}
       initial="initial"
       animate={isInView ? "animate" : "initial"}
-      className="h-screen w-screen flex items-center justify-center px-4 gap-[100px] xl:gap-[50px] lg:flex-col"
+      className="h-screen w-screen flex flex-col lg:flex-row items-center justify-center px-4 gap-12 sm:gap-8"
       style={{ background: gradientBackgrounds[index] || undefined }}
     >
-      <motion.div variants={imgVariants} className="w-[40%] rounded-2xl overflow-hidden lg:w-[80%]">
+      <motion.div variants={imgVariants} className="w-full max-w-[500px] rounded-2xl overflow-hidden">
         <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
       </motion.div>
 
-      <motion.div variants={textVariants} className="w-[40%] flex flex-col gap-6 lg:w-[80%]">
-        <motion.h1 variants={textVariants} className="text-[56px] xl:text-[48px] font-bold">
+      <motion.div variants={textVariants} className="w-full max-w-[500px] flex flex-col gap-4 sm:gap-3 text-center lg:text-left">
+        <motion.h1 variants={textVariants} className="text-4xl sm:text-3xl font-bold">
           {item.title}
         </motion.h1>
-        <motion.p variants={textVariants} className="font-light">
+        <motion.p variants={textVariants} className="font-light text-base sm:text-sm">
           {item.desc}
         </motion.p>
         <motion.a variants={textVariants} href={item.link}>
-          <button className="bg-pink-300 px-4 py-3 rounded-xl font-medium cursor-pointer">
+          <button className="bg-pink-300 px-4 py-3 rounded-xl font-medium cursor-pointer w-full sm:w-auto">
             View Project
           </button>
         </motion.a>
@@ -106,7 +106,7 @@ const Portfolio: React.FC = () => {
   const xTranslate = useTransform(scrollYProgress, [0, 1], [0, -clientWidth * items.length]);
 
   return (
-    <div className="relative h-[600vh] max-w-6xl mt-10" ref={ref}>
+    <div className="relative h-[600vh] mt-10" ref={ref}>
       <motion.div className="sticky top-0 flex h-screen w-max" style={{ x: xTranslate }}>
         <div className="shrink-0" style={{ width: clientWidth / 5 - containerDistance }} />
         {items.map((item, index) => (
@@ -115,11 +115,12 @@ const Portfolio: React.FC = () => {
         <div className="shrink-0" style={{ width: clientWidth - containerDistance }} />
       </motion.div>
 
-      {/* Placeholder sections for vertical scroll space */}
+      {/* Invisible sections to extend scroll space */}
       {[...Array(5)].map((_, i) => (
         <section key={i} />
       ))}
 
+      {/* Scroll Progress */}
       <div className="sticky left-0 bottom-[80%] w-[80px] h-[80px] max-md:w-[50px] max-md:h-[50px]">
         <svg width="100%" height="100%" viewBox="0 0 160 160">
           <circle cx="80" cy="80" r="70" fill="none" stroke="#ddd" strokeWidth={20} />
