@@ -83,63 +83,46 @@ const ListItem: React.FC<ListItemProps> = ({ item, index }) => {
 };
 
 const Portfolio: React.FC = () => {
-  const [containerDistance, setContainerDistance] = useState<number>(0);
   const ref = useRef<HTMLDivElement | null>(null);
+  const [clientWidth, setClientWidth] = useState(0);
+  const [containerDistance, setContainerDistance] = useState(0);
 
   useEffect(() => {
-    const calculateDistance = () => {
-      if (ref.current) {
+    const updateSizes = () => {
+      if (typeof window !== "undefined" && ref.current) {
+        setClientWidth(window.innerWidth);
         const rect = ref.current.getBoundingClientRect();
         setContainerDistance(rect.left);
       }
     };
 
-    calculateDistance();
-    window.addEventListener("resize", calculateDistance);
-    return () => window.removeEventListener("resize", calculateDistance);
+    updateSizes();
+    window.addEventListener("resize", updateSizes);
+    return () => window.removeEventListener("resize", updateSizes);
   }, []);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  const xTranslate = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -window.innerWidth * (items.length)]
-  );
+  const xTranslate = useTransform(scrollYProgress, [0, 1], [0, -clientWidth * items.length]);
 
   return (
     <div className="relative h-[600vh] max-w-6xl mt-10" ref={ref}>
-      <motion.div
-        className="sticky top-0 flex h-screen w-max"
-        style={{ x: xTranslate }}
-      >
-        <div
-          className="shrink-0"
-          style={{ width: (window.innerWidth/5) - containerDistance }}
-        />
+      <motion.div className="sticky top-0 flex h-screen w-max" style={{ x: xTranslate }}>
+        <div className="shrink-0" style={{ width: clientWidth / 5 - containerDistance }} />
         {items.map((item, index) => (
           <ListItem item={item} index={index} key={item.id} />
         ))}
-        <div
-          className="shrink-0"
-          style={{ width: window.innerWidth - containerDistance }}
-        />
+        <div className="shrink-0" style={{ width: clientWidth - containerDistance }} />
       </motion.div>
 
+      {/* Placeholder sections for vertical scroll space */}
       {[...Array(5)].map((_, i) => (
         <section key={i} />
       ))}
 
       <div className="sticky left-0 bottom-[80%] w-[80px] h-[80px] max-md:w-[50px] max-md:h-[50px]">
         <svg width="100%" height="100%" viewBox="0 0 160 160">
-          <circle
-            cx="80"
-            cy="80"
-            r="70"
-            fill="none"
-            stroke="#ddd"
-            strokeWidth={20}
-          />
+          <circle cx="80" cy="80" r="70" fill="none" stroke="#ddd" strokeWidth={20} />
           <motion.circle
             cx="80"
             cy="80"
