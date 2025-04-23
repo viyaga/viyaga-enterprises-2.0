@@ -5,6 +5,7 @@ import TechStackSection from './tech-stack';
 import PortfolioSection from './portfolio';
 import TestimonialsSection from './testimonials';
 import ContactSection from './contact';
+import TrustedBy from './trusted-by';
 
 export default function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
       {/* <ServicesSection /> */}
       <TechStackSection />
       <TestimonialsSection />
+      <TrustedBy />
       <ContactSection />
     </div>
   );
