@@ -143,7 +143,9 @@ const Affiliates: CollectionConfig = {
     ],
     access: {
         admin: () => false,
-        delete: () => false,
+        read: ({ req }) => !!req.user,
+        create: ({ req }) => !!req.user,
+        update: ({ req }) => !!req.user,
     },
     indexes: [
         {
