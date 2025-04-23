@@ -57,7 +57,6 @@ const Products: CollectionConfig = {
     { name: 'changelog', type: 'richText' },
     { name: 'isFeatured', type: 'checkbox' },
     { name: 'isFree', type: 'checkbox' },
-
     {
       name: 'demo_urls',
       type: 'array',
@@ -67,23 +66,19 @@ const Products: CollectionConfig = {
         { name: 'url', type: 'text', required: true },
       ],
     },
-
     { name: 'documentation_url', type: 'text' },
-
     {
       name: 'affiliate_commission',
       type: 'number',
       label: 'Affiliate Commission(%)',
-      required: false,
+      defaultValue: 0,
       admin: {
         placeholder: 'e.g. 30%',
       },
     },
-
     { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug },
     { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true },
     { name: 'thumbnail', type: 'upload', relationTo: 'media' },
-
     {
       name: 'screenshots',
       type: 'array',
@@ -91,8 +86,6 @@ const Products: CollectionConfig = {
         { name: 'image', type: 'upload', relationTo: 'media' },
       ],
     },
-
-    { name: 'file', type: 'upload', relationTo: 'media', required: true },
   ],
 };
 

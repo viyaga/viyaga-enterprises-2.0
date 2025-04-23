@@ -142,15 +142,14 @@ const Affiliates: CollectionConfig = {
         },
     ],
     access: {
-        // No general access to admin panel
         admin: () => false,
         delete: () => false,
     },
     indexes: [
         {
-            fields: ['status'],
+            fields: ['referred_by', 'status'],
             unique: false,
-        },
+        }
     ],
 };
 

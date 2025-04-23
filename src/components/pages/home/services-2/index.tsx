@@ -8,8 +8,8 @@ import Image from "next/image";
 
 const services = [
   { id: 1, img: "/service1.png", title: "Web Development", counter: 35 },
-  { id: 2, img: "/service2.png", title: "Product Design", counter: 23 },
-  { id: 3, img: "/service3.png", title: "Branding", counter: 46 },
+  { id: 2, img: "/service2.png", title: "Mobile App Development", counter: 23 },
+  { id: 3, img: "/service3.png", title: "AI Integrations", counter: 46 },
 ];
 
 const Services = () => {
@@ -42,7 +42,7 @@ const Services = () => {
             animate={isInView ? "animate" : "initial"}
             className="text-4xl lg:text-6xl font-bold leading-tight text-white"
           >
-            How do I help?
+            How We Help You Grow?
           </motion.h1>
 
           <motion.div
@@ -61,8 +61,8 @@ const Services = () => {
                     service.id === 1
                       ? "bg-red-500"
                       : service.id === 2
-                      ? "bg-teal-600"
-                      : "bg-yellow-600"
+                        ? "bg-teal-600"
+                        : "bg-yellow-600"
                   }`}
                 >
                   <Image
@@ -86,7 +86,7 @@ const Services = () => {
 
           <div className="flex gap-6 mt-6">
             <Counter from={0} to={104} text="Projects Completed" />
-            <Counter from={0} to={72} text="Happy Clients" />
+            <Counter from={0} to={98} text="Happy Clients" />
           </div>
         </div>
 

@@ -15,7 +15,7 @@ const Customers: CollectionConfig = {
             required: true,
         },
         {
-            name: 'referral_code',
+            name: 'referred_by', //affiliate Id
             type: 'text',
             admin: {
                 position: 'sidebar',
@@ -42,17 +42,15 @@ const Customers: CollectionConfig = {
         },
     ],
     access: {
-        read: ({ req: { user } }) => {
-            if (!user) return false;
-            // Only allow users to read their own data unless admin
-            return { id: { equals: user.id } };
-        },
-        update: ({ req: { user } }) => {
-            if (!user) return false;
-            return { id: { equals: user.id } };
-        },
+        admin: () => false,
         delete: () => false,
     },
+    indexes: [
+        {
+            fields: ['referred_by'],
+            unique: false,
+        },
+    ],
 };
 
 export default Customers;
