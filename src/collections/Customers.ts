@@ -15,7 +15,7 @@ const Customers: CollectionConfig = {
             required: true,
         },
         {
-            name: 'referred_by_code',
+            name: 'referral_code',
             type: 'text',
             admin: {
                 position: 'sidebar',
