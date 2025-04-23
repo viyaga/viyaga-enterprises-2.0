@@ -31,7 +31,7 @@ const Services = () => {
   };
 
   return (
-    <section className="w-full h-full bg-gradient-to-t from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white py-3 lg:py-5">
+    <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white py-3 lg:py-5">
       <div
         ref={ref}
         className="flex flex-col lg:flex-row w-full h-full py-12 gap-1 md:gap-12 max-w-6xl mx-auto"
