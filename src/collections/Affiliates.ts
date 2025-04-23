@@ -121,7 +121,7 @@ const Affiliates: CollectionConfig = {
             name: 'status',
             type: 'radio',
             required: true,
-            defaultValue: 1,
+            defaultValue: '1',
             options: [
                 {
                     label: 'Active',

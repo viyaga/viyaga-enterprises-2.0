@@ -1,4 +1,3 @@
-// payload/collections/customers.js
 import { CollectionConfig, CollectionSlug } from 'payload';
 
 const Customers: CollectionConfig = {
@@ -15,7 +14,7 @@ const Customers: CollectionConfig = {
             required: true,
         },
         {
-            name: 'referred_by', //affiliate Id
+            name: 'referred_by', 
             type: 'text',
             admin: {
                 position: 'sidebar',
@@ -26,15 +25,15 @@ const Customers: CollectionConfig = {
             type: 'upload',
             relationTo: 'media',
         },
-        {
-            name: 'orders',
-            type: 'relationship',
-            relationTo: 'orders' as CollectionSlug,
-            hasMany: true,
-            admin: {
-                position: 'sidebar',
-            },
-        },
+        // {
+        //     name: 'orders',
+        //     type: 'relationship',
+        //     relationTo: 'orders' as CollectionSlug,
+        //     hasMany: true,
+        //     admin: {
+        //         position: 'sidebar',
+        //     },
+        // },
         {
             name: 'isVerified',
             type: 'checkbox',

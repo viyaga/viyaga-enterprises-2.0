@@ -3,10 +3,9 @@ import { CollectionConfig, CollectionSlug } from 'payload';
 const Orders: CollectionConfig = {
   slug: 'orders',
   admin: { useAsTitle: 'orderNumber' },
-  hooks: {afterChange: []},
   fields: [
     { name: 'orderNumber', type: 'text', required: true, unique: true },
-    { name: 'customer', type: 'relationship', relationTo: 'Customers' as CollectionSlug },
+    // { name: 'customer', type: 'relationship', relationTo: 'Customers' as CollectionSlug },
     { name: 'product', type: 'relationship', relationTo: 'products' as CollectionSlug },
     {
       name: 'country',

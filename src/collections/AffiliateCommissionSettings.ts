@@ -1,6 +1,6 @@
 import { CollectionConfig, CollectionSlug } from 'payload';
 
-export const AffiliateCommissionSettings: CollectionConfig = {
+const  AffiliateCommissionSettings: CollectionConfig = {
   slug: 'affiliate-commission-settings',
   admin: {
     useAsTitle: 'name',
@@ -80,3 +80,5 @@ export const AffiliateCommissionSettings: CollectionConfig = {
   ],
   timestamps: true,
 };
+
+export default AffiliateCommissionSettings;
