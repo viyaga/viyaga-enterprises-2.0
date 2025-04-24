@@ -9,8 +9,8 @@ export default function SearchFilters() {
   // You could lift state up here for full integration
 
   return (
-    <section className="py-8 px-4 max-w-4xl mx-auto">
-      <div className="flex flex-col md:flex-row gap-4 items-center">
+    <section className="py-4 px-2 md:py-8 px-4mx-auto sticky top-18 z-30 bg-white shadow-md">
+      <div className="flex flex-col md:flex-row gap-4 items-center  max-w-4xl mx-auto">
         <Input
           placeholder="Search products..."
           className="w-full md:flex-1"
