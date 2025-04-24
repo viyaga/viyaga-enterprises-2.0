@@ -4,11 +4,13 @@ import ProductGrid from "./product-grid";
 import Licensing from "./licensing";
 import Testimonials from "./testimonials";
 import Newsletter from "./newsletter";
+import AutoScrollBanner from "./auto-scroll-banner";
 
 export default function SoftwareProductsPage() {
   return (
-    <div className="bg-[oklch(var(--background))] text-[oklch(var(--foreground))]">
+    <div className="">
       <HeroSection />
+      <AutoScrollBanner />
       <SearchFilters />
       <ProductGrid />
       <Licensing />

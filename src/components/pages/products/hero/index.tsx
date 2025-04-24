@@ -1,14 +1,35 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
+import { RocketIcon } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function HeroSection() {
   return (
-    <section className="py-16 text-center px-4">
-      <h1 className="text-4xl font-bold mb-4">Discover High-Quality Software Tools</h1>
-      <p className="text-lg mb-6">Browse premium tools, scripts, and apps made for developers and businesses.</p>
-      <div className="flex justify-center gap-4">
-        <Button>Browse Products</Button>
-        <Button variant="outline">Submit a Product</Button>
-      </div>
+    <section className="relative pb-24 pt-36 text-center px-4 bg-gradient-to-b from-[#] via-muted/40 to-background overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+        className="relative z-10"
+      >
+        <h1 className="text-4xl md:text-5xl font-bold mb-5 max-w-3xl mx-auto leading-tight">
+          Discover High-Quality Software Tools Built for Growth
+        </h1>
+        <p className="text-lg md:text-xl mb-8 max-w-xl mx-auto text-muted-foreground">
+          Explore powerful tools developed by Viyaga Enterprises to elevate your business.
+        </p>
+        <div className="flex justify-center">
+          <Button size="lg" className="gap-2">
+            <RocketIcon className="w-5 h-5" />
+            Browse Products
+          </Button>
+        </div>
+      </motion.div>
+
+      {/* Decorative Background Glow (Optional) */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-primary/20 rounded-full blur-3xl opacity-30" />
     </section>
   )
 }
