@@ -14,7 +14,7 @@ const logos = [
 export default function AutoScrollBanner() {
   return (
     <div
-      className="w-full overflow-hidden py-6 border-t border-b bg-white"
+      className="w-full overflow-hidden py-6 border-b max-w-6xl mx-auto bg-white dark:bg-[#00182e]"
       style={{
         WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
       }}

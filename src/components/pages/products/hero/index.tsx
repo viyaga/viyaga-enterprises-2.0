@@ -6,13 +6,18 @@ import { motion } from "framer-motion"
 
 export default function HeroSection() {
   return (
-    <section className="relative pb-24 pt-36 text-center px-4 bg-gradient-to-b from-[#] via-muted/40 to-background overflow-hidden">
+    <section
+      className="relative pb-24 pt-36 text-center px-4 bg-gradient-to-b from-[#f4cc77] via-[#f7d895] to-[#fff] 
+      dark:from-[#00182e] dark:via-[#00334d] dark:to-[#00182e] 
+      light:from-[#ffffff] light:via-[#f5f5f5] light:to-[#ffffff] 
+      overflow-hidden"
+    >
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="relative z-10"
+        className="relative z-10 max-w-6xl mx-auto"
       >
         <h1 className="text-4xl md:text-5xl font-bold mb-5 max-w-3xl mx-auto leading-tight">
           Discover High-Quality Software Tools Built for Growth
