@@ -1,5 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
+
 const logos = [
   { src: "/images/american-express.svg", name: "American Express" },
   { src: "/images/united-parcel-service.svg", name: "United Parcel Service" },
@@ -14,38 +16,26 @@ const logos = [
 export default function AutoScrollBanner() {
   return (
     <div
-      className="w-full overflow-hidden py-6 border-b max-w-6xl mx-auto bg-white dark:bg-[#00182e]"
+      className="w-full overflow-hidden py-6 max-w-6xl mx-auto bg-white dark:bg-[#00182e]"
       style={{
         WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
       }}
     >
-      <div
-        className="flex animate-scroll whitespace-nowrap gap-16 px-8"
-        style={{
-          animation: "scroll 40s linear infinite",
-        }}
+      <motion.div
+        className="flex whitespace-nowrap gap-10 px-8"
+        animate={{ x: ["0%", "-50%"] }}
+        transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
       >
         {logos.concat(logos).map((logo, i) => (
-          <img
+            <img
             key={i}
-            src={logo.src}
-            alt={logo.name}
-            title={logo.name}
-            className="h-10 object-contain opacity-80 transition duration-300 md:grayscale md:hover:grayscale-0 md:opacity-70 md:hover:opacity-100"
-          />
+              src={logo.src}
+              alt={logo.name}
+              title={logo.name}
+              className="h-6 sm:h-8 md:h-10 object-contain opacity-80 transition duration-300 md:grayscale md:hover:grayscale-0 md:opacity-70 md:hover:opacity-100"
+            />
         ))}
-      </div>
-
-      <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-      `}</style>
+      </motion.div>
     </div>
   )
 }
