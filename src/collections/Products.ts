@@ -52,7 +52,6 @@ const Products: CollectionConfig = {
         },
       ],
     },
-
     { name: 'version', type: 'text' },
     { name: 'changelog', type: 'richText' },
     { name: 'isFeatured', type: 'checkbox' },

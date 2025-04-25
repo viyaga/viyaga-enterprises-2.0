@@ -4,9 +4,7 @@ export function useIsClient(): boolean {
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
-
         setIsClient(true);
-
     }, [setIsClient]);
 
     return isClient;

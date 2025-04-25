@@ -1,9 +1,18 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar } from "@/components/ui/avatar"
 import { StarIcon } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function Testimonials() {
   return (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
     <section className="py-12 px-4 bg-[oklch(var(--surface))]">
       <h2 className="text-2xl font-bold mb-8 text-center">What Our Users Say</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -27,5 +36,6 @@ export default function Testimonials() {
         ))}
       </div>
     </section>
+    </motion.div>
   )
 }

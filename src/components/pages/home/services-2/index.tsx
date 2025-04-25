@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import ComputerModelContainer from "./computer/ComputerModelContainer";
 import Counter from "./Counter";
 import Image from "next/image";
+import { useIsClient } from "@/lib/hooks/useIsClient";
 
 const services = [
   { id: 1, img: "/service1.png", title: "Web Development", counter: 35 },
@@ -15,6 +16,7 @@ const services = [
 const Services = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-200px" });
+  const isClient = useIsClient();
 
   const textVariants = {
     initial: { x: -100, y: -100, opacity: 0 },
@@ -89,9 +91,12 @@ const Services = () => {
             <Counter from={0} to={98} text="Happy Clients" />
           </div>
         </div>
-
         <div className="w-screen lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center mx-auto">
-          <ComputerModelContainer />
+          {isClient && typeof window !== "undefined" ? (
+            <ComputerModelContainer />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </section>

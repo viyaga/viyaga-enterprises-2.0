@@ -6,10 +6,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function SearchFilters() {
   const [query, setQuery] = useState("")
-  // You could lift state up here for full integration
 
   return (
-    <section className="py-4 px-2 md:py-8 px-4mx-auto sticky top-18 z-30 bg-white shadow-md">
+    <section className="py-4 px-2 md:py-8 px-4mx-auto">
       <div className="flex flex-col md:flex-row gap-4 items-center  max-w-4xl mx-auto">
         <Input
           placeholder="Search products..."
