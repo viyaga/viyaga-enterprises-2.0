@@ -14,19 +14,19 @@ const companies = [
   { src: "/images/PricewaterhouseCoopers.svg", name: "PwC" },
 ];
 
-export default function TrustedBy() {
+export default function AutoScrollBanner() {
   const logos = [...companies, ...companies];
 
   return (
-    <section
-      className="bg-white dark:bg-[#00182e] max-w-6xl mx-auto"
-      style={{
-        WebkitMaskImage:
-          "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
-      }}
-    >
-      <div className="w-full px-4 text-center">
-        <div className="overflow-hidden relative w-full">
+    <section className="bg-white dark:bg-[#00182e]">
+      <div
+        className="w-full px-4 text-center"
+       
+      >
+        <div className="overflow-hidden relative w-full max-w-6xl mx-auto"  style={{
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+        }}>
           <motion.div
             className="flex gap-12 px-6 w-[200%]"
             initial={{ x: "0%" }}
