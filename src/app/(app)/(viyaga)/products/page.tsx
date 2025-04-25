@@ -1,12 +1,15 @@
 import SoftwareProductsPage from "@/components/pages/products";
+import { searchParamsCache } from "@/lib/searchparams";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Software Products | Viyaga Enterprises",
-  description: "Explore premium software tools built by Viyaga Enterprises for modern businesses.",
+  description:
+    "Explore premium software tools built by Viyaga Enterprises for modern businesses.",
   openGraph: {
     title: "Explore Our Software Products | Viyaga Enterprises",
-    description: "Browse business-ready software tools designed and developed by Viyaga Enterprises.",
+    description:
+      "Browse business-ready software tools designed and developed by Viyaga Enterprises.",
     url: "https://viyaga.com/products",
     siteName: "Viyaga Enterprises",
     images: [
@@ -20,9 +23,15 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: "index, follow",
-}
+};
 
-const page = () => {
+const page = async ({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) => {
+  await searchParamsCache.parse(searchParams);
+
   return <SoftwareProductsPage />;
 };
 

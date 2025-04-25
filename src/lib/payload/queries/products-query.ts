@@ -1,8 +1,8 @@
 import { Where } from "payload";
 
 export const getAllProductsQuery = (
-    { page, limit, search, tagId, sort = "createdAt", depth = 0 }
-        : { page: number; limit: number; search?: string; tagId?: number, sort?: string, depth?: number }
+    { page, limit, search, categoryId, tagId, sort = "createdAt", depth = 0 }
+        : { page: number; limit: number; search?: string; categoryId: number, tagId?: number, sort?: string, depth?: number }
 ) => {
     const where: Where = {};
     const select = {
@@ -17,6 +17,10 @@ export const getAllProductsQuery = (
         ];
     }
 
+    if (categoryId) {
+        where.category = { equals: categoryId };
+    }
+
     if (tagId) {
         where.tag = { equals: tagId };
     }
@@ -24,9 +28,9 @@ export const getAllProductsQuery = (
     return {
         page,
         limit,
-        select,
+        // select,
         where,
         sort,
-        depth,
+        depth:1,
     };
 };

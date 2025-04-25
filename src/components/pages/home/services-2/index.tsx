@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import ComputerModelContainer from "./computer/ComputerModelContainer";
 import Counter from "./Counter";
 import Image from "next/image";
-import { useIsClient } from "@/lib/hooks/useIsClient";
 
 const services = [
   { id: 1, img: "/service1.png", title: "Web Development", counter: 35 },
@@ -13,11 +12,9 @@ const services = [
   { id: 3, img: "/service3.png", title: "AI Integrations", counter: 46 },
 ];
 
-const Services = () => {
+const ServicesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-200px" });
-  const isClient = useIsClient();
-
   const textVariants = {
     initial: { x: -100, y: -100, opacity: 0 },
     animate: { x: 0, y: 0, opacity: 1, transition: { duration: 1 } },
@@ -92,15 +89,11 @@ const Services = () => {
           </div>
         </div>
         <div className="w-screen lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center mx-auto">
-          {isClient && typeof window !== "undefined" ? (
-            <ComputerModelContainer />
-          ) : (
-            <></>
-          )}
+          <ComputerModelContainer />
         </div>
       </div>
     </section>
   );
 };
 
-export default Services;
+export default ServicesSection;

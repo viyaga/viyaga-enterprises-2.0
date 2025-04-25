@@ -75,7 +75,7 @@ const Products: CollectionConfig = {
         placeholder: 'e.g. 30%',
       },
     },
-    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug },
+    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true },
     { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true },
     { name: 'thumbnail', type: 'upload', relationTo: 'media' },
     {

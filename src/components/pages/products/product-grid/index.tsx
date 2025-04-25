@@ -7,7 +7,9 @@ const mockProducts = [
   { id: 3, name: "ChatBot AI", price: 59, category: "AI", description: "Add an AI chatbot to your site." },
 ]
 
-export default function ProductGrid() {
+export default function ProductGrid({ products} : { products: any[] }) {
+  console.log({ products });
+  
   return (
     <section className="py-8 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
       {mockProducts.map((product) => (
