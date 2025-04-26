@@ -9,7 +9,6 @@ export default function HeroSection() {
     <section
       className="relative pb-15 pt-36 text-center px-4 bg-gradient-to-b from-[#f4cc77] via-[#f7d895] to-[#fff] 
       dark:from-[#00182e] dark:via-[#00334d] dark:to-[#00182e] 
-      light:from-[#ffffff] light:via-[#f5f5f5] light:to-[#ffffff] 
       overflow-hidden"
     >
       <motion.div

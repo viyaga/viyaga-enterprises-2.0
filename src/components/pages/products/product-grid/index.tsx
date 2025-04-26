@@ -134,31 +134,12 @@ export default function ProductGrid({ products }: { products: Product[] }) {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="py-12 md:py-24 px-4 sm:px-6 md:px-8 min-h-screen text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]"
+      className="py-6 md:py-12 px-4 sm:px-6 md:px-8 min-h-screen text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]"
     >
-      <motion.h2
-        variants={fadeInUp}
-        className="text-3xl sm:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text drop-shadow-md"
-      >
-        Our Products
-      </motion.h2>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
-
-      <div className="text-center mt-16">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          <Button className="w-full sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
-            Explore More Products
-          </Button>
-        </motion.div>
       </div>
     </motion.section>
   );
