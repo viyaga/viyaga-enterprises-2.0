@@ -30,8 +30,12 @@ type PageProps = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-const Page = async ({ searchParams }: PageProps) => {
-  await searchParamsCache.parse(searchParams);
+const Page = async (props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) => {
+  const { searchParams } = props;
+  const resolvedSearchParams = await searchParams;
+  await searchParamsCache.parse(resolvedSearchParams);
 
   return <SoftwareProductsPage />;
 };
