@@ -25,13 +25,8 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-type PageProps = {
-  params: {}; // No dynamic params for this page, can be an empty object
-  searchParams: Record<string, string | string[] | undefined>;
-};
-
 const Page = async (props: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) => {
   const { searchParams } = props;
   const resolvedSearchParams = await searchParams;

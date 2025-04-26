@@ -1,5 +1,5 @@
 // payload/collections/categories.js
-import { CollectionConfig } from 'payload';
+import { CollectionConfig, CollectionSlug } from 'payload';
 
 const Categories: CollectionConfig = {
   slug: 'categories',
@@ -9,6 +9,12 @@ const Categories: CollectionConfig = {
     { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'description', type: 'textarea' },
     { name: 'icon', type: 'upload', relationTo: 'media' },
+    {
+      name: 'seo',
+      type: 'relationship',
+      relationTo: 'seo' as CollectionSlug,
+      label: 'SEO',
+    },
   ],
 };
 

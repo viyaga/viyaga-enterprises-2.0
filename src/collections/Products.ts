@@ -85,6 +85,12 @@ const Products: CollectionConfig = {
         { name: 'image', type: 'upload', relationTo: 'media' },
       ],
     },
+    {
+      name: 'seo',
+      type: 'relationship',
+      relationTo: 'seo' as CollectionSlug,
+      label: 'SEO',
+    },
   ],
 };
 

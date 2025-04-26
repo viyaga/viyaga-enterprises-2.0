@@ -20,6 +20,7 @@ import Orders from './collections/Orders'
 import Testimonials from './collections/Testimonials'
 import BankDetails from './collections/BankDetails'
 import AffiliateCommissionSettings from './collections/AffiliateCommissionSettings'
+import SEO from './collections/Seo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +35,7 @@ export default buildConfig({
   collections: [
     Users, Media, Banners, Categories, Pages, Tags, Products,
     Affiliates, Customers, Orders, Testimonials, BankDetails,
-    AffiliateCommissionSettings
+    AffiliateCommissionSettings, SEO
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
