@@ -1,6 +1,6 @@
+import { type Metadata } from "next";
 import SoftwareProductsPage from "@/components/pages/products";
 import { searchParamsCache } from "@/lib/searchparams";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Software Products | Viyaga Enterprises",
@@ -25,14 +25,15 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-const page = async ({
-  searchParams,
-}: {
+interface PageProps {
+  params: Record<string, string>;
   searchParams: Record<string, string | string[] | undefined>;
-}) => {
+}
+
+const Page = async ({ searchParams }: PageProps) => {
   await searchParamsCache.parse(searchParams);
 
   return <SoftwareProductsPage />;
 };
 
-export default page;
+export default Page;
