@@ -37,11 +37,6 @@ export default buildConfig({
     Affiliates, Customers, Orders, Testimonials, BankDetails,
     AffiliateCommissionSettings, SEO
   ],
-  cors: {
-    origins: [
-      'http://localhost:30000',
-    ],
-  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
