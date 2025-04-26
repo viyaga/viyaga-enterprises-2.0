@@ -25,10 +25,10 @@ export const metadata: Metadata = {
   robots: "index, follow",
 };
 
-interface PageProps {
-  params: Record<string, string>;
+type PageProps = {
+  params: {}; // No dynamic params for this page, can be an empty object
   searchParams: Record<string, string | string[] | undefined>;
-}
+};
 
 const Page = async ({ searchParams }: PageProps) => {
   await searchParamsCache.parse(searchParams);
