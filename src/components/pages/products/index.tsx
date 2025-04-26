@@ -36,14 +36,20 @@ export default async function SoftwareProductsPage() {
     sort,
   });
 
-  console.log({ products: products?.docs });
+  if (products.error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold text-red-500">{products.error}</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="relative">
       <HeroSection />
       <AutoScrollBanner />
       <SearchFilters />
-      <ProductGrid products={products} />
+      <ProductGrid products={products.docs} />
       <Licensing />
       <Testimonials />
       <Newsletter />
