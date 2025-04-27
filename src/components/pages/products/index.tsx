@@ -1,3 +1,5 @@
+"use server";
+
 import HeroSection from "./hero";
 import SearchFilters from "./search-filters";
 import ProductGrid from "./product-grid";
@@ -7,11 +9,13 @@ import Newsletter from "./newsletter";
 import AutoScrollBanner from "./auto-scroll-banner";
 import { getAllProducts } from "@/lib/payload";
 import { searchParamsCache } from "@/lib/searchparams";
-import { getUserGeoLocation } from "@/lib/get-user-geo-location";
+import { getUserGeoLocation } from "@/lib/services/user-geo-location";
+import { getPurchasingPower } from "@/lib/services/ppp";
 
 export default async function SoftwareProductsPage() {
   const { country } = await getUserGeoLocation();
-  console.log({ country });
+  const ppp = await getPurchasingPower();
+  console.log({ country, ppp });
 
   const page = searchParamsCache.get("page");
   const search = searchParamsCache.get("q");

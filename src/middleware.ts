@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
     const existingRegion = cookieStore.get('user_country_region');
     const existingCity = cookieStore.get('user_city');
 
-    // Only if cookies are missing
+    // Only if cookies are missing or country is different, set the cookies
     if (!existingCountry || !existingRegion || !existingCity) {
       const country = request.headers.get('x-vercel-ip-country');
       const region = request.headers.get('x-vercel-ip-country-region');

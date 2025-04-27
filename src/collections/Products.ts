@@ -30,46 +30,24 @@ const Products: CollectionConfig = {
     { name: 'description', type: 'richText' },
     { name: 'features', type: 'richText' },
     {
-      name: 'pricing',
-      type: 'array',
-      label: 'Pricing by Country',
-      fields: [
-        {
-          name: 'country',
-          type: 'select',
-          label: 'Country',
-          required: true,
-          options: [
-            { label: 'United States', value: 'US' },
-            { label: 'India', value: 'IN' },
-            { label: 'Germany', value: 'DE' },
-            { label: 'United Kingdom', value: 'UK' },
-            { label: 'Canada', value: 'CA' },
-          ],
-        },
-        {
-          name: 'currency',
-          type: 'select',
-          label: 'Currency',
-          required: true,
-          options: [
-            { label: 'USD', value: 'USD' },
-            { label: 'INR', value: 'INR' },
-            { label: 'EUR', value: 'EUR' },
-            { label: 'GBP', value: 'GBP' },
-            { label: 'CAD', value: 'CAD' },
-          ],
-        },
-        {
-          name: 'price',
-          type: 'number',
-          required: true,
-        },
-        {
-          name: 'discount_price',
-          type: 'number',
-        },
-      ],
+      name: 'price',
+      type: 'number',
+      required: true,
+    },
+    {
+      name: 'discount_price',
+      type: 'number',
+      index: true,
+    },
+    {
+      name: 'inr_price',
+      type: 'number',
+      required: true,
+    },
+    {
+      name: 'inr_discount_price',
+      type: 'number',
+      index: true,
     },
     { name: 'version', type: 'text' },
     { name: 'changelog', type: 'richText' },
@@ -80,7 +58,7 @@ const Products: CollectionConfig = {
       type: 'array',
       label: 'Demo URLs',
       fields: [
-        { name: 'label', type: 'text', required: true }, // e.g., Admin, Client, Delivery
+        { name: 'label', type: 'text', required: true },
         { name: 'url', type: 'text', required: true },
       ],
     },
@@ -94,8 +72,8 @@ const Products: CollectionConfig = {
         placeholder: 'e.g. 30%',
       },
     },
-    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true },
-    { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true },
+    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true, index: true }, // Index added for category filter
+    { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true, index: true }, // Index added for tags filter
     { name: 'thumbnail', type: 'upload', relationTo: 'media' },
     {
       name: 'screenshots',
@@ -110,6 +88,11 @@ const Products: CollectionConfig = {
       relationTo: 'seo' as CollectionSlug,
       label: 'SEO',
     },
+  ],
+  indexes: [
+    { fields: ['price_in_usd'] }, // Adding an index for price_in_usd for sorting low to high
+    { fields: ['category'] }, // Index for category filter
+    { fields: ['tags'] }, // Index for tags filter
   ],
 };
 
