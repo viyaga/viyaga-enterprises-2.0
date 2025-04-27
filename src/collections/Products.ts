@@ -8,6 +8,22 @@ const Products: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    afterChange: [
+      async ({ doc, req }) => {
+        const res = await fetch(`/api/revalidate?token=${process.env.PAYLOAD_SECRET}tag=products`, {
+          method: 'POST',
+          body: JSON.stringify({ productId: doc.id }),
+        });
+
+        if (!res.ok) {
+          console.error('Failed to revalidate product');
+        }
+
+        return doc;
+      },
+    ],
+  },
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'slug', type: 'text', required: true, unique: true },

@@ -7,8 +7,12 @@ import Newsletter from "./newsletter";
 import AutoScrollBanner from "./auto-scroll-banner";
 import { getAllProducts } from "@/lib/payload";
 import { searchParamsCache } from "@/lib/searchparams";
+import { getUserGeoLocation } from "@/lib/get-user-geo-location";
 
 export default async function SoftwareProductsPage() {
+  const { country } = await getUserGeoLocation();
+  console.log({ country });
+
   const page = searchParamsCache.get("page");
   const search = searchParamsCache.get("q");
   const limit = searchParamsCache.get("limit");
@@ -49,7 +53,7 @@ export default async function SoftwareProductsPage() {
       <HeroSection />
       <AutoScrollBanner />
       <SearchFilters />
-      <ProductGrid products={products.docs} />
+      <ProductGrid products={products.docs} country={country} />
       <Licensing />
       <Testimonials />
       <Newsletter />

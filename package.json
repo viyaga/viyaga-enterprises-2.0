@@ -30,6 +30,7 @@
     "@types/qs": "^6.9.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cookie": "^1.0.2",
     "framer-motion": "^12.7.4",
     "graphql": "^16.10.0",
     "lucide-react": "^0.503.0",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/cookie": "^0.6.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

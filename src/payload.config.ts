@@ -37,6 +37,9 @@ export default buildConfig({
     Affiliates, Customers, Orders, Testimonials, BankDetails,
     AffiliateCommissionSettings, SEO
   ],
+  defaultDepth: 0,
+  maxDepth: 3,
+  defaultMaxTextLength: 2000,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
