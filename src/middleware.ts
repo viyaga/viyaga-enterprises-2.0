@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import countries from "@/constants/countries";
 
 const allowedOrigins = ['https://your-frontend.com', 'https://admin.your-frontend.com'];
 
@@ -15,10 +16,10 @@ export function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Credentials', 'true');
   }
 
-  // get and set GEO Location of the user  ==========================================================
+  // Get and set GEO Location of the user ==========================================================
   const isApiRoute = request.nextUrl.pathname.startsWith('/api');
 
-  //Skip for API routes
+  // Skip for API routes
   if (!isApiRoute) {
     const cookieStore = request.cookies;
 
@@ -28,7 +29,7 @@ export function middleware(request: NextRequest) {
 
     // Only if cookies are missing
     if (!existingCountry || !existingRegion || !existingCity) {
-      const country = request.headers.get('x-vercel-ip-country');
+      const country = request.headers.get('x-vercel-ip-country') || 'US';
       const region = request.headers.get('x-vercel-ip-country-region');
       const city = request.headers.get('x-vercel-ip-city');
 
@@ -37,6 +38,21 @@ export function middleware(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict',
+          path: '/',
+          maxAge: 60 * 60 * 24 * 365,
+        });
+
+        // Set the purchasing power cookie based on country code
+        const countryObj = countries.find(
+          (c) => c.country_code.toUpperCase() === country.toUpperCase()
+        );
+
+        const purchasingPower = countryObj ? countryObj.purchasing_power : 0.15;
+
+        response.cookies.set('purchasing_power', purchasingPower.toString(), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
           path: '/',
           maxAge: 60 * 60 * 24 * 365,
         });

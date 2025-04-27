@@ -4,6 +4,7 @@ import { motion, Variants } from "framer-motion";
 import ProductCard from "./product-card";
 
 // Types
+
 type Category = { id: string; name: string };
 
 type Pricing = {
@@ -11,6 +12,8 @@ type Pricing = {
   currency: string;
   price: number;
   discount_price?: number;
+  inr_price?: number; // Added inr_price to handle India pricing
+  inr_discount_price?: number; // Added inr_discount_price
 };
 
 type Product = {
@@ -33,7 +36,13 @@ const containerVariants: Variants = {
   },
 };
 
-export default function ProductGrid({ products, country }: { products: Product[], country: string }) {
+export default function ProductGrid({
+  products,
+  country,
+}: {
+  products: Product[];
+  country: string;
+}) {
   return (
     <motion.section
       variants={containerVariants}

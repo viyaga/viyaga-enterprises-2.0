@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";  // Use Link for navigation in Next.js
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
@@ -11,6 +12,8 @@ type Pricing = {
   currency: string;
   price: number;
   discount_price?: number;
+  inr_price?: number; // Added inr_price to handle India pricing
+  inr_discount_price?: number; // Added inr_discount_price
 };
 
 type Product = {
@@ -42,27 +45,31 @@ export default function ProductCard({
   product: Product;
   country: string;
 }) {
-
   const matchedPricing = product.pricing?.find(
     (pricing) => pricing.country === country
   );
+
+  // Check if the country is India, and adjust price accordingly
+  const isIndia = country === "IN";
+  const price = isIndia ? matchedPricing?.inr_price : matchedPricing?.price;
+  const discountPrice = isIndia ? matchedPricing?.inr_discount_price : matchedPricing?.discount_price;
 
   const priceLabel = product.isFree ? (
     "Free"
   ) : (
     <div className="flex items-center gap-2">
-      {matchedPricing?.discount_price ? (
+      {discountPrice ? (
         <>
           <span className="text-sm text-gray-500 line-through">
-            {matchedPricing.currency} {matchedPricing.price}
+            {matchedPricing?.currency} {price}
           </span>
           <span className="text-primary font-bold">
-            {matchedPricing.currency} {matchedPricing.discount_price}
+            {matchedPricing?.currency} {discountPrice}
           </span>
         </>
       ) : (
         <span className="text-primary font-bold">
-          {matchedPricing?.currency} {matchedPricing?.price}
+          {matchedPricing?.currency} {price}
         </span>
       )}
     </div>
@@ -81,7 +88,7 @@ export default function ProductCard({
           <Image
             src={thumbnailUrl}
             alt={product.title}
-            fill
+            layout="fill"
             className="object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
@@ -92,7 +99,7 @@ export default function ProductCard({
             title={product.title}
           >
             {product.title}
-            {matchedPricing?.discount_price && (
+            {discountPrice && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -131,9 +138,11 @@ export default function ProductCard({
               transition={{ type: "spring", stiffness: 300 }}
             >
               <Button className="text-xs px-4 py-1 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
-                <a href="#" className="flex items-center gap-1">
-                  View Details <ExternalLink className="w-4 h-4" />
-                </a>
+                <Link href={`/product/${product.id}`}>
+                  <a className="flex items-center gap-1">
+                    View Details <ExternalLink className="w-4 h-4" />
+                  </a>
+                </Link>
               </Button>
             </motion.div>
           </div>
