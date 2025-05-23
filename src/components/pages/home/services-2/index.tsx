@@ -1,8 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import ComputerModelContainer from "./computer/ComputerModelContainer";
 import Counter from "./Counter";
 import Image from "next/image";
 
@@ -15,6 +14,9 @@ const services = [
 const ServicesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-200px" });
+
+  const [activeServiceId, setActiveServiceId] = useState(services[0].id);
+
   const textVariants = {
     initial: { x: -100, y: -100, opacity: 0 },
     animate: { x: 0, y: 0, opacity: 1, transition: { duration: 1 } },
@@ -29,12 +31,15 @@ const ServicesSection = () => {
     },
   };
 
+  const selectedService = services.find((s) => s.id === activeServiceId);
+
   return (
     <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white py-3 lg:py-5">
       <div
         ref={ref}
         className="flex flex-col lg:flex-row w-full h-full py-12 gap-1 md:gap-12 max-w-6xl mx-auto"
       >
+        {/* Left Content */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center gap-10 px-3">
           <motion.h1
             variants={textVariants}
@@ -50,18 +55,23 @@ const ServicesSection = () => {
             className="flex flex-col gap-4"
           >
             {services.map((service) => (
-              <motion.div
+              <motion.button
                 key={service.id}
+                onClick={() => setActiveServiceId(service.id)}
                 variants={listVariants}
-                className="flex items-center gap-4 p-5 rounded-2xl bg-white/10 hover:bg-white/20 transition-all duration-300"
+                className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 ${
+                  activeServiceId === service.id
+                    ? "bg-white/20"
+                    : "bg-white/10 hover:bg-white/20"
+                }`}
               >
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center ${
                     service.id === 1
                       ? "bg-red-500"
                       : service.id === 2
-                        ? "bg-teal-600"
-                        : "bg-yellow-600"
+                      ? "bg-teal-600"
+                      : "bg-yellow-600"
                   }`}
                 >
                   <Image
@@ -71,7 +81,7 @@ const ServicesSection = () => {
                     alt={service.title}
                   />
                 </div>
-                <div>
+                <div className="text-left">
                   <h2 className="text-lg font-semibold text-white">
                     {service.title}
                   </h2>
@@ -79,7 +89,7 @@ const ServicesSection = () => {
                     {service.counter} Projects
                   </p>
                 </div>
-              </motion.div>
+              </motion.button>
             ))}
           </motion.div>
 
@@ -88,8 +98,17 @@ const ServicesSection = () => {
             <Counter from={0} to={98} text="Happy Clients" />
           </div>
         </div>
-        <div className="w-screen lg:w-1/2 h-[500px] lg:h-auto flex justify-center items-center mx-auto">
-          <ComputerModelContainer />
+
+        {/* Right Content (Image instead of 3D model) */}
+        <div className="w-screen lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto relative">
+          <Image
+            key={selectedService?.img}
+            src={selectedService?.img || ""}
+            alt={selectedService?.title || ""}
+            width={500}
+            height={500}
+            className="object-contain rounded-xl transition duration-700 ease-in-out shadow-xl"
+          />
         </div>
       </div>
     </section>
