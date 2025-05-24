@@ -1,5 +1,5 @@
-// storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -16,10 +16,10 @@ import Products from './collections/Products'
 import Affiliates from './collections/Affiliates'
 import Customers from './collections/Customers'
 import Orders from './collections/Orders'
-import Testimonials from './collections/Testimonials'
 import BankDetails from './collections/BankDetails'
 import AffiliateCommissionSettings from './collections/AffiliateCommissionSettings'
 import SEO from './collections/Seo'
+import Testimonials from './collections/Testimonials'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -32,7 +32,7 @@ export default buildConfig({
     },
   },
   collections: [
-    Users, Media, Banners, Categories, Pages, Tags, Products,
+     Users, Media, Banners, Categories, Pages, Tags, Products,
     Affiliates, Customers, Orders, Testimonials, BankDetails,
     AffiliateCommissionSettings, SEO
   ],
@@ -46,6 +46,7 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
+    payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
 })

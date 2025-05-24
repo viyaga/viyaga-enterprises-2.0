@@ -42,6 +42,7 @@ export default async function SoftwareProductsPage() {
     categoryId,
     tagId,
     sort,
+    depth:1
   });
 
   if (products.error) {
@@ -52,6 +53,8 @@ export default async function SoftwareProductsPage() {
     );
   }
 
+  console.log({products:products.docs, country});
+  
   return (
     <div className="relative">
       <HeroSection />

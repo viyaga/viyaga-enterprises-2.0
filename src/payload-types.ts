@@ -6,26 +6,165 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * Supported timezones in IANA format.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supportedTimezones".
+ */
+export type SupportedTimezones =
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    affiliates: AffiliateAuthOperations;
+    customers: CustomerAuthOperations;
   };
+  blocks: {};
   collections: {
     users: User;
     media: Media;
+    banners: Banner;
+    categories: Category;
+    pages: Page;
+    tags: Tag;
+    products: Product;
+    affiliates: Affiliate;
+    customers: Customer;
+    orders: Order;
+    testimonials: Testimonial;
+    'bank-details': BankDetail;
+    'affiliate-commission-settings': AffiliateCommissionSetting;
+    seo: Seo;
+    'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
+  };
+  collectionsJoins: {};
+  collectionsSelect: {
+    users: UsersSelect<false> | UsersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    banners: BannersSelect<false> | BannersSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    affiliates: AffiliatesSelect<false> | AffiliatesSelect<true>;
+    customers: CustomersSelect<false> | CustomersSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    'bank-details': BankDetailsSelect<false> | BankDetailsSelect<true>;
+    'affiliate-commission-settings': AffiliateCommissionSettingsSelect<false> | AffiliateCommissionSettingsSelect<true>;
+    seo: SeoSelect<false> | SeoSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
     defaultIDType: string;
   };
   globals: {};
+  globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'users';
+  user:
+    | (User & {
+        collection: 'users';
+      })
+    | (Affiliate & {
+        collection: 'affiliates';
+      })
+    | (Customer & {
+        collection: 'customers';
+      });
+  jobs: {
+    tasks: unknown;
+    workflows: unknown;
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface AffiliateAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface CustomerAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -51,6 +190,9 @@ export interface User {
   id: string;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -81,14 +223,415 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners".
+ */
+export interface Banner {
+  id: string;
+  title: string;
+  image?: (string | null) | Media;
+  link?: string | null;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string | null;
+  icon?: (string | null) | Media;
+  seo?: (string | null) | Seo;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo".
+ */
+export interface Seo {
+  id: string;
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords?: string | null;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImage?: (string | null) | Media;
+  twitterTitle?: string | null;
+  twitterDescription?: string | null;
+  twitterImage?: (string | null) | Media;
+  canonicalUrl?: string | null;
+  structuredData?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  title: string;
+  slug: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  thumbnail?: (string | null) | Media;
+  title: string;
+  slug: string;
+  price: number;
+  discount_price: number;
+  inr_price: number;
+  inr_discount_price: number;
+  isFeatured?: boolean | null;
+  isFree?: boolean | null;
+  category?: (string | Category)[] | null;
+  tags?: (string | Tag)[] | null;
+  affiliate_commission?: number | null;
+  screenshots?:
+    | {
+        image?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  features?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  demo_urls?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  seo?: (string | null) | Seo;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliates".
+ */
+export interface Affiliate {
+  id: string;
+  name: string;
+  /**
+   * Unique code for referral tracking
+   */
+  referral_code: string;
+  address?: {
+    house_number?: string | null;
+    street_and_area?: string | null;
+    city?: string | null;
+    state?: string | null;
+    country?: string | null;
+    postal_code?: string | null;
+  };
+  /**
+   * Phone number in international format
+   */
+  phone_number?: string | null;
+  country_code: string;
+  total_earned?: number | null;
+  wallet_balance?: number | null;
+  bonus_balance?: number | null;
+  current_rank?: string | null;
+  referral_tree_ids?:
+    | {
+        id?: string | null;
+      }[]
+    | null;
+  referred_by?: string | null;
+  bank_accounts?: (string | BankDetail)[] | null;
+  status: '1' | '0' | '-1';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bank-details".
+ */
+export interface BankDetail {
+  id: string;
+  affiliate: string | Affiliate;
+  account_holder_name: string;
+  bank_name: string;
+  /**
+   * Alphanumeric account number (5–34 characters)
+   */
+  account_number: string;
+  /**
+   * Indian Financial System Code (e.g., SBIN0001234)
+   */
+  ifsc_code?: string | null;
+  /**
+   * IBAN — required for European accounts
+   */
+  iban?: string | null;
+  /**
+   * 8 or 11 character SWIFT/BIC code (e.g., CHASUS33XXX)
+   */
+  swift_code: string;
+  bank_country: string;
+  /**
+   * Full bank branch address for verification
+   */
+  bank_address?: string | null;
+  currency: string;
+  /**
+   * Mark as primary payout account
+   */
+  is_primary?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers".
+ */
+export interface Customer {
+  id: string;
+  name: string;
+  referred_by?: string | null;
+  profile_picture?: (string | null) | Media;
+  isVerified?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: string;
+  orderNumber: string;
+  product?: (string | null) | Product;
+  country: 'US' | 'IN' | 'DE' | 'UK' | 'CA';
+  currency?: ('USD' | 'INR' | 'EUR' | 'GBP' | 'CAD') | null;
+  amount: number;
+  payment_status: 'Pending' | 'Paid' | 'Failed';
+  affiliate_commission_status: 'Pending' | 'Paid' | 'Not Applicable';
+  download_link?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  customer_name: string;
+  rating?: number | null;
+  review?: string | null;
+  product?: (string | null) | Product;
+  approved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliate-commission-settings".
+ */
+export interface AffiliateCommissionSetting {
+  id: string;
+  name: string;
+  description?: string | null;
+  tier1: number;
+  tier2: number;
+  tier3: number;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents".
+ */
+export interface PayloadLockedDocument {
+  id: string;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'banners';
+        value: string | Banner;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: string | Category;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: string | Page;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'affiliates';
+        value: string | Affiliate;
+      } | null)
+    | ({
+        relationTo: 'customers';
+        value: string | Customer;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: string | Order;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: string | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'bank-details';
+        value: string | BankDetail;
+      } | null)
+    | ({
+        relationTo: 'affiliate-commission-settings';
+        value: string | AffiliateCommissionSetting;
+      } | null)
+    | ({
+        relationTo: 'seo';
+        value: string | Seo;
+      } | null);
+  globalSlug?: string | null;
+  user:
+    | {
+        relationTo: 'users';
+        value: string | User;
+      }
+    | {
+        relationTo: 'affiliates';
+        value: string | Affiliate;
+      }
+    | {
+        relationTo: 'customers';
+        value: string | Customer;
+      };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
   id: string;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: string | User;
+      }
+    | {
+        relationTo: 'affiliates';
+        value: string | Affiliate;
+      }
+    | {
+        relationTo: 'customers';
+        value: string | Customer;
+      };
   key?: string | null;
   value?:
     | {
@@ -112,6 +655,302 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners_select".
+ */
+export interface BannersSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
+  link?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  icon?: T;
+  seo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  thumbnail?: T;
+  title?: T;
+  slug?: T;
+  price?: T;
+  discount_price?: T;
+  inr_price?: T;
+  inr_discount_price?: T;
+  isFeatured?: T;
+  isFree?: T;
+  category?: T;
+  tags?: T;
+  affiliate_commission?: T;
+  screenshots?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  description?: T;
+  features?: T;
+  demo_urls?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  seo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliates_select".
+ */
+export interface AffiliatesSelect<T extends boolean = true> {
+  name?: T;
+  referral_code?: T;
+  address?:
+    | T
+    | {
+        house_number?: T;
+        street_and_area?: T;
+        city?: T;
+        state?: T;
+        country?: T;
+        postal_code?: T;
+      };
+  phone_number?: T;
+  country_code?: T;
+  total_earned?: T;
+  wallet_balance?: T;
+  bonus_balance?: T;
+  current_rank?: T;
+  referral_tree_ids?:
+    | T
+    | {
+        id?: T;
+      };
+  referred_by?: T;
+  bank_accounts?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  name?: T;
+  referred_by?: T;
+  profile_picture?: T;
+  isVerified?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  product?: T;
+  country?: T;
+  currency?: T;
+  amount?: T;
+  payment_status?: T;
+  affiliate_commission_status?: T;
+  download_link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  customer_name?: T;
+  rating?: T;
+  review?: T;
+  product?: T;
+  approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bank-details_select".
+ */
+export interface BankDetailsSelect<T extends boolean = true> {
+  affiliate?: T;
+  account_holder_name?: T;
+  bank_name?: T;
+  account_number?: T;
+  ifsc_code?: T;
+  iban?: T;
+  swift_code?: T;
+  bank_country?: T;
+  bank_address?: T;
+  currency?: T;
+  is_primary?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliate-commission-settings_select".
+ */
+export interface AffiliateCommissionSettingsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  tier1?: T;
+  tier2?: T;
+  tier3?: T;
+  isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo_select".
+ */
+export interface SeoSelect<T extends boolean = true> {
+  metaTitle?: T;
+  metaDescription?: T;
+  metaKeywords?: T;
+  ogTitle?: T;
+  ogDescription?: T;
+  ogImage?: T;
+  twitterTitle?: T;
+  twitterDescription?: T;
+  twitterImage?: T;
+  canonicalUrl?: T;
+  structuredData?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents_select".
+ */
+export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences_select".
+ */
+export interface PayloadPreferencesSelect<T extends boolean = true> {
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations_select".
+ */
+export interface PayloadMigrationsSelect<T extends boolean = true> {
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

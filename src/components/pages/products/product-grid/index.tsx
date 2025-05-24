@@ -2,29 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import ProductCard from "./product-card";
-
-// Types
-
-type Category = { id: string; name: string };
-
-type Pricing = {
-  country: string;
-  currency: string;
-  price: number;
-  discount_price?: number;
-  inr_price?: number; // Added inr_price to handle India pricing
-  inr_discount_price?: number; // Added inr_discount_price
-};
-
-type Product = {
-  id: string;
-  title: string;
-  description?: string | React.ReactNode;
-  category?: Category[];
-  pricing?: Pricing[];
-  isFree?: boolean;
-  thumbnail?: { url: string };
-};
+import { ProductGridProps } from "./types";
 
 // Animation Variants
 const containerVariants: Variants = {
@@ -39,22 +17,25 @@ const containerVariants: Variants = {
 export default function ProductGrid({
   products,
   country,
-}: {
-  products: Product[];
-  country: string;
-}) {
+}: ProductGridProps) {
   return (
     <motion.section
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="py-6 md:py-12 px-4 sm:px-6 md:px-8 min-h-screen text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]"
+      className="py-12 px-4 sm:px-6 md:px-8 text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} country={country} />
-        ))}
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              country={country}
+            />
+          ))}
+        </div>
       </div>
     </motion.section>
   );

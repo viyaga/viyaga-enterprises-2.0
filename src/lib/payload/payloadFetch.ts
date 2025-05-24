@@ -8,13 +8,15 @@ const headers = {
     Authorization: `Bearer ${process.env.PAYLOAD_API_KEY}`,
 };
 
+const defaultRevalidateTime = process.env.NODE_ENV === 'development'? 0:60 * 60 * 24 * 365;
+
 export async function payloadFetch({
     path,
     query,
     method = 'GET',
     body,
     tags,
-    revalidateTime = 60 * 60 * 24 * 365,
+    revalidateTime = defaultRevalidateTime,
 }: {
     path: string;
     query?: Record<string, any>;

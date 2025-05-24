@@ -5,10 +5,6 @@ export const getAllProductsQuery = (
         : { page: number; limit: number; search?: string; categoryId: number, tagId?: number, sort?: string, depth?: number }
 ) => {
     const where: Where = {};
-    const select = {
-        title: true,
-        documentation_url: true
-    }
 
     if (search) {
         where.or = [
@@ -31,6 +27,6 @@ export const getAllProductsQuery = (
         // select,
         where,
         sort,
-        depth:1,
+        depth,
     };
 };
