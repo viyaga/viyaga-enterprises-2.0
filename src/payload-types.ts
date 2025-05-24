@@ -500,7 +500,6 @@ export interface Order {
   amount: number;
   payment_status: 'Pending' | 'Paid' | 'Failed';
   affiliate_commission_status: 'Pending' | 'Paid' | 'Not Applicable';
-  download_link?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -851,7 +850,6 @@ export interface OrdersSelect<T extends boolean = true> {
   amount?: T;
   payment_status?: T;
   affiliate_commission_status?: T;
-  download_link?: T;
   updatedAt?: T;
   createdAt?: T;
 }

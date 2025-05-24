@@ -47,7 +47,6 @@ const Orders: CollectionConfig = {
       required: true,
       defaultValue: 'Pending',
     },
-    { name: 'download_link', type: 'text' },
   ],
 };
 

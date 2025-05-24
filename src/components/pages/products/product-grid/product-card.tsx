@@ -109,29 +109,45 @@ export default function ProductCard({ product, country }: ProductCardProps) {
           <div className="flex justify-between items-center mt-auto pt-3 border-t border-border">
             {priceLabel}
 
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <Link
-                href={
-                  product.slug.startsWith("https")
-                    ? product.slug
-                    : `/products/${product.slug}`
-                }
-                target="_blank"
+            <div className="flex items-center gap-2">
+              {/* External link button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <Button
-                  className="text-xs px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600"
-                  variant="ghost"
+                <Link
+                  href={
+                    product.slug.startsWith("https")
+                      ? product.slug
+                      : `/products/${product.slug}`
+                  }
+                  target="_blank"
                 >
-                  <span className="flex items-center gap-1">
-                    Live Preview <ExternalLink className="w-4 h-4" />
-                  </span>
-                </Button>
-              </Link>
-            </motion.div>
+                  <Button
+                    className="text-xs px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600"
+                    variant="ghost"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </motion.div>
+
+              {/* Buy Now Button (updated) */}
+              {product && (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Link href={product?.id || "/"} target="_blank">
+                    <Button className="text-xs px-4 py-1.5 rounded-full text-white shadow font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:to-pink-500">
+                      Buy Now
+                    </Button>
+                  </Link>
+                </motion.div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
