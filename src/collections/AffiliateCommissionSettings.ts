@@ -8,7 +8,7 @@ const  AffiliateCommissionSettings: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      async ({ data, req, operation }) => {
+      async ({ data, req }) => {
         if (data.isActive) {
           const existingActive = await req.payload.find({
             collection: 'affiliate-commission-settings' as CollectionSlug,

@@ -1,21 +1,5 @@
 import { CollectionConfig } from 'payload';
-import isURL from 'validator/lib/isURL'; // You can install this package to validate URLs
-import { isJsonString } from '@/lib/utils'; // A custom utility function to validate JSON-LD
-
-// Define types for each field's value
-interface SEOFieldValue {
-  metaTitle?: string;
-  metaDescription?: string;
-  metaKeywords?: string;
-  ogTitle?: string;
-  ogDescription?: string;
-  ogImage?: { width: number; height: number }; // Assuming image has width/height properties
-  twitterTitle?: string;
-  twitterDescription?: string;
-  twitterImage?: { width: number; height: number }; // Assuming image has width/height properties
-  canonicalUrl?: string;
-  structuredData?: string; // JSON string
-}
+import { isJsonString, isUrl } from '@/lib/utils'; // A custom utility function to validate JSON-LD
 
 const SEO: CollectionConfig = {
   slug: 'seo',
@@ -116,7 +100,7 @@ const SEO: CollectionConfig = {
       type: 'text',
       label: 'Canonical URL',
       validate: (value: string | null | undefined) => {
-        if (value && !isURL(value)) {
+        if (value && !isUrl(value)) {
           return 'Canonical URL must be a valid URL.';
         }
         return true;

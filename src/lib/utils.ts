@@ -10,7 +10,17 @@ export const isJsonString = (str: string | null | undefined): boolean => {
   try {
     JSON.parse(str);
     return true;
-  } catch (e) {
+  } catch {
+    return false;
+  }
+};
+
+export const isUrl = (str: string | null | undefined): boolean => {
+  if (!str) return false;
+  try {
+    const url = new URL(str);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
     return false;
   }
 };

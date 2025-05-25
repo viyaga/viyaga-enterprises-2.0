@@ -1,6 +1,8 @@
 "use server";
 
 import * as qs from 'qs-esm';
+import { Tquery } from './types';
+import { JsonObject } from 'payload';
 
 const endpoint = process.env.PAYLOAD_API_URL;
 const headers = {
@@ -19,9 +21,9 @@ export async function payloadFetch({
     revalidateTime = defaultRevalidateTime,
 }: {
     path: string;
-    query?: Record<string, any>;
+    query?: Tquery;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    body?: any;
+    body?: JsonObject;
     tags?: string[];
     revalidateTime?: number;
 }) {

@@ -1,6 +1,4 @@
-// payload/collections/categories.js
 import { CollectionConfig, CollectionSlug } from 'payload';
-import { title } from 'process';
 
 const Categories: CollectionConfig = {
   slug: 'categories',

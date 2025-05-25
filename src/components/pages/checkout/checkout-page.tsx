@@ -4,7 +4,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
-import { CartItem } from "./order-item";
 import { PaymentMethodSelector } from "./payment-method-selector";
 import { CardNumberInput } from "./card-number-input";
 import { BankTransferDetails } from "./bank-transfer-details";
