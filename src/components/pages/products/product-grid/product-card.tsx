@@ -125,7 +125,7 @@ export default function ProductCard({ product, country }: ProductCardProps) {
                   target="_blank"
                 >
                   <Button
-                    className="text-xs px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600"
+                    className="cursor-pointer text-xs px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600"
                     variant="ghost"
                   >
                     <ExternalLink className="w-4 h-4" />
@@ -133,20 +133,17 @@ export default function ProductCard({ product, country }: ProductCardProps) {
                 </Link>
               </motion.div>
 
-              {/* Buy Now Button (updated) */}
-              {product && (
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <Link href={product?.id || "/"} target="_blank">
-                    <Button className="text-xs px-4 py-1.5 rounded-full text-white shadow font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:to-pink-500">
-                      Buy Now
-                    </Button>
-                  </Link>
-                </motion.div>
-              )}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Link href={`/checkout/${product?.id}`}>
+                  <Button className="cursor-pointer text-xs px-4 py-1.5 rounded-full text-white shadow font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-500 hover:to-pink-500">
+                    Buy Now
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </CardContent>
