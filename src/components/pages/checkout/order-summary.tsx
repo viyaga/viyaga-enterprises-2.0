@@ -4,19 +4,10 @@ import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrderItem } from "./order-item";
-import { CartItem } from "./order-item";
-
-interface OrderSummaryProps {
-  cartItems: CartItem[];
-  formatPrice: (price: number) => string;
-  subtotal: number;
-  taxes: number;
-  shipping: number;
-  total: number;
-}
+import { OrderSummaryProps } from "./types";
 
 export function OrderSummary({
-  cartItems,
+  product,
   formatPrice,
   subtotal,
   taxes,
@@ -29,10 +20,7 @@ export function OrderSummary({
         <CardTitle>Order Summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {cartItems.map((item) => (
-          <OrderItem key={item.id} item={item} />
-        ))}
-
+        <OrderItem product={product} />
         <div className="border-t pt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
           <div className="flex justify-between">
             <span>Subtotal</span>

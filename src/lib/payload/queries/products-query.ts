@@ -1,3 +1,4 @@
+import { getUserGeoLocation } from "@/lib/services/user-geo-location";
 import { Where } from "payload";
 
 export const getAllProductsQuery = (
@@ -28,5 +29,27 @@ export const getAllProductsQuery = (
         where,
         sort,
         depth,
+    };
+};
+
+export const getProductByIdForCheckoutQuery = async ({ depth = 0 }: { depth?: number }) => {
+    const { country } = await getUserGeoLocation()
+    const select = country === "IN"
+        ? {
+            "thumbnail": true,
+            "title": true,
+            "inr_price": true,
+            "inr_discount_price": true
+        }
+        : {
+            "thumbnail": true,
+            "title": true,
+            "price": true,
+            "discount_price": true
+        };
+
+    return {
+        depth,
+        select
     };
 };

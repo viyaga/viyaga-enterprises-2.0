@@ -1,7 +1,7 @@
 "use server";
 
 import { payloadFetch } from "./payloadFetch";
-import { getAllProductsQuery } from "./queries";
+import { getAllProductsQuery, getProductByIdForCheckoutQuery } from "./queries";
 
 type GetFilteredProductsOptions = {
   page: number;
@@ -10,6 +10,11 @@ type GetFilteredProductsOptions = {
   categoryId: number;
   tagId: number;
   sort: string;
+  depth?: number;
+};
+
+type GetProductByIdOptions = {
+  id: string;
   depth?: number;
 };
 
@@ -40,4 +45,12 @@ export async function getAllProducts({
   });
 }
 
+export async function getProductByIdForCheckout({ id, depth = 0 }: GetProductByIdOptions) {
+  const query = await getProductByIdForCheckoutQuery({ depth });
 
+  return await payloadFetch({
+    path: `products/${id}`,
+    query,
+    tags: ['products', `product-${id}`],
+  });
+}
