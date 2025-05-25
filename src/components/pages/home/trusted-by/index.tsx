@@ -24,7 +24,7 @@ export default function TrustedBy() {
           Trusted By Industry Leaders
         </h2>
         <p className="text-gray-400 text-sm mb-6 max-w-xl mx-auto">
-          The world's top companies trust us to build and scale their software.
+          The world&apos;s top companies trust us to build and scale their software.
         </p>
 
         <div

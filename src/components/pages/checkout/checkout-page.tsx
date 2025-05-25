@@ -14,7 +14,7 @@ import { BillingDetailsForm, BillingFormData } from "./billing-details-form";
 import { OrderSummary } from "./order-summary";
 
 export default function CheckoutPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
+  const cartItems = [
     {
       id: 1,
       title: "Product name",
@@ -22,7 +22,7 @@ export default function CheckoutPage() {
       quantity: 1,
       image: "/150",
     },
-  ]);
+  ];
   const [countryCode, setCountryCode] = useState<string>("");
   const [paymentOptions, setPaymentOptions] = useState<string[]>([
     "Credit/Debit Card",
@@ -50,7 +50,10 @@ export default function CheckoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const availablePaymentOptions = useMemo(() => paymentOptions, [paymentOptions]);
+  const availablePaymentOptions = useMemo(
+    () => paymentOptions,
+    [paymentOptions]
+  );
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -67,6 +70,7 @@ export default function CheckoutPage() {
     }).format(price);
 
   function onBillingSubmit(data: BillingFormData) {
+    setIsSubmitting(true);
     // Handle billing details form submission
     console.log("Billing Data:", data);
     // Possibly trigger payment or move to next step

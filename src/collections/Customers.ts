@@ -1,4 +1,4 @@
-import { CollectionConfig, CollectionSlug } from 'payload';
+import { CollectionConfig } from 'payload';
 
 const Customers: CollectionConfig = {
     slug: 'customers',

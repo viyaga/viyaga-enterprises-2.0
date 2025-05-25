@@ -147,7 +147,7 @@ export default function PortfolioSection() {
           transition={{ type: "spring", stiffness: 300 }}
         >
           <Button className="w-full sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
-            Let's Build Something Great Together
+            Let&apos;s Build Something Great Together
           </Button>
         </motion.div>
       </div>

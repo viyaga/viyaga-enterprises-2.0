@@ -180,7 +180,7 @@ export default function SearchFilters() {
             {/* Desktop: Sort Buttons */}
             <div className="hidden sm:flex flex-wrap gap-3 justify-center">
               {sortOptions.map((option) => (
-                <motion.div whileTap={{ scale: 0.95 }}>
+                <motion.div key={option.value} whileTap={{ scale: 0.95 }}>
                   <Button
                     key={option.value}
                     size="sm"
