@@ -1,25 +1,33 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { PaymentMethodSelector } from "./payment-method-selector";
 import { CardNumberInput } from "./card-number-input";
 import { BankTransferDetails } from "./bank-transfer-details";
-import { getUserGeoLocation } from "@/lib/services/user-geo-location";
 import { BillingDetailsForm, BillingFormData } from "./billing-details-form";
 import { OrderSummary } from "./order-summary";
-import { CheckoutProduct } from "./types";
 
-export default function CheckoutPage({ product }: { product: CheckoutProduct }) {
+import { getReferralCode, getUserGeoLocation } from "@/lib/services/cookies";
+import { createOrder } from "@/lib/payload/orders";
+import { CheckoutProduct, CreateOrderInput, PaymentOption } from "./types";
+
+export default function CheckoutPage({
+  product,
+}: {
+  product: CheckoutProduct;
+}) {
+  const router = useRouter();
+
   const [countryCode, setCountryCode] = useState<string>("");
-  const [paymentOptions, setPaymentOptions] = useState<string[]>([
-    "Credit/Debit Card",
-    "PayPal",
+  const [paymentOptions, setPaymentOptions] = useState<PaymentOption[]>([
+    "bank transfer",
   ]);
-  const [selectedPayment, setSelectedPayment] = useState<string>("");
-  const [geoLoading, setGeoLoading] = useState(true);
+  const [selectedPayment, setSelectedPayment] =
+    useState<PaymentOption>("bank transfer");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -27,95 +35,145 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
       try {
         const { country } = await getUserGeoLocation();
         setCountryCode(country);
-        if (country === "US" && !paymentOptions.includes("Bank Transfer")) {
-          setPaymentOptions((opts) => ["Bank Transfer", ...opts]);
-        }
+
+        if (country !== "IN")
+          setPaymentOptions(["card", "paypal", "bank transfer"]);
+
       } catch (e) {
         console.error("Geo lookup failed", e);
-      } finally {
-        setGeoLoading(false);
       }
     }
+
     fetchGeo();
   }, []);
 
-  const availablePaymentOptions = useMemo(() => paymentOptions, [paymentOptions]);
+  const availablePaymentOptions: PaymentOption[] = useMemo(
+    () => paymentOptions,
+    [paymentOptions]
+  );
 
-  const currency = "inr_price" in product ? "INR" : "USD";
-  const unitPrice = "inr_price" in product ? product.inr_price! : product.price;
+  const currency = product?.inr_price ? "INR" : "USD";
+  const unitPrice = product?.inr_discount_price ?? product?.discount_price;
+  const originalPrice = product?.inr_price ?? product?.price;
+
+  if (unitPrice === undefined || originalPrice === undefined) {
+    throw new Error("Product is missing unitPrice");
+  }
+
   const quantity = 1;
-
   const subtotal = unitPrice * quantity;
-  const taxes = +(subtotal * 0.1).toFixed(2);
+  const taxes = +(subtotal * 0.18).toFixed(2);
   const shipping = 0;
   const total = +(subtotal + taxes + shipping).toFixed(2);
 
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
-      style: "currency",
-      currency,
-    }).format(price);
+  const formatPrice = useMemo(
+    () => (price: number) =>
+      new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
+        style: "currency",
+        currency,
+      }).format(price),
+    [currency]
+  );
 
-  function onBillingSubmit(data: BillingFormData) {
+  const triggerFormSubmit = () => {
+    document
+      .getElementById("billing-form")
+      ?.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
+  };
+
+  const onBillingSubmit = async (data: BillingFormData) => {
     setIsSubmitting(true);
-    console.log("Billing Data:", data);
-  }
+
+    const referralCode = await getReferralCode();
+
+    const orderData: CreateOrderInput = {
+      productTitle: product.title,
+      productThumbnail: product.thumbnail?.id || undefined,
+      currency,
+      originalPrice,
+      discountedPrice: unitPrice,
+      subtotal,
+      taxes,
+      total,
+      paymentMethod: selectedPayment,
+      countryCode,
+      billingDetails: {
+        fullName: data.fullName,
+        email: data.email,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        postalCode: data.zip,
+        country: data.country,
+      },
+      orderStatus: "pending",
+      referralCode: referralCode || "company",
+      affiliate: {
+        paymentStatus: "pending",
+        commissionPercentage: product.affiliateCommission || 0,
+      },
+    };
+
+    console.log({ orderData });
+
+    const response = await createOrder(orderData);
+    console.log({ response });
+
+    if (response?.error) {
+      return toast.error(
+        response.error || "Something went wrong. Please try again."
+      );
+    }
+
+    toast.success("Order placed successfully! Please login to continue.");
+    router.push("/login");
+    setIsSubmitting(false);
+  };
 
   return (
-    <div className="min-h-screen py-8 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
+    <div className="min-h-screen py-8 md:py-12 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
       <div className="container mx-auto px-4">
-        <motion.h1
-          className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-100"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-        >
+        <h1 className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
           Checkout
-        </motion.h1>
+        </h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <motion.div
-            className="lg:col-span-2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          <div className="lg:col-span-2">
             <BillingDetailsForm
-              defaultCountry={geoLoading ? "" : countryCode}
+              defaultCountry={countryCode}
               onSubmit={onBillingSubmit}
-              isLoading={isSubmitting}
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <div>
             <OrderSummary
               product={product}
-              // quantity={quantity}
               formatPrice={formatPrice}
-              subtotal={subtotal}
               taxes={taxes}
-              shipping={shipping}
               total={total}
+              originalPrice={originalPrice}
+              discountedPrice={unitPrice}
             />
 
             <div className="mt-6">
               <PaymentMethodSelector
                 paymentOptions={availablePaymentOptions}
-                selectedPayment={selectedPayment}
+                selectedOption={selectedPayment}
                 onSelect={setSelectedPayment}
               />
-              {selectedPayment === "Credit/Debit Card" && <CardNumberInput />}
-              {selectedPayment === "Bank Transfer" && <BankTransferDetails />}
+
+              {selectedPayment === "card" && <CardNumberInput />}
+              {selectedPayment === "bank transfer" && <BankTransferDetails />}
             </div>
 
-            <Button className="w-full mt-6" disabled={!selectedPayment}>
-              Pay Now
+            <Button
+              className="w-full mt-6"
+              disabled={!selectedPayment || isSubmitting}
+              onClick={triggerFormSubmit}
+            >
+              {isSubmitting ? "Processing..." : "Pay Now"}
             </Button>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

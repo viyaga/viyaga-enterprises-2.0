@@ -65,7 +65,6 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
     affiliates: AffiliateAuthOperations;
-    customers: CustomerAuthOperations;
   };
   blocks: {};
   collections: {
@@ -77,7 +76,6 @@ export interface Config {
     tags: Tag;
     products: Product;
     affiliates: Affiliate;
-    customers: Customer;
     orders: Order;
     testimonials: Testimonial;
     'bank-details': BankDetail;
@@ -97,7 +95,6 @@ export interface Config {
     tags: TagsSelect<false> | TagsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     affiliates: AffiliatesSelect<false> | AffiliatesSelect<true>;
-    customers: CustomersSelect<false> | CustomersSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'bank-details': BankDetailsSelect<false> | BankDetailsSelect<true>;
@@ -119,9 +116,6 @@ export interface Config {
       })
     | (Affiliate & {
         collection: 'affiliates';
-      })
-    | (Customer & {
-        collection: 'customers';
       });
   jobs: {
     tasks: unknown;
@@ -164,35 +158,15 @@ export interface AffiliateAuthOperations {
     password: string;
   };
 }
-export interface CustomerAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  registerFirstUser: {
-    email: string;
-    password: string;
-  };
-  unlock: {
-    email: string;
-    password: string;
-  };
-}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: string;
+  role: 'admin' | 'affiliate' | 'customer';
   updatedAt: string;
   createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -333,7 +307,7 @@ export interface Product {
   isFree?: boolean | null;
   category?: (string | Category)[] | null;
   tags?: (string | Tag)[] | null;
-  affiliate_commission?: number | null;
+  affiliateCommission?: number | null;
   screenshots?:
     | {
         image?: (string | null) | Media;
@@ -468,38 +442,35 @@ export interface BankDetail {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "customers".
- */
-export interface Customer {
-  id: string;
-  name: string;
-  referred_by?: string | null;
-  profile_picture?: (string | null) | Media;
-  isVerified?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
   id: string;
-  orderNumber: string;
-  product?: (string | null) | Product;
-  country: 'US' | 'IN' | 'DE' | 'UK' | 'CA';
-  currency?: ('USD' | 'INR' | 'EUR' | 'GBP' | 'CAD') | null;
-  amount: number;
-  payment_status: 'Pending' | 'Paid' | 'Failed';
-  affiliate_commission_status: 'Pending' | 'Paid' | 'Not Applicable';
+  productTitle: string;
+  productThumbnail?: (string | null) | Media;
+  currency: 'USD' | 'INR';
+  originalPrice: number;
+  discountedPrice: number;
+  subtotal: number;
+  taxes: number;
+  total: number;
+  paymentMethod: 'card' | 'paypal' | 'bank transfer';
+  countryCode?: string | null;
+  billingDetails: {
+    fullName: string;
+    email: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  orderStatus: 'pending' | 'paid' | 'failed';
+  referralCode: string;
+  affiliate: {
+    paymentStatus: 'pending' | 'paid' | 'failed';
+    commissionPercentage: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -572,10 +543,6 @@ export interface PayloadLockedDocument {
         value: string | Affiliate;
       } | null)
     | ({
-        relationTo: 'customers';
-        value: string | Customer;
-      } | null)
-    | ({
         relationTo: 'orders';
         value: string | Order;
       } | null)
@@ -604,10 +571,6 @@ export interface PayloadLockedDocument {
     | {
         relationTo: 'affiliates';
         value: string | Affiliate;
-      }
-    | {
-        relationTo: 'customers';
-        value: string | Customer;
       };
   updatedAt: string;
   createdAt: string;
@@ -626,10 +589,6 @@ export interface PayloadPreference {
     | {
         relationTo: 'affiliates';
         value: string | Affiliate;
-      }
-    | {
-        relationTo: 'customers';
-        value: string | Customer;
       };
   key?: string | null;
   value?:
@@ -660,11 +619,9 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
-  enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -758,7 +715,7 @@ export interface ProductsSelect<T extends boolean = true> {
   isFree?: T;
   category?: T;
   tags?: T;
-  affiliate_commission?: T;
+  affiliateCommission?: T;
   screenshots?:
     | T
     | {
@@ -821,35 +778,38 @@ export interface AffiliatesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "customers_select".
- */
-export interface CustomersSelect<T extends boolean = true> {
-  name?: T;
-  referred_by?: T;
-  profile_picture?: T;
-  isVerified?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
-  orderNumber?: T;
-  product?: T;
-  country?: T;
+  productTitle?: T;
+  productThumbnail?: T;
   currency?: T;
-  amount?: T;
-  payment_status?: T;
-  affiliate_commission_status?: T;
+  originalPrice?: T;
+  discountedPrice?: T;
+  subtotal?: T;
+  taxes?: T;
+  total?: T;
+  paymentMethod?: T;
+  countryCode?: T;
+  billingDetails?:
+    | T
+    | {
+        fullName?: T;
+        email?: T;
+        address?: T;
+        city?: T;
+        state?: T;
+        postalCode?: T;
+        country?: T;
+      };
+  orderStatus?: T;
+  referralCode?: T;
+  affiliate?:
+    | T
+    | {
+        paymentStatus?: T;
+        commissionPercentage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

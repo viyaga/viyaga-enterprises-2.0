@@ -39,10 +39,11 @@ const Products: CollectionConfig = {
     { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true, index: true }, // Index added for category filter
     { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true, index: true }, // Index added for tags filter
     {
-      name: 'affiliate_commission',
+      name: 'affiliateCommission',
       type: 'number',
       label: 'Affiliate Commission(%)',
       defaultValue: 0,
+      max: 100,
       admin: {
         placeholder: 'e.g. 30%',
       },

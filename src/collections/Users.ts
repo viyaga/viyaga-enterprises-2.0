@@ -6,10 +6,19 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   auth: {
-    useAPIKey: true
+    tokenExpiration: 60 * 60 * 24 * 365,
   },
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    {
+      name: 'role',
+      type: 'select',
+      options: [
+        { label: 'Admin', value: 'admin' },
+        { label: 'Affiliate', value: 'affiliate' },
+        { label: 'Customer', value: 'customer' },
+      ],
+      required: true,
+      defaultValue: 'customer',
+    },
   ],
 }

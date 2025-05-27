@@ -14,7 +14,6 @@ import Pages from './collections/Pages'
 import Tags from './collections/Tags'
 import Products from './collections/Products'
 import Affiliates from './collections/Affiliates'
-import Customers from './collections/Customers'
 import Orders from './collections/Orders'
 import BankDetails from './collections/BankDetails'
 import AffiliateCommissionSettings from './collections/AffiliateCommissionSettings'
@@ -32,8 +31,8 @@ export default buildConfig({
     },
   },
   collections: [
-     Users, Media, Banners, Categories, Pages, Tags, Products,
-    Affiliates, Customers, Orders, Testimonials, BankDetails,
+    Users, Media, Banners, Categories, Pages, Tags, Products,
+    Affiliates, Orders, Testimonials, BankDetails,
     AffiliateCommissionSettings, SEO
   ],
   editor: lexicalEditor(),
@@ -49,4 +48,5 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  maxDepth: 2
 })

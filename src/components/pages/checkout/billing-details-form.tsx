@@ -28,14 +28,14 @@ export type BillingFormData = z.infer<typeof billingSchema>;
 interface BillingDetailsFormProps {
   defaultCountry?: string;
   onSubmit: (data: BillingFormData) => void;
-  isLoading?: boolean;
 }
 
 export function BillingDetailsForm({
   defaultCountry = "",
   onSubmit,
-  isLoading = false,
 }: BillingDetailsFormProps) {
+  console.log({ defaultCountry });
+
   const {
     register,
     handleSubmit,
@@ -46,12 +46,13 @@ export function BillingDetailsForm({
   });
 
   return (
-    <Card className="shadow-md bg-gray-100 dark:bg-[#0e161c]/50">
-      <CardHeader>
-        <CardTitle>Billing Details</CardTitle>
+    <Card className="rounded-lg shadow-md bg-white dark:bg-gray-900/50 p-2 sm:p-4 md:p-6 border-none">
+      <CardHeader className="py-4">
+        <CardTitle>BILLING DETAILS</CardTitle>
       </CardHeader>
       <CardContent>
         <form
+          id="billing-form"
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-6"
           aria-label="Billing Details Form"
@@ -61,7 +62,7 @@ export function BillingDetailsForm({
             <div>
               <Label
                 htmlFor="fullName"
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 tracking-wide"
               >
                 Full Name
               </Label>
@@ -83,7 +84,7 @@ export function BillingDetailsForm({
             <div>
               <Label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
               >
                 Email
               </Label>
@@ -109,7 +110,7 @@ export function BillingDetailsForm({
           <div>
             <Label
               htmlFor="mobile"
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
             >
               Mobile Number
             </Label>
@@ -133,7 +134,7 @@ export function BillingDetailsForm({
           <div>
             <Label
               htmlFor="address"
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
             >
               Address
             </Label>
@@ -157,7 +158,7 @@ export function BillingDetailsForm({
             <div>
               <Label
                 htmlFor="city"
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
               >
                 City
               </Label>
@@ -180,7 +181,7 @@ export function BillingDetailsForm({
             <div>
               <Label
                 htmlFor="state"
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
               >
                 State/Province
               </Label>
@@ -203,7 +204,7 @@ export function BillingDetailsForm({
             <div>
               <Label
                 htmlFor="zip"
-                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+                className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
               >
                 ZIP/Postal Code
               </Label>
@@ -227,7 +228,7 @@ export function BillingDetailsForm({
           <div>
             <Label
               htmlFor="country"
-              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide"
+              className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
             >
               Country
             </Label>
@@ -235,7 +236,7 @@ export function BillingDetailsForm({
               id="country"
               placeholder="Country"
               {...register("country")}
-              disabled={!!defaultCountry}
+              // disabled={!!defaultCountry}
               aria-invalid={!!errors.country}
               aria-describedby="country-error"
               className="mb-4"
@@ -246,10 +247,6 @@ export function BillingDetailsForm({
               </p>
             )}
           </div>
-
-          {/* Submit button can be handled outside this component */}
-
-          {isLoading && <p>Submitting...</p>}
         </form>
       </CardContent>
     </Card>

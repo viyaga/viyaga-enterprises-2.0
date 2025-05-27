@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,13 +56,6 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'Viyaga Enterprises | Global Web & Mobile App Development',
-  //   description: 'We deliver modern digital solutions to startups and enterprises around the world.',
-  //   site: '@viyaga',
-  //   creator: '@mohankumar'
-  // },
   icons: {
     icon: "/logo/logo-v.svg",
     shortcut: "/favicon.ico",
@@ -76,10 +70,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning={true}
       >
         <ThemeProvider
           attribute="class"
@@ -87,6 +81,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NuqsAdapter>{children}</NuqsAdapter>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

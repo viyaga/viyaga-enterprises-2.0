@@ -52,7 +52,11 @@ export async function payloadFetch({
                 data?.errors?.[0]?.message ||
                 `Failed to fetch ${path} (status ${res.status})`;
 
-            return { error: message, status: res.status, raw: data };
+            if (process.env.NODE_ENV === 'development') {
+                return { error: message, status: res.status, raw: data };
+            } else {
+                return { error: message, status: res.status };
+            }
         }
 
         return data;

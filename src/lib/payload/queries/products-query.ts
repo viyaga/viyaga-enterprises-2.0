@@ -1,4 +1,4 @@
-import { getUserGeoLocation } from "@/lib/services/user-geo-location";
+import { getUserGeoLocation } from "@/lib/services/cookies";
 import { Where } from "payload";
 
 export const getAllProductsQuery = (
@@ -38,12 +38,14 @@ export const getProductByIdForCheckoutQuery = async ({ depth = 0 }: { depth?: nu
         ? {
             "thumbnail": true,
             "title": true,
+            "affiliateCommission":true,
             "inr_price": true,
             "inr_discount_price": true
         }
         : {
             "thumbnail": true,
             "title": true,
+            "affiliateCommission":true,
             "price": true,
             "discount_price": true
         };

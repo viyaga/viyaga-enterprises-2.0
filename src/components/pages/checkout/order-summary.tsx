@@ -1,45 +1,78 @@
-"use client";
-
 import React from "react";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { OrderItem } from "./order-item";
-import { OrderSummaryProps } from "./types";
+import { CheckoutProduct } from "./types";
+import Image from "next/image";
 
 export function OrderSummary({
   product,
   formatPrice,
-  subtotal,
   taxes,
-  shipping,
   total,
-}: OrderSummaryProps) {
+  originalPrice,
+  discountedPrice,
+}: {
+  product: CheckoutProduct;
+  formatPrice: (price: number) => string;
+  taxes: number;
+  total: number;
+  originalPrice: number;
+  discountedPrice: number;
+}) {
   return (
-    <Card className="shadow-md bg-gray-100 dark:bg-[#0e161c]/50">
-      <CardHeader>
-        <CardTitle>Order Summary</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <OrderItem product={product} />
-        <div className="border-t pt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
-          <div className="flex justify-between">
-            <span>Subtotal</span>
-            <span>{formatPrice(subtotal)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Taxes</span>
-            <span>{formatPrice(taxes)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Shipping</span>
-            <span>{formatPrice(shipping)}</span>
-          </div>
-          <div className="flex justify-between font-semibold text-gray-900 dark:text-gray-100">
-            <span>Total</span>
-            <span>{formatPrice(total)}</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="rounded-lg shadow-md bg-white dark:bg-gray-900 p-6">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+        Order Summary
+      </h2>
+
+      {/* Full-width Product Image */}
+      <div className="w-full mb-2">
+        <Image
+          src={product.thumbnail.url}
+          alt={product.thumbnail.alt || product.title}
+          width={800}
+          height={500}
+          className="w-full h-auto rounded-md object-cover border border-gray-200 dark:border-gray-700"
+        />
+      </div>
+
+      {/* Title Below Image */}
+      <div className="mb-4">
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+          {product.title}
+        </h3>
+      </div>
+
+      {/* Price */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-gray-700 dark:text-gray-300">Price:</span>
+        <span className="text-gray-900 dark:text-white">
+          <span className="line-through text-sm text-gray-500 mr-2">
+            {formatPrice(originalPrice)}
+          </span>
+          <span className="text-green-600 font-semibold">
+            {formatPrice(discountedPrice)}
+          </span>
+        </span>
+      </div>
+
+      {/* Taxes */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-gray-700 dark:text-gray-300">Taxes:</span>
+        <span className="text-gray-900 dark:text-white">
+          {formatPrice(taxes)}
+        </span>
+      </div>
+
+      <hr className="my-4 border-gray-300 dark:border-gray-700" />
+
+      {/* Total */}
+      <div className="flex items-center justify-between">
+        <span className="text-lg font-semibold text-gray-900 dark:text-white">
+          Total:
+        </span>
+        <span className="text-lg font-semibold text-green-600">
+          {formatPrice(total)}
+        </span>
+      </div>
+    </div>
   );
 }

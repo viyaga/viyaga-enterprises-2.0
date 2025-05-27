@@ -1,10 +1,14 @@
+import { Order } from "@/payload-types";
+
 export type CheckoutProduct = {
+    id:string;
     thumbnail: {
         alt: string,
-        filename: string,
         url: string
+        id: string
     };
-    title: string;
+    title: string,
+    affiliateCommission: number;
 } & (
         | {
             inr_price: number;
@@ -21,10 +25,20 @@ export type CheckoutProduct = {
     );
 
 export interface OrderSummaryProps {
-  product: CheckoutProduct;
-  formatPrice: (price: number) => string;
-  subtotal: number;
-  taxes: number;
-  shipping: number;
-  total: number;
+    product: CheckoutProduct;
+    formatPrice: (price: number) => string;
+    subtotal: number;
+    taxes: number;
+    shipping: number;
+    total: number;
 }
+
+export type PaymentOption = "card" | "paypal" | "bank transfer";
+
+export interface PaymentOptionsProps {
+    paymentOptions: PaymentOption[];
+    selectedOption: PaymentOption;
+    onSelect: (option: PaymentOption) => void;
+}
+
+export type CreateOrderInput = Omit<Order, "id" | "createdAt" | "updatedAt">;
