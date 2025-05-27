@@ -24,10 +24,20 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  routes: {
+    admin: "/dashboard",
+  },
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    components: {
+      graphics:{
+        Icon: "./components/payload/icon.tsx",
+        Logo: "./components/payload/logo.tsx",
+      },
+      Nav: './components/payload/nav.tsx',
     },
   },
   collections: [

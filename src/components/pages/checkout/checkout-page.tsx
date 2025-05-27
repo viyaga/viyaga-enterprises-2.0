@@ -126,7 +126,7 @@ export default function CheckoutPage({
     }
 
     toast.success("Order placed successfully! Please login to continue.");
-    router.push("/login");
+    router.push("/admin/collections/orders");
     setIsSubmitting(false);
   };
 

@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-types": "npx payload generate:types"
+    "generate-types": "npx payload generate:types",
+    "generate-importmap": "npx payload generate:importmap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
