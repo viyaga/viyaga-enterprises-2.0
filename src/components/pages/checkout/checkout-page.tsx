@@ -38,7 +38,6 @@ export default function CheckoutPage({
 
         if (country !== "IN")
           setPaymentOptions(["card", "paypal", "bank transfer"]);
-
       } catch (e) {
         console.error("Geo lookup failed", e);
       }
@@ -126,7 +125,7 @@ export default function CheckoutPage({
     }
 
     toast.success("Order placed successfully! Please login to continue.");
-    router.push("/admin/collections/orders");
+    router.push("/dashboard/collections/orders");
     setIsSubmitting(false);
   };
 
@@ -161,7 +160,6 @@ export default function CheckoutPage({
                 selectedOption={selectedPayment}
                 onSelect={setSelectedPayment}
               />
-
               {selectedPayment === "card" && <CardNumberInput />}
               {selectedPayment === "bank transfer" && <BankTransferDetails />}
             </div>

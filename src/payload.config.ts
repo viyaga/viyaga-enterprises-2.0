@@ -37,7 +37,7 @@ export default buildConfig({
         Icon: "./components/payload/icon.tsx",
         Logo: "./components/payload/logo.tsx",
       },
-      Nav: './components/payload/nav.tsx',
+      Nav: './components/payload/navbar/nav.tsx',
     },
   },
   collections: [

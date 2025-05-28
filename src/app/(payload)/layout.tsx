@@ -8,6 +8,8 @@ import React from "react";
 
 import { importMap } from "./dashboard/importMap.js";
 import "./custom.css";
+import { Toaster } from "sonner";
+
 
 type Args = {
   children: React.ReactNode;
@@ -29,6 +31,7 @@ const Layout = ({ children }: Args) => (
     serverFunction={serverFunction}
   >
     {children}
+    <Toaster />
   </RootLayout>
 );
 
