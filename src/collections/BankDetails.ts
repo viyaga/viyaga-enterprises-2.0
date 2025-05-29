@@ -1,5 +1,6 @@
 import { CollectionSlug } from 'payload';
 import { CollectionConfig } from 'payload';
+import { hasBankDetailsAccess } from './access/bank-details-access';
 
 const BankDetails: CollectionConfig = {
   slug: 'bank-details',
@@ -7,12 +8,16 @@ const BankDetails: CollectionConfig = {
     useAsTitle: 'account_holder_name',
     defaultColumns: ['account_holder_name', 'bank_name', 'account_number', 'currency'],
   },
-  auth: false,
+  access: {
+    read: hasBankDetailsAccess,
+    update: hasBankDetailsAccess,
+    delete: hasBankDetailsAccess
+  },
   fields: [
     {
-      name: 'affiliate',
+      name: 'user',
       type: 'relationship',
-      relationTo: 'affiliates' as CollectionSlug,
+      relationTo: 'users' as CollectionSlug,
       required: true,
     },
     {

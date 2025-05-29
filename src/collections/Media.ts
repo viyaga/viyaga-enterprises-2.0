@@ -1,14 +1,19 @@
 import type { CollectionConfig } from 'payload'
+import { hasMediaAccess } from './access/media-access'
+import { isAdmin } from './access'
+import { setUploadedBy } from './hooks/media-hooks'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true,
+    read: hasMediaAccess,
+    update: hasMediaAccess,
+    delete: isAdmin,
   },
-  defaultPopulate:{
-    filename:true,
-    url:true,
-    alt:true,
+  upload: true,
+  defaultPopulate: {
+    url: true,
+    alt: true
   },
   fields: [
     {
@@ -16,6 +21,18 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'uploaded_by',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+      },
+    },
   ],
-  upload: true,
+  hooks: {
+    beforeChange: [
+      setUploadedBy,
+    ],
+  },
 }

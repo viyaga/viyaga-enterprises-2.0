@@ -37,5 +37,5 @@ export async function getPurchasingPower(): Promise<number> {
 
 export async function getReferralCode(): Promise<string> {
   const cookieStore = await cookies();
-  return cookieStore.get('referral_code')?.value || 'company';
+  return cookieStore.get('referralCode')?.value || 'company';
 }

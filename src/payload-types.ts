@@ -64,22 +64,18 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
-    affiliates: AffiliateAuthOperations;
   };
   blocks: {};
   collections: {
     users: User;
     media: Media;
-    banners: Banner;
     categories: Category;
-    pages: Page;
     tags: Tag;
     products: Product;
-    affiliates: Affiliate;
     orders: Order;
-    testimonials: Testimonial;
     'bank-details': BankDetail;
     'affiliate-commission-settings': AffiliateCommissionSetting;
+    'affiliate-commissions': AffiliateCommission;
     seo: Seo;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -89,16 +85,13 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    banners: BannersSelect<false> | BannersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
-    affiliates: AffiliatesSelect<false> | AffiliatesSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
-    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'bank-details': BankDetailsSelect<false> | BankDetailsSelect<true>;
     'affiliate-commission-settings': AffiliateCommissionSettingsSelect<false> | AffiliateCommissionSettingsSelect<true>;
+    'affiliate-commissions': AffiliateCommissionsSelect<false> | AffiliateCommissionsSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -110,13 +103,9 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user:
-    | (User & {
-        collection: 'users';
-      })
-    | (Affiliate & {
-        collection: 'affiliates';
-      });
+  user: User & {
+    collection: 'users';
+  };
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -140,31 +129,71 @@ export interface UserAuthOperations {
     password: string;
   };
 }
-export interface AffiliateAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  registerFirstUser: {
-    email: string;
-    password: string;
-  };
-  unlock: {
-    email: string;
-    password: string;
-  };
-}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: string;
-  role: 'admin' | 'affiliate' | 'customer';
+  /**
+   * Defines the access level and permissions of the user.
+   */
+  role?: ('admin' | 'affiliate' | 'customer') | null;
+  /**
+   * Please enter your full legal name.
+   */
+  name: string;
+  /**
+   * Auto-generated unique code used for referring others.
+   */
+  referralCode: string;
+  /**
+   * Fill in your complete residential address.
+   */
+  address?: {
+    houseNumber?: string | null;
+    streetAndArea?: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    country?: string | null;
+  };
+  /**
+   * Total earnings accumulated through referrals.
+   */
+  total_earned?: number | null;
+  /**
+   * Funds currently available in the user’s wallet.
+   */
+  wallet_balance?: number | null;
+  /**
+   * Extra bonuses rewarded for performance or campaigns.
+   */
+  bonus_balance?: number | null;
+  /**
+   * User’s current referral rank or status.
+   */
+  current_rank?: string | null;
+  /**
+   * Tracks the chain of referrers above this user.
+   */
+  referral_tree_ids?:
+    | {
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Referral code of the person who invited this user.
+   */
+  referred_by?: (string | null) | User;
+  /**
+   * Linked bank account(s) for payouts.
+   */
+  bank_accounts?: (string | BankDetail)[] | null;
+  /**
+   * Used by admins to manage account visibility.
+   */
+  status: '1' | '0' | '-1';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -178,11 +207,50 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bank-details".
+ */
+export interface BankDetail {
+  id: string;
+  user: string | User;
+  account_holder_name: string;
+  bank_name: string;
+  /**
+   * Alphanumeric account number (5–34 characters)
+   */
+  account_number: string;
+  /**
+   * Indian Financial System Code (e.g., SBIN0001234)
+   */
+  ifsc_code?: string | null;
+  /**
+   * IBAN — required for European accounts
+   */
+  iban?: string | null;
+  /**
+   * 8 or 11 character SWIFT/BIC code (e.g., CHASUS33XXX)
+   */
+  swift_code: string;
+  bank_country: string;
+  /**
+   * Full bank branch address for verification
+   */
+  bank_address?: string | null;
+  currency: string;
+  /**
+   * Mark as primary payout account
+   */
+  is_primary?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: string;
   alt: string;
+  uploaded_by?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -194,19 +262,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "banners".
- */
-export interface Banner {
-  id: string;
-  title: string;
-  image?: (string | null) | Media;
-  link?: string | null;
-  isActive?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -247,36 +302,6 @@ export interface Seo {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: string;
-  title: string;
-  slug: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -357,91 +382,6 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "affiliates".
- */
-export interface Affiliate {
-  id: string;
-  name: string;
-  /**
-   * Unique code for referral tracking
-   */
-  referral_code: string;
-  address?: {
-    house_number?: string | null;
-    street_and_area?: string | null;
-    city?: string | null;
-    state?: string | null;
-    country?: string | null;
-    postal_code?: string | null;
-  };
-  /**
-   * Phone number in international format
-   */
-  phone_number?: string | null;
-  country_code: string;
-  total_earned?: number | null;
-  wallet_balance?: number | null;
-  bonus_balance?: number | null;
-  current_rank?: string | null;
-  referral_tree_ids?:
-    | {
-        id?: string | null;
-      }[]
-    | null;
-  referred_by?: string | null;
-  bank_accounts?: (string | BankDetail)[] | null;
-  status: '1' | '0' | '-1';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "bank-details".
- */
-export interface BankDetail {
-  id: string;
-  affiliate: string | Affiliate;
-  account_holder_name: string;
-  bank_name: string;
-  /**
-   * Alphanumeric account number (5–34 characters)
-   */
-  account_number: string;
-  /**
-   * Indian Financial System Code (e.g., SBIN0001234)
-   */
-  ifsc_code?: string | null;
-  /**
-   * IBAN — required for European accounts
-   */
-  iban?: string | null;
-  /**
-   * 8 or 11 character SWIFT/BIC code (e.g., CHASUS33XXX)
-   */
-  swift_code: string;
-  bank_country: string;
-  /**
-   * Full bank branch address for verification
-   */
-  bank_address?: string | null;
-  currency: string;
-  /**
-   * Mark as primary payout account
-   */
-  is_primary?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
@@ -459,32 +399,21 @@ export interface Order {
   billingDetails: {
     fullName: string;
     email: string;
-    address: string;
+    phone: string;
+    houseNumber: string;
+    streetAndArea: string;
     city: string;
     state: string;
     postalCode: string;
     country: string;
   };
-  orderStatus: 'pending' | 'paid' | 'failed';
+  paymentStatus: 'pending' | 'awaiting verification' | 'paid' | 'failed' | 'refunded';
+  orderStatus: 'pending' | 'processing' | 'completed' | 'on_hold' | 'cancelled';
   referralCode: string;
   affiliate: {
     paymentStatus: 'pending' | 'paid' | 'failed';
     commissionPercentage: number;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: string;
-  customer_name: string;
-  rating?: number | null;
-  review?: string | null;
-  product?: (string | null) | Product;
-  approved?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -505,6 +434,26 @@ export interface AffiliateCommissionSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliate-commissions".
+ */
+export interface AffiliateCommission {
+  id: string;
+  order: string | Order;
+  affiliateUser: string | User;
+  commissionAmount: number;
+  commissionCurrency: 'USD' | 'INR';
+  commissionPercentage: number;
+  tier: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10';
+  paymentStatus: 'pending' | 'paid' | 'failed';
+  /**
+   * Optional notes about this commission payment.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -519,16 +468,8 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'banners';
-        value: string | Banner;
-      } | null)
-    | ({
         relationTo: 'categories';
         value: string | Category;
-      } | null)
-    | ({
-        relationTo: 'pages';
-        value: string | Page;
       } | null)
     | ({
         relationTo: 'tags';
@@ -539,16 +480,8 @@ export interface PayloadLockedDocument {
         value: string | Product;
       } | null)
     | ({
-        relationTo: 'affiliates';
-        value: string | Affiliate;
-      } | null)
-    | ({
         relationTo: 'orders';
         value: string | Order;
-      } | null)
-    | ({
-        relationTo: 'testimonials';
-        value: string | Testimonial;
       } | null)
     | ({
         relationTo: 'bank-details';
@@ -559,19 +492,18 @@ export interface PayloadLockedDocument {
         value: string | AffiliateCommissionSetting;
       } | null)
     | ({
+        relationTo: 'affiliate-commissions';
+        value: string | AffiliateCommission;
+      } | null)
+    | ({
         relationTo: 'seo';
         value: string | Seo;
       } | null);
   globalSlug?: string | null;
-  user:
-    | {
-        relationTo: 'users';
-        value: string | User;
-      }
-    | {
-        relationTo: 'affiliates';
-        value: string | Affiliate;
-      };
+  user: {
+    relationTo: 'users';
+    value: string | User;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -581,15 +513,10 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: string;
-  user:
-    | {
-        relationTo: 'users';
-        value: string | User;
-      }
-    | {
-        relationTo: 'affiliates';
-        value: string | Affiliate;
-      };
+  user: {
+    relationTo: 'users';
+    value: string | User;
+  };
   key?: string | null;
   value?:
     | {
@@ -620,6 +547,30 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  name?: T;
+  referralCode?: T;
+  address?:
+    | T
+    | {
+        houseNumber?: T;
+        streetAndArea?: T;
+        city?: T;
+        state?: T;
+        postalCode?: T;
+        country?: T;
+      };
+  total_earned?: T;
+  wallet_balance?: T;
+  bonus_balance?: T;
+  current_rank?: T;
+  referral_tree_ids?:
+    | T
+    | {
+        id?: T;
+      };
+  referred_by?: T;
+  bank_accounts?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -636,6 +587,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  uploaded_by?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -650,18 +602,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "banners_select".
- */
-export interface BannersSelect<T extends boolean = true> {
-  title?: T;
-  image?: T;
-  link?: T;
-  isActive?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
@@ -670,23 +610,6 @@ export interface CategoriesSelect<T extends boolean = true> {
   description?: T;
   icon?: T;
   seo?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  content?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -737,47 +660,6 @@ export interface ProductsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "affiliates_select".
- */
-export interface AffiliatesSelect<T extends boolean = true> {
-  name?: T;
-  referral_code?: T;
-  address?:
-    | T
-    | {
-        house_number?: T;
-        street_and_area?: T;
-        city?: T;
-        state?: T;
-        country?: T;
-        postal_code?: T;
-      };
-  phone_number?: T;
-  country_code?: T;
-  total_earned?: T;
-  wallet_balance?: T;
-  bonus_balance?: T;
-  current_rank?: T;
-  referral_tree_ids?:
-    | T
-    | {
-        id?: T;
-      };
-  referred_by?: T;
-  bank_accounts?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
@@ -796,12 +678,15 @@ export interface OrdersSelect<T extends boolean = true> {
     | {
         fullName?: T;
         email?: T;
-        address?: T;
+        phone?: T;
+        houseNumber?: T;
+        streetAndArea?: T;
         city?: T;
         state?: T;
         postalCode?: T;
         country?: T;
       };
+  paymentStatus?: T;
   orderStatus?: T;
   referralCode?: T;
   affiliate?:
@@ -815,23 +700,10 @@ export interface OrdersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials_select".
- */
-export interface TestimonialsSelect<T extends boolean = true> {
-  customer_name?: T;
-  rating?: T;
-  review?: T;
-  product?: T;
-  approved?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bank-details_select".
  */
 export interface BankDetailsSelect<T extends boolean = true> {
-  affiliate?: T;
+  user?: T;
   account_holder_name?: T;
   bank_name?: T;
   account_number?: T;
@@ -856,6 +728,22 @@ export interface AffiliateCommissionSettingsSelect<T extends boolean = true> {
   tier2?: T;
   tier3?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliate-commissions_select".
+ */
+export interface AffiliateCommissionsSelect<T extends boolean = true> {
+  order?: T;
+  affiliateUser?: T;
+  commissionAmount?: T;
+  commissionCurrency?: T;
+  commissionPercentage?: T;
+  tier?: T;
+  paymentStatus?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

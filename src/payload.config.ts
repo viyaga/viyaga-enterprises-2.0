@@ -8,17 +8,14 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import Banners from './collections/Banners'
 import Categories from './collections/Categories'
-import Pages from './collections/Pages'
 import Tags from './collections/Tags'
 import Products from './collections/Products'
-import Affiliates from './collections/Affiliates'
 import Orders from './collections/Orders'
 import BankDetails from './collections/BankDetails'
 import AffiliateCommissionSettings from './collections/AffiliateCommissionSettings'
 import SEO from './collections/Seo'
-import Testimonials from './collections/Testimonials'
+import AffiliateCommissions from './collections/AffiliateCommissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,17 +30,17 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      graphics:{
+      graphics: {
         Icon: "./components/payload/icon.tsx",
         Logo: "./components/payload/logo.tsx",
       },
       Nav: './components/payload/navbar/nav.tsx',
+      beforeDashboard: ['./components/payload/before-dashboard.tsx'],
     },
   },
   collections: [
-    Users, Media, Banners, Categories, Pages, Tags, Products,
-    Affiliates, Orders, Testimonials, BankDetails,
-    AffiliateCommissionSettings, SEO
+    Users, Media, Categories, Tags, Products, Orders, BankDetails,
+    AffiliateCommissionSettings, AffiliateCommissions, SEO
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

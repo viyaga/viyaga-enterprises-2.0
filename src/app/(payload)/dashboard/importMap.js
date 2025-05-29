@@ -24,6 +24,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_31053be7dec3c935e40de1cea1c4e21c } from '../../../components/payload/navbar/nav.tsx'
 import { default as default_b47ecd02b675f4768cc002d26bfecd78 } from '../../../components/payload/icon.tsx'
 import { default as default_831cb38d1ca69ead05c2615a09b7de55 } from '../../../components/payload/logo.tsx'
+import { default as default_7ccc97a72f5a8bb52d645eb98ea99e85 } from '../../../components/payload/before-dashboard.tsx'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -51,5 +52,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "./components/payload/navbar/nav.tsx#default": default_31053be7dec3c935e40de1cea1c4e21c,
   "./components/payload/icon.tsx#default": default_b47ecd02b675f4768cc002d26bfecd78,
-  "./components/payload/logo.tsx#default": default_831cb38d1ca69ead05c2615a09b7de55
+  "./components/payload/logo.tsx#default": default_831cb38d1ca69ead05c2615a09b7de55,
+  "./components/payload/before-dashboard.tsx#default": default_7ccc97a72f5a8bb52d645eb98ea99e85
 }

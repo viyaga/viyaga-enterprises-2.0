@@ -10,7 +10,7 @@ const headers = {
     Authorization: `Bearer ${process.env.PAYLOAD_API_KEY}`,
 };
 
-const defaultRevalidateTime = process.env.NODE_ENV === 'development'? 0:60 * 60 * 24 * 365;
+const defaultRevalidateTime = process.env.NODE_ENV === 'development' ? 0 : 60 * 60 * 24 * 365;
 
 export async function payloadFetch({
     path,
@@ -19,6 +19,7 @@ export async function payloadFetch({
     body,
     tags,
     revalidateTime = defaultRevalidateTime,
+    customHeaders = headers
 }: {
     path: string;
     query?: Tquery;
@@ -26,6 +27,7 @@ export async function payloadFetch({
     body?: JsonObject;
     tags?: string[];
     revalidateTime?: number;
+    customHeaders?: Record<string, string>;
 }) {
     const queryString = query ? `?${qs.stringify(query, { encode: false })}` : '';
     const url = `${endpoint}/${path}${queryString}`;
@@ -35,7 +37,7 @@ export async function payloadFetch({
     try {
         const res = await fetch(url, {
             method,
-            headers,
+            headers: customHeaders,
             body: body ? JSON.stringify(body) : undefined,
             next: {
                 tags,

@@ -1,8 +1,19 @@
 import { CollectionConfig } from 'payload';
 import { isJsonString, isUrl } from '@/lib/utils'; // A custom utility function to validate JSON-LD
+import { isAdmin } from './access';
 
 const SEO: CollectionConfig = {
   slug: 'seo',
+  labels: {
+    singular: "SEO",
+    plural: "SEO",
+  },
+  access: {
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin
+  },
   fields: [
     {
       name: 'metaTitle',

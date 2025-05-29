@@ -12,10 +12,10 @@ import { Label } from "@/components/ui/label";
 const billingSchema = z.object({
   fullName: z.string().min(2, "Full Name is required"),
   email: z.string().email("Invalid email address"),
-  mobile: z
+  phone: z
     .string()
-    .min(10, "Mobile number is required")
-    .regex(/^\+?\d{10,15}$/, "Invalid mobile number"),
+    .min(10, "phone number is required")
+    .regex(/^\+?\d{10,15}$/, "Invalid phone number"),
   address: z.string().min(5, "Address is required"),
   city: z.string().min(2, "City is required"),
   state: z.string().min(2, "State is required"),
@@ -106,27 +106,27 @@ export function BillingDetailsForm({
             </div>
           </div>
 
-          {/* Mobile Number Field */}
+          {/* phone Number Field */}
           <div>
             <Label
-              htmlFor="mobile"
+              htmlFor="phone"
               className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300  tracking-wide"
             >
-              Mobile Number
+              phone Number
             </Label>
             <Input
-              id="mobile"
+              id="phone"
               type="tel"
-              placeholder="+1 234 567 8901"
+              placeholder="234 567 8901"
               autoComplete="tel"
-              {...register("mobile")}
-              aria-invalid={!!errors.mobile}
-              aria-describedby="mobile-error"
+              {...register("phone")}
+              aria-invalid={!!errors.phone}
+              aria-describedby="phone-error"
               className="mb-4"
             />
-            {errors.mobile && (
-              <p id="mobile-error" className="text-red-600 text-sm mt-1">
-                {errors.mobile.message}
+            {errors.phone && (
+              <p id="phone-error" className="text-red-600 text-sm mt-1">
+                {errors.phone.message}
               </p>
             )}
           </div>

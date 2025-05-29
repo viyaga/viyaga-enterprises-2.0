@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { Link, useNav } from "@payloadcms/ui";
+import React from "react";
+import { Link, useAuth, useNav } from "@payloadcms/ui";
 import { usePathname, useRouter } from "next/navigation";
-import { navLinks } from "./navLinks";
+import { getNavLinksByRole } from "./navLinks";
 import { toast } from "sonner";
 import { logoutAction } from "@/lib/payload/users";
 import { LogOut, X } from "lucide-react";
@@ -12,9 +12,11 @@ export default function MyCustomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const { setNavOpen } = useNav();
+  const { user } = useAuth();
+  const navLinks = getNavLinksByRole(user?.role);
 
   const handleCloseNav = () => {
-    setNavOpen(false)
+    setNavOpen(false);
   };
 
   const handleLogout = async () => {
@@ -25,11 +27,11 @@ export default function MyCustomNav() {
   };
 
   return (
-    <nav className="relative w-full p-5 border-b border-gray-200 dark:border-gray-700">
+    <nav className="relative w-full h-screen flex flex-col justify-between p-5 border-b border-gray-200 dark:border-gray-700 overflow-hidden">
       {/* Close Button */}
       <button
         aria-label="Close Menu"
-        className="absolute top-5 right-5 p-2 bg-transparent border-none"
+        className="absolute top-5 right-5 p-2 bg-transparent border-none [@media_(min-width:769px)]:hidden"
         type="button"
         onClick={handleCloseNav}
       >
@@ -54,18 +56,18 @@ export default function MyCustomNav() {
             </li>
           );
         })}
-
-        {/* Logout Button */}
-        <li className="pt-6 list-none">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 px-3 py-2 rounded-md bg-white transition-colors font-medium shadow-sm cursor-pointer text-red-500"
-          >
-            <LogOut className="h-5 w-5" />
-            Log Out
-          </button>
-        </li>
       </ul>
+
+      {/* Logout Button at Bottom */}
+      <div className="px-5 py-10">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-md bg-white transition-colors font-medium shadow-sm cursor-pointer text-red-500"
+        >
+          <LogOut className="h-5 w-5" />
+          Log Out
+        </button>
+      </div>
     </nav>
   );
 }

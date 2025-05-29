@@ -1,10 +1,17 @@
 import { CollectionConfig, CollectionSlug } from 'payload';
+import { isAdmin } from './access';
 
-const  AffiliateCommissionSettings: CollectionConfig = {
+const AffiliateCommissionSettings: CollectionConfig = {
   slug: 'affiliate-commission-settings',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'tier1', 'tier2', 'tier3'],
+  },
+  access: {
+    create: isAdmin,
+    read: isAdmin,
+    update: isAdmin,
+    delete: isAdmin
   },
   hooks: {
     beforeChange: [
@@ -53,21 +60,21 @@ const  AffiliateCommissionSettings: CollectionConfig = {
           label: 'Tier 1 Commission (%)',
           type: 'number',
           required: true,
-          defaultValue: 30,
+          defaultValue: 50,
         },
         {
           name: 'tier2',
           label: 'Tier 2 Commission (%)',
           type: 'number',
           required: true,
-          defaultValue: 15,
+          defaultValue: 30,
         },
         {
           name: 'tier3',
           label: 'Tier 3 Commission (%)',
           type: 'number',
           required: true,
-          defaultValue: 5,
+          defaultValue: 20,
         },
       ],
     },

@@ -129,8 +129,15 @@
     margin-top: 20px;
   }
 
+  .payload-settings {
+    margin: 0;
+    border: none;
+  }
+
+  .payload-settings h3,
   .gravatar-account,
-  .dashboard__label{
+  .dashboard__label,
+  .doc-tabs__tabs a.btn.doc-tab[href$="/api"] {
     display: none;
   }
 

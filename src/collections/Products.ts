@@ -1,4 +1,5 @@
 import { CollectionConfig, CollectionSlug } from 'payload';
+import { isAdmin, isAdminOrAffiliate } from './access';
 
 const Products: CollectionConfig = {
   slug: 'products',
@@ -6,7 +7,10 @@ const Products: CollectionConfig = {
     useAsTitle: 'title',
   },
   access: {
-    read: () => true,
+    read: isAdminOrAffiliate,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     { name: 'thumbnail', type: 'upload', relationTo: 'media' },
@@ -41,11 +45,11 @@ const Products: CollectionConfig = {
     {
       name: 'affiliateCommission',
       type: 'number',
-      label: 'Affiliate Commission(%)',
+      label: 'Affiliate Commission Amount',
       defaultValue: 0,
-      max: 100,
+      max: 10000,
       admin: {
-        placeholder: 'e.g. 30%',
+        placeholder: 'e.g. 1000',
       },
     },
     {

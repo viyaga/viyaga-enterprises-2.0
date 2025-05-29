@@ -99,6 +99,7 @@ export default function CheckoutPage({
       billingDetails: {
         fullName: data.fullName,
         email: data.email,
+        phone: data.phone,
         address: data.address,
         city: data.city,
         state: data.state,
@@ -117,6 +118,7 @@ export default function CheckoutPage({
 
     const response = await createOrder(orderData);
     console.log({ response });
+    setIsSubmitting(false);
 
     if (response?.error) {
       return toast.error(
@@ -126,7 +128,6 @@ export default function CheckoutPage({
 
     toast.success("Order placed successfully! Please login to continue.");
     router.push("/dashboard/collections/orders");
-    setIsSubmitting(false);
   };
 
   return (

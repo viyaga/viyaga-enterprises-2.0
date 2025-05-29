@@ -1,10 +1,14 @@
 import { CollectionConfig, CollectionSlug } from 'payload';
+import { isAdmin } from './access';
 
 const Categories: CollectionConfig = {
   slug: 'categories',
   admin: { useAsTitle: 'title' },
   access: {
-    read: () => true,
+    read: isAdmin,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin
   },
   defaultPopulate: {
     title: true,
