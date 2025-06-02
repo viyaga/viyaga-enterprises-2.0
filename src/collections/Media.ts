@@ -1,13 +1,13 @@
 import type { CollectionConfig } from 'payload'
-import { hasMediaAccess } from './access/media-access'
+import { hasMediaReadAccess, hasMediaUpdateAccess } from './access/media-access'
 import { isAdmin } from './access'
 import { setUploadedBy } from './hooks/media-hooks'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: hasMediaAccess,
-    update: hasMediaAccess,
+    read: hasMediaReadAccess,
+    update: hasMediaUpdateAccess,
     delete: isAdmin,
   },
   upload: true,

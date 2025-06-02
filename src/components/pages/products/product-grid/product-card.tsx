@@ -26,6 +26,7 @@ export default function ProductCard({ product, country }: ProductCardProps) {
     ? product.inr_discount_price
     : product.discount_price;
   const thumbnailUrl = product.thumbnail?.url ?? "/fallback-thumbnail.jpg";
+console.log({thumbnailUrl});
 
   const priceLabel = (
     <div className="flex items-center gap-2 text-sm sm:text-base">
