@@ -1,7 +1,6 @@
 import { User } from "@/payload-types";
 import { PayloadRequest, Where } from "payload";
 import { isAdminUser, isAffiliateUser } from ".";
-import { equal } from "assert";
 
 export function canAccessUserDetails({ req }: { req: PayloadRequest }) {
     const user = req.user as User

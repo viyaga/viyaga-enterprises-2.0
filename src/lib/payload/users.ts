@@ -12,7 +12,7 @@ export async function getUserToken(): Promise<string | null> {
   return token ?? null;
 }
 
-export async function getMe(): Promise<any | null> {
+export async function getMe() {
   const token = await getUserToken();
   if (!token) return null;
   return payloadFetch({
@@ -25,22 +25,22 @@ export async function getMe(): Promise<any | null> {
   });
 }
 
-export async function logoutAction(): Promise<any> {
+export async function logoutAction() {
   return logout({ config });
 }
 
-export async function redirectBasedOnRole(): Promise<never> {
+export async function redirectBasedOnRole(): Promise<never | void> {
   const res = await getMe();
-  const role = res?.user?.role;
+  console.log({ res, user: res.user });
 
-  if (!role) {
-    await logoutAction()
-    return redirect('/dashboard/login');
-  }
+  const role = res?.user?.role;
 
   if (role === 'customer' || role === 'affiliate') {
     return redirect('/dashboard/collections/orders');
   }
 
-  return redirect('/dashboard');
+  if (!role || role !== 'admin') {
+    await logoutAction()
+    return redirect('/dashboard/login');
+  }
 }

@@ -1,6 +1,5 @@
 import CheckoutPage from "@/components/pages/checkout/checkout-page";
 import { getProductByIdForCheckout } from "@/lib/payload";
-import { error } from "console";
 import { notFound } from "next/navigation";
 
 const page = async (props: {
