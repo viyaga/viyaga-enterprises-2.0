@@ -21,7 +21,7 @@ export default function MyCustomNav() {
 
   const handleLogout = async () => {
     const res = await logoutAction();
-    if ("error" in res) return toast.error(res.error);
+    if ("error" in res) return toast.error(typeof res.error === "string" ? res.error : "An error occurred");
     toast.success("Logged out Successfully");
     router.replace(`/dashboard/login?redirect=${encodeURIComponent(pathname)}`);
   };
