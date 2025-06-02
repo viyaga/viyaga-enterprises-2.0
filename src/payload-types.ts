@@ -251,6 +251,7 @@ export interface Media {
   id: string;
   alt: string;
   uploaded_by?: (string | null) | User;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -587,6 +588,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   uploaded_by?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

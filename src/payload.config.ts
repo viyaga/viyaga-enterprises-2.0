@@ -1,5 +1,5 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -16,6 +16,7 @@ import BankDetails from './collections/BankDetails'
 import AffiliateCommissionSettings from './collections/AffiliateCommissionSettings'
 import SEO from './collections/Seo'
 import AffiliateCommissions from './collections/AffiliateCommissions'
+import { requiredEnv } from './lib/utils'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,8 +53,28 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    // payloadCloudPlugin(),
+    s3Storage({
+      collections: {
+        media: {
+          prefix: 'uploads',
+          generateFileURL: ({ filename, prefix, size }) => {
+            const folder = prefix || 'media'
+            const sizePath = size ? `${size.name}/` : ''
+            return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${folder}/${sizePath}${filename}`
+          },
+          disablePayloadAccessControl: true
+        },
+      },
+      bucket: requiredEnv('S3_BUCKET'),
+      config: {
+        credentials: {
+          accessKeyId: requiredEnv('S3_ACCESS_KEY_ID'),
+          secretAccessKey: requiredEnv('S3_SECRET_ACCESS_KEY'),
+        },
+        region: requiredEnv('S3_REGION'),
+      },
+    }),
   ],
   maxDepth: 2
 })
