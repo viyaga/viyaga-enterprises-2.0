@@ -160,14 +160,8 @@ const Orders: CollectionConfig = {
           required: true,
         },
         {
-          name: 'houseNumber',
-          label: 'House / Flat No.',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'streetAndArea',
-          label: 'Street and Area',
+          name: 'address',
+          label: 'Address',
           type: 'text',
           required: true,
         },
@@ -201,7 +195,6 @@ const Orders: CollectionConfig = {
       name: 'paymentStatus',
       type: 'select',
       label: 'Payment Status',
-      required: true,
       defaultValue: "awaiting verification",
       options: [
         { label: 'Pending', value: 'pending' },

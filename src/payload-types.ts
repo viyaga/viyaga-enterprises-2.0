@@ -400,14 +400,13 @@ export interface Order {
     fullName: string;
     email: string;
     phone: string;
-    houseNumber: string;
-    streetAndArea: string;
+    address: string;
     city: string;
     state: string;
     postalCode: string;
     country: string;
   };
-  paymentStatus: 'pending' | 'awaiting verification' | 'paid' | 'failed' | 'refunded';
+  paymentStatus?: ('pending' | 'awaiting verification' | 'paid' | 'failed' | 'refunded') | null;
   orderStatus: 'pending' | 'processing' | 'completed' | 'on_hold' | 'cancelled';
   referralCode: string;
   affiliate: {
@@ -679,8 +678,7 @@ export interface OrdersSelect<T extends boolean = true> {
         fullName?: T;
         email?: T;
         phone?: T;
-        houseNumber?: T;
-        streetAndArea?: T;
+        address?: T;
         city?: T;
         state?: T;
         postalCode?: T;
