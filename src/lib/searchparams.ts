@@ -8,7 +8,7 @@ import {
 
 export const searchParams = {
     page: parseAsInteger.withDefault(1),
-    limit: parseAsInteger.withDefault(10),
+    limit: parseAsInteger.withDefault(12),
     q: parseAsString.withDefault(''),
     sort: parseAsString.withDefault('createdAt'),
     category: parseAsString.withDefault(''),

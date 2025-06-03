@@ -4,11 +4,12 @@ import { getAllProducts } from "@/lib/payload";
 import { searchParamsCache } from "@/lib/searchparams";
 import { getUserGeoLocation } from "@/lib/services/cookies";
 import { getPurchasingPower } from "@/lib/services/cookies";
+import { getLocalizedPrice } from "@/lib/services/price";
+import { ClientPagination } from "./pagination";
 
 export default async function ProductGrid() {
   const { country } = await getUserGeoLocation();
-  const ppp = await getPurchasingPower();
-  console.log({ country, ppp });
+  const purchasingPower = await getPurchasingPower();
 
   const page = searchParamsCache.get("page");
   const search = searchParamsCache.get("q");
@@ -46,17 +47,30 @@ export default async function ProductGrid() {
     );
   }
 
-  console.log({ products: products.docs, country });
-
   return (
-      <div className="py-12 px-4 sm:px-6 md:px-8 text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]">
+    <div className="py-12 px-4 sm:px-6 md:px-8 text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {products.docs.map((product: Product) => (
-            <ProductCard key={product.id} product={product} country={country} />
-          ))}
+          {products.docs.map((product: Product) => {
+            const priceData = getLocalizedPrice(
+              product,
+              country,
+              purchasingPower
+            );
+
+            return (
+              <ProductCard
+                key={product.id}
+                product={product}
+                priceData={priceData}
+              />
+            );
+          })}
         </div>
+
+        {/* Pagination */}
+        <ClientPagination totalItems={products.totalDocs} />
       </div>
-      </div>
+    </div>
   );
 }

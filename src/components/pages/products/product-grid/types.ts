@@ -3,9 +3,9 @@ export type Product = {
   title: string;
   slug: string;
   price: number;
-  discount_price?: number;
-  inr_price?: number;
-  inr_discount_price?: number;
+  discount_price: number;
+  inr_price: number;
+  inr_discount_price: number;
   affiliate_commission?: number;
   thumbnail?: Media;
   category?: Category[];
@@ -36,10 +36,14 @@ export type Tag = {
 
 export type ProductCardProps = {
   product: Product;
-  country: string;
+  priceData: {
+    price: number,
+    discountPrice: number,
+    currency: string,
+  }
 };
 
-export type ProductGridProps =  {
+export type ProductGridProps = {
   products: Product[];
   country: string;
 };

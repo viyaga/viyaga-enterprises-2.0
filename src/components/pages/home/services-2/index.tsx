@@ -6,9 +6,9 @@ import Counter from "./Counter";
 import Image from "next/image";
 
 const services = [
-  { id: 1, img: "/service1.png", title: "Web Development", counter: 35 },
-  { id: 2, img: "/service2.png", title: "Mobile App Development", counter: 23 },
-  { id: 3, img: "/service3.png", title: "AI Integrations", counter: 46 },
+  { id: 1, img: "/images/ai-services.png", title: "AI Agent & Chatbot", counter: 46 },
+  { id: 2, img: "/images/web-services.png", title: "Web Development", counter: 35 },
+  { id: 3, img: "/images/mobile-app-services.png", title: "Mobile App Development", counter: 23 },
 ];
 
 const ServicesSection = () => {
@@ -67,18 +67,19 @@ const ServicesSection = () => {
               >
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    service.id === 1
-                      ? "bg-red-500"
-                      : service.id === 2
-                      ? "bg-teal-600"
-                      : "bg-yellow-600"
+                  service.id === 1
+                    ? "bg-red-500"
+                    : service.id === 2
+                    ? "bg-teal-600"
+                    : "bg-yellow-600"
                   }`}
                 >
                   <Image
-                    src={service.img}
-                    width={24}
-                    height={24}
-                    alt={service.title}
+                  src={service.img}
+                  width={24}
+                  height={24}
+                  alt={service.title}
+                  className="p-1 sm:p-2 md:p-3"
                   />
                 </div>
                 <div className="text-left">
@@ -99,8 +100,7 @@ const ServicesSection = () => {
           </div>
         </div>
 
-        {/* Right Content (Image instead of 3D model) */}
-        <div className="w-screen lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto relative">
+        <div className="w-screen lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto relative px-4 sm:px-8">
           <Image
             key={selectedService?.img}
             src={selectedService?.img || ""}

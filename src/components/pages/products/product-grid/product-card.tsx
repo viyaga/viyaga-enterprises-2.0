@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -18,15 +18,10 @@ const fadeInUp: Variants = {
   },
 };
 
-export default function ProductCard({ product, country }: ProductCardProps) {
-  const isIndia = country === "IN";
-  const currency = isIndia ? "₹" : "$";
-  const price = isIndia ? product.inr_price : product.price;
-  const discountPrice = isIndia
-    ? product.inr_discount_price
-    : product.discount_price;
+export default function ProductCard({ product, priceData }: ProductCardProps) {
+  const { price, discountPrice, currency } = priceData;
   const thumbnailUrl = product.thumbnail?.url ?? "/fallback-thumbnail.jpg";
-console.log({thumbnailUrl});
+  console.log({ thumbnailUrl });
 
   const priceLabel = (
     <div className="flex items-center gap-2 text-sm sm:text-base">
