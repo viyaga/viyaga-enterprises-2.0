@@ -45,7 +45,7 @@ const Products: CollectionConfig = {
     {
       name: 'affiliateCommission',
       type: 'number',
-      label: 'Affiliate Commission Amount',
+      label: 'Affiliate Commission %',
       defaultValue: 0,
       max: 10000,
       admin: {

@@ -249,7 +249,7 @@ export interface BankDetail {
  */
 export interface Media {
   id: string;
-  alt: string;
+  alt?: string | null;
   uploaded_by?: (string | null) | User;
   prefix?: string | null;
   updatedAt: string;
