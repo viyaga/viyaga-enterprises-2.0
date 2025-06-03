@@ -124,14 +124,14 @@ export default function PortfolioSection() {
                     className="text-primary dark:text-blue-400 underline hover:text-primary/80"
                     asChild
                   >
-                    <a
+                    {/* <a
                       href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       View Project{" "}
                       <ExternalLink className="w-4 h-4 ml-1 inline" />
-                    </a>
+                    </a> */}
                   </Button>
                 </motion.div>
               </CardContent>
@@ -146,9 +146,9 @@ export default function PortfolioSection() {
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Button className="w-full sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
-            Let&apos;s Build Something Great Together
-          </Button>
+            <Button className="w-full sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
+            Start Your Project
+            </Button>
         </motion.div>
       </div>
     </motion.section>

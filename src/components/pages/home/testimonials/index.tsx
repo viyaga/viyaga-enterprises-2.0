@@ -32,7 +32,10 @@ const cardVariant = {
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-20 px-4 bg-muted dark:bg-background text-black dark:text-white">
+    <section
+      className="px-4 py-10 md:py-12 lg:py-16 bg-muted dark:bg-background text-black 
+      dark:text-white bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]"
+    >
       <div className="max-w-4xl mx-auto text-center mb-14">
         <h2 className="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
       </div>
