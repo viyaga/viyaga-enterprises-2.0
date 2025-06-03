@@ -2,7 +2,6 @@
 
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
@@ -146,7 +145,7 @@ export default function PortfolioSection() {
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-            <Button className="w-full sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
+            <Button className="sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
             Start Your Project
             </Button>
         </motion.div>

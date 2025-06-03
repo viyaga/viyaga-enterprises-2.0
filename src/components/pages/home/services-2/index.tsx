@@ -14,7 +14,6 @@ const services = [
 const ServicesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-200px" });
-
   const [activeServiceId, setActiveServiceId] = useState(services[0].id);
 
   const textVariants = {
@@ -67,19 +66,19 @@ const ServicesSection = () => {
               >
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                  service.id === 1
-                    ? "bg-red-500"
-                    : service.id === 2
-                    ? "bg-teal-600"
-                    : "bg-yellow-600"
+                    service.id === 1
+                      ? "bg-red-500"
+                      : service.id === 2
+                      ? "bg-teal-600"
+                      : "bg-yellow-600"
                   }`}
                 >
                   <Image
-                  src={service.img}
-                  width={24}
-                  height={24}
-                  alt={service.title}
-                  className="p-1 sm:p-2 md:p-3"
+                    src={service.img}
+                    width={24}
+                    height={24}
+                    alt={service.title}
+                    className="p-1 sm:p-2 md:p-3"
                   />
                 </div>
                 <div className="text-left">
@@ -100,7 +99,7 @@ const ServicesSection = () => {
           </div>
         </div>
 
-        <div className="w-screen lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto relative px-4 sm:px-8">
+        <div className="w-full py-4 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto px-4 sm:px-8">
           <Image
             key={selectedService?.img}
             src={selectedService?.img || ""}

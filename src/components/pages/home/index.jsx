@@ -13,8 +13,8 @@ export default function HomePage() {
       <TrustedBy />
       <Services />
       <PortfolioSection />
-      <TestimonialsSection />
       <WhyChooseUsSection />
+      <TestimonialsSection />
       <ContactSection />
     </div>
   );
