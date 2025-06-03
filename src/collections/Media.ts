@@ -12,6 +12,8 @@ export const Media: CollectionConfig = {
   },
   upload: true,
   defaultPopulate: {
+    filename:true,
+    prefix:true,
     url: true,
     alt: true
   },

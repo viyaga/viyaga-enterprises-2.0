@@ -57,11 +57,10 @@ export default buildConfig({
     s3Storage({
       collections: {
         media: {
-          prefix: 'uploads',
-          generateFileURL: ({ filename, prefix, size }) => {
+          prefix: 'viyaga',
+          generateFileURL: ({ filename, prefix }) => {
             const folder = prefix || 'media'
-            const sizePath = size ? `${size.name}/` : ''
-            return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${folder}/${sizePath}${filename}`
+            return `https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${folder}/${filename}`
           },
           disablePayloadAccessControl: true
         },
