@@ -13,7 +13,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import ContactSvg from "./contact-svg";
 
@@ -124,7 +123,7 @@ export default function Contact2() {
             variants={listVariant}
             className="text-3xl font-semibold mb-6"
           >
-            Let's keep in touch
+            Let&apos;s keep in touch
           </motion.h1>
 
           {/* Name */}

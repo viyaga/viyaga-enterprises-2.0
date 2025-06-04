@@ -2,7 +2,6 @@ import HeroSection from './hero';
 import Services from './services-2';
 import PortfolioSection from './portfolio';
 import TestimonialsSection from './testimonials';
-import ContactSection from './contact';
 import TrustedBy from './trusted-by';
 import { WhyChooseUsSection } from './why-choose-us';
 import Contact2 from './contact2/contact2';
