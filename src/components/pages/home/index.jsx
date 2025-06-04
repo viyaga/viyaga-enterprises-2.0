@@ -5,6 +5,7 @@ import TestimonialsSection from './testimonials';
 import ContactSection from './contact';
 import TrustedBy from './trusted-by';
 import { WhyChooseUsSection } from './why-choose-us';
+import Contact2 from './contact2/contact2';
 
 export default function HomePage() {
   return (
@@ -15,7 +16,8 @@ export default function HomePage() {
       <PortfolioSection />
       <WhyChooseUsSection />
       <TestimonialsSection />
-      <ContactSection />
+      {/* <ContactSection /> */}
+      <Contact2 />
     </div>
   );
 }
