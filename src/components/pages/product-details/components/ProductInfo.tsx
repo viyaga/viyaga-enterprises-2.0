@@ -4,18 +4,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Product } from "../types";
 
-interface Product {
-  id: string;
-  title: string;
-  isFree?: boolean;
-  description?: { children: { text: string }[] }[];
-  features?: { children: { text: string }[] }[];
-  price: number;
-  discount_price: number;
-  inr_price: number;
-  inr_discount_price: number;
-}
 
 const ProductInfo = ({ product }: { product: Product }) => {
   return (

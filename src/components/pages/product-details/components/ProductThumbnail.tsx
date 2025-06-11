@@ -1,13 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
-type Product = {
-  title?: string;
-  thumbnail?: {
-    url: string;
-  };
-};
+import { Product } from "../types";
 
 const ProductThumbnail = ({ product }: { product: Product }) => {
   if (!product.thumbnail?.url) return null;
