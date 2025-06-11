@@ -63,7 +63,6 @@ export default async function ProductGrid() {
               <ProductCard
                 key={product.id}
                 product={product}
-                priceData={priceData}
               />
             );
           })}
