@@ -54,3 +54,17 @@ export async function getProductByIdForCheckout({ id, depth = 0 }: GetProductByI
     tags: ['products', `product-${id}`],
   });
 }
+
+type GetProductBySlugOptions = {
+  slug: string;
+  depth?: number;
+};
+
+export async function getProductDetailsBySlug({ slug, depth = 0 }: GetProductBySlugOptions) {
+  const query = { depth };
+  return await payloadFetch({
+    path: `products`,
+    query: { ...query, where: { slug: { equals: slug } } },
+    tags: ['products', `product-slug-${slug}`],
+  });
+}

@@ -23,7 +23,7 @@ const Counter: React.FC<CounterProps> = ({ from, to, text }) => {
     });
 
     return controls.stop;
-  }, [from, to]);
+  }, [from, to, count]);
 
   return (
     <div

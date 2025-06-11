@@ -337,21 +337,12 @@ export interface Product {
         priceUSD: number;
         priceINR: number;
         trialPeriodDays?: number | null;
-        features?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
+        features?:
+          | {
+              feature: string;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -670,7 +661,12 @@ export interface ProductsSelect<T extends boolean = true> {
         priceUSD?: T;
         priceINR?: T;
         trialPeriodDays?: T;
-        features?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
         id?: T;
       };
   price?: T;

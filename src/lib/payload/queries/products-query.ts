@@ -38,19 +38,51 @@ export const getProductByIdForCheckoutQuery = async ({ depth = 0 }: { depth?: nu
         ? {
             "thumbnail": true,
             "title": true,
-            "affiliateCommission":true,
+            "affiliateCommission": true,
             "inr_price": true,
             "inr_discount_price": true
         }
         : {
             "thumbnail": true,
             "title": true,
-            "affiliateCommission":true,
+            "affiliateCommission": true,
             "price": true,
             "discount_price": true
         };
 
     return {
+        depth,
+        select
+    };
+};
+
+export const getProductDetailsBySlugQuery = (
+    { slug, depth = 0 }: { slug: string; depth?: number }
+) => {
+    const select = {
+        "thumbnail": true,
+        "title": true,
+        "description": true,
+        "features": true,
+        "affiliateCommission": true,
+        "inr_price": true,
+        "inr_discount_price": true,
+        "price": true,
+        "discount_price": true,
+        "category": true,
+        "tags": true,
+        "isSubscription": true,
+        "subscriptionPlans": true,
+        "screenshots": true,
+        "demo_urls": true,
+        "seo": true,
+        "slug": true
+    }
+
+    const where = { slug: { equals: slug } };
+
+    return {
+        where,
         depth,
         select
     };

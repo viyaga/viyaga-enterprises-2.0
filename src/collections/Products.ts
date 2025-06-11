@@ -18,8 +18,8 @@ const Products: CollectionConfig = {
     { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'isFeatured', type: 'checkbox' },
     { name: 'isFree', type: 'checkbox' },
-    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true, index: true }, // Index added for category filter
-    { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true, index: true }, // Index added for tags filter
+    { name: 'category', type: 'relationship', relationTo: 'categories' as CollectionSlug, hasMany: true, index: true },
+    { name: 'tags', type: 'relationship', relationTo: 'tags' as CollectionSlug, hasMany: true, index: true },
     {
       name: 'isSubscription',
       type: 'checkbox',
@@ -71,8 +71,16 @@ const Products: CollectionConfig = {
         },
         {
           name: 'features',
-          type: 'richText',
+          type: 'array',
           label: 'Plan Features',
+          fields: [
+            {
+              name: 'feature',
+              type: 'text',
+              label: 'Feature',
+              required: true,
+            },
+          ],
         },
       ],
     },
