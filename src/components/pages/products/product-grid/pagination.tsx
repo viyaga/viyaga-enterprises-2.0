@@ -11,6 +11,7 @@ import {
 import { parseAsInteger, useQueryState } from "nuqs";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 type Props = {
   totalItems: number;
@@ -19,7 +20,11 @@ type Props = {
 const ELLIPSIS = "...";
 
 // Helper to build page range with ellipsis
-function getPageNumbers(currentPage: number, totalPages: number, maxPageButtons = 7) {
+function getPageNumbers(
+  currentPage: number,
+  totalPages: number,
+  maxPageButtons = 7
+) {
   if (totalPages <= maxPageButtons) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
@@ -67,7 +72,9 @@ export function ClientPagination({ totalItems }: Props) {
 
   const [pageSize] = useQueryState(
     "limit",
-    parseAsInteger.withOptions({ shallow: false, history: "push" }).withDefault(10)
+    parseAsInteger
+      .withOptions({ shallow: false, history: "push" })
+      .withDefault(12)
   );
 
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -114,7 +121,9 @@ export function ClientPagination({ totalItems }: Props) {
               goToPage(currentPage - 1);
             }}
             className={`rounded px-3 py-1 hover:bg-blue-200 dark:hover:bg-blue-800 transition ${
-              currentPage <= 1 ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+              currentPage <= 1
+                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                : ""
             }`}
             aria-label="Previous Page"
             aria-disabled={currentPage <= 1 ? "true" : undefined}
@@ -136,7 +145,9 @@ export function ClientPagination({ totalItems }: Props) {
                   key={`ellipsis-${index}`}
                   className="pointer-events-none select-none px-2"
                 >
-                  <span className="text-gray-500 dark:text-gray-400">{ELLIPSIS}</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    {ELLIPSIS}
+                  </span>
                 </PaginationItem>
               );
             }
@@ -164,11 +175,12 @@ export function ClientPagination({ totalItems }: Props) {
                       goToPage(pageNum);
                     }}
                     aria-current={isActive ? "page" : undefined}
-                    className={`px-3 py-1 transition focus:outline-none focus:ring-2 focus:ring-blue-400 rounded ${
+                    className={cn(
+                      "px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       isActive
-                        ? "bg-blue-600 text-white shadow-md"
-                        : "hover:bg-blue-100 dark:hover:bg-blue-700"
-                    }`}
+                        ? "bg-blue-600 text-white hover:text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500"
+                        : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+                    )}
                   >
                     {pageNum}
                   </PaginationLink>
@@ -187,7 +199,9 @@ export function ClientPagination({ totalItems }: Props) {
               goToPage(currentPage + 1);
             }}
             className={`rounded px-3 py-1 hover:bg-blue-200 dark:hover:bg-blue-800 transition ${
-              currentPage >= totalPages ? "opacity-50 cursor-not-allowed pointer-events-none" : ""
+              currentPage >= totalPages
+                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                : ""
             }`}
             aria-label="Next Page"
             aria-disabled={currentPage >= totalPages ? "true" : undefined}

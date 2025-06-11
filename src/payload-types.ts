@@ -325,14 +325,40 @@ export interface Product {
   thumbnail?: (string | null) | Media;
   title: string;
   slug: string;
-  price: number;
-  discount_price: number;
-  inr_price: number;
-  inr_discount_price: number;
   isFeatured?: boolean | null;
   isFree?: boolean | null;
   category?: (string | Category)[] | null;
   tags?: (string | Tag)[] | null;
+  isSubscription?: boolean | null;
+  subscriptionPlans?:
+    | {
+        planName: string;
+        billingCycle: 'monthly' | 'yearly' | 'one-time';
+        priceUSD: number;
+        priceINR: number;
+        trialPeriodDays?: number | null;
+        features?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  price: number;
+  discount_price: number;
+  inr_price: number;
+  inr_discount_price: number;
   affiliateCommission?: number | null;
   screenshots?:
     | {
@@ -631,14 +657,26 @@ export interface ProductsSelect<T extends boolean = true> {
   thumbnail?: T;
   title?: T;
   slug?: T;
-  price?: T;
-  discount_price?: T;
-  inr_price?: T;
-  inr_discount_price?: T;
   isFeatured?: T;
   isFree?: T;
   category?: T;
   tags?: T;
+  isSubscription?: T;
+  subscriptionPlans?:
+    | T
+    | {
+        planName?: T;
+        billingCycle?: T;
+        priceUSD?: T;
+        priceINR?: T;
+        trialPeriodDays?: T;
+        features?: T;
+        id?: T;
+      };
+  price?: T;
+  discount_price?: T;
+  inr_price?: T;
+  inr_discount_price?: T;
   affiliateCommission?: T;
   screenshots?:
     | T

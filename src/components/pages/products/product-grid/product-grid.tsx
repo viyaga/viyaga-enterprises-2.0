@@ -46,7 +46,8 @@ export default async function ProductGrid() {
       </div>
     );
   }
-
+  console.log({products, totalPages:products.totalDocs});
+  
   return (
     <div className="py-12 px-4 sm:px-6 md:px-8 text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]">
       <div className="max-w-7xl mx-auto">

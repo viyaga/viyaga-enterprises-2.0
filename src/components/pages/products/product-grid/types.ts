@@ -36,11 +36,6 @@ export type Tag = {
 
 export type ProductCardProps = {
   product: Product;
-  priceData: {
-    price: number,
-    discountPrice: number,
-    currency: string,
-  }
 };
 
 export type ProductGridProps = {

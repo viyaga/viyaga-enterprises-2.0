@@ -151,7 +151,8 @@
   }
   
   a {
-    @apply underline-offset-4 hover:underline transition;
+    @apply transition;
+    text-decoration: none;
   }
 
   bg-primary {
