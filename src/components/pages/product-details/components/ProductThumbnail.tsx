@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 
-const ProductThumbnail = ({ product }: { product: any }) => {
+type Product = {
+  title?: string;
+  thumbnail?: {
+    url: string;
+  };
+};
+
+const ProductThumbnail = ({ product }: { product: Product }) => {
   if (!product.thumbnail?.url) return null;
 
   return (

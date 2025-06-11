@@ -5,7 +5,19 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const ProductInfo = ({ product }: { product: any }) => {
+interface Product {
+  id: string;
+  title: string;
+  isFree?: boolean;
+  description?: { children: { text: string }[] }[];
+  features?: { children: { text: string }[] }[];
+  price: number;
+  discount_price: number;
+  inr_price: number;
+  inr_discount_price: number;
+}
+
+const ProductInfo = ({ product }: { product: Product }) => {
   return (
     <div className="flex-1 space-y-4">
       <h1 className="text-4xl font-bold tracking-tight">{product.title}</h1>
@@ -16,13 +28,13 @@ const ProductInfo = ({ product }: { product: any }) => {
         </Badge>
       )}
 
-      {product.description?.length > 0 && (
+      {product.description && product.description?.length > 0 && (
         <div className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
           {/* {product.description[0].children[0].text} */}
         </div>
       )}
 
-      {product.features?.length > 0 && (
+      {product.features && product.features?.length > 0 && (
         <div className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
           <h2 className="text-lg font-semibold mb-1">Features</h2>
           {/* {product.features[0].children[0].text} */}
@@ -33,12 +45,16 @@ const ProductInfo = ({ product }: { product: any }) => {
         <p>
           <span className="font-semibold">Price (USD):</span>{" "}
           <s className="text-gray-500">${product.price}</s>{" "}
-          <span className="text-green-600 font-bold">${product.discount_price}</span>
+          <span className="text-green-600 font-bold">
+            ${product.discount_price}
+          </span>
         </p>
         <p>
           <span className="font-semibold">Price (INR):</span>{" "}
           <s className="text-gray-500">₹{product.inr_price}</s>{" "}
-          <span className="text-green-600 font-bold">₹{product.inr_discount_price}</span>
+          <span className="text-green-600 font-bold">
+            ₹{product.inr_discount_price}
+          </span>
         </p>
       </div>
 

@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 
-const ScreenshotsGallery = ({ screenshots }: { screenshots: any[] }) => {
+type Screenshot = {
+  image: {
+    url: string;
+    // add other properties if needed
+  };
+};
+
+const ScreenshotsGallery = ({ screenshots }: { screenshots: Screenshot[] }) => {
   return (
     <div className="mt-12">
       <h2 className="text-2xl font-bold mb-4">Screenshots</h2>

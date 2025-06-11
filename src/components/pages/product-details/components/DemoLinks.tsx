@@ -5,7 +5,12 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const DemoLinks = ({ demoUrls }: { demoUrls: any[] }) => {
+type DemoLink = {
+  url: string;
+  label: string;
+};
+
+const DemoLinks = ({ demoUrls }: { demoUrls: DemoLink[] }) => {
   return (
     <div className="flex flex-wrap gap-2">
       {demoUrls.map((demo, index) => (
