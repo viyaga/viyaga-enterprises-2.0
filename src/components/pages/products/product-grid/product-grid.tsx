@@ -7,9 +7,6 @@ import { getPurchasingPower } from "@/lib/services/cookies";
 import { ClientPagination } from "./pagination";
 
 export default async function ProductGrid() {
-  const { country } = await getUserGeoLocation();
-  const purchasingPower = await getPurchasingPower();
-
   const page = searchParamsCache.get("page");
   const search = searchParamsCache.get("q");
   const limit = searchParamsCache.get("limit");

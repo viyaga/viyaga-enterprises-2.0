@@ -12,7 +12,7 @@ const ProductDetailsPage = ({ docs }: { docs: Product[] }) => {
   if (!product) return null;
 
   return (
-    <section className="pt-24 space-y-12">
+    <section className="pt-24 space-y-12 bg-gradient-to-b from-[#f0f9ff] to-[#f0f9ff] dark:from-[#0f172a] dark:to-[#0f172a]">
       <div className="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto p-6">
         <ProductThumbnail product={product} />
         <ProductInfo product={product} />

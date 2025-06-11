@@ -10,7 +10,7 @@ import ProductGridSkeleton from "./product-grid/product-grid-skeleton";
 
 export default function SoftwareProductsPage() {
   return (
-    <div className="relative">
+    <div className="relative bg-gradient-to-b from-[#f0f9ff] to-[#f0f9ff] dark:from-[#0f172a] dark:to-[#0f172a]">
       <HeroSection />
       <AutoScrollBanner />
       <SearchFilters />
