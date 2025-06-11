@@ -2,8 +2,6 @@ import ProductCard from "./product-card";
 import { Product } from "./types";
 import { getAllProducts } from "@/lib/payload";
 import { searchParamsCache } from "@/lib/searchparams";
-import { getUserGeoLocation } from "@/lib/services/cookies";
-import { getPurchasingPower } from "@/lib/services/cookies";
 import { ClientPagination } from "./pagination";
 
 export default async function ProductGrid() {
