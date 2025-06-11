@@ -4,7 +4,6 @@ import { getAllProducts } from "@/lib/payload";
 import { searchParamsCache } from "@/lib/searchparams";
 import { getUserGeoLocation } from "@/lib/services/cookies";
 import { getPurchasingPower } from "@/lib/services/cookies";
-import { getLocalizedPrice } from "@/lib/services/price";
 import { ClientPagination } from "./pagination";
 
 export default async function ProductGrid() {
@@ -53,12 +52,6 @@ export default async function ProductGrid() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {products.docs.map((product: Product) => {
-            const priceData = getLocalizedPrice(
-              product,
-              country,
-              purchasingPower
-            );
-
             return (
               <ProductCard
                 key={product.id}
