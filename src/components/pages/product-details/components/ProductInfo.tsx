@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Product } from "../types";
-
+import DemoLinks from "./DemoLinks";
+import RichTextRenderer from "@/components/RichTextRenderer";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   return (
@@ -17,48 +15,23 @@ const ProductInfo = ({ product }: { product: Product }) => {
           Free
         </Badge>
       )}
-
-      {product.description && product.description?.length > 0 && (
+      {product.demo_urls?.length > 0 && (
+        <DemoLinks demoUrls={product.demo_urls} />
+      )}
+      {product.description && (
         <div className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
+          <RichTextRenderer content={product.description} />
           {/* {product.description[0].children[0].text} */}
         </div>
       )}
 
-      {product.features && product.features?.length > 0 && (
+      {product.features && (
         <div className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">
           <h2 className="text-lg font-semibold mb-1">Features</h2>
+          <RichTextRenderer content={product.features} />
           {/* {product.features[0].children[0].text} */}
         </div>
       )}
-
-      <div className="space-y-2">
-        <p>
-          <span className="font-semibold">Price (USD):</span>{" "}
-          <s className="text-gray-500">${product.price}</s>{" "}
-          <span className="text-green-600 font-bold">
-            ${product.discount_price}
-          </span>
-        </p>
-        <p>
-          <span className="font-semibold">Price (INR):</span>{" "}
-          <s className="text-gray-500">₹{product.inr_price}</s>{" "}
-          <span className="text-green-600 font-bold">
-            ₹{product.inr_discount_price}
-          </span>
-        </p>
-      </div>
-
-      <motion.div
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        <Link href={`/checkout/${product.id}`}>
-          <Button className="px-6 py-2 rounded-full text-white shadow font-semibold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-red-600 hover:to-pink-600">
-            Buy Now
-          </Button>
-        </Link>
-      </motion.div>
     </div>
   );
 };

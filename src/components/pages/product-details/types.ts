@@ -1,5 +1,7 @@
 // types.ts
 
+import { PayloadLexicalReactContent } from "@zapal/payload-lexical-react";
+
 export interface Screenshot {
   image: {
     url: string;
@@ -36,8 +38,8 @@ export interface Product {
   discount_price: number;
   inr_price: number;
   inr_discount_price: number;
-  description?: string;
-  features?: string;
+  description?: PayloadLexicalReactContent;
+  features?: PayloadLexicalReactContent;
   subscriptionPlans: SubscriptionPlan[];
   demo_urls: DemoUrl[];
   screenshots: Screenshot[];

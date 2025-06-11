@@ -14,10 +14,13 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
   const [isAnnually, setIsAnnually] = useState(false);
 
   return (
-    <section className="py-32 bg-gradient-to-b from-[#00182e] to-gray-900 dark:from-[#00182e] dark:to-gray-900 bg-white dark:bg-gradient-to-b dark:text-white text-gray-900">
+    <section
+      className="py-8 md:py-12 lg:py-20 bg-gradient-to-b from-white via-[#e4f4ff] to-[#e0f2ff] 
+      dark:from-[#00182e] dark:via-[#113a65] dark:to-[#113a65]"
+    >
       <div className="max-w-6xl mx-auto container px-4">
       <div className="mx-auto flex max-w-7xl flex-col gap-10">
-        <h2 className="text-4xl lg:text-6xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-500">
+        <h2 className="text-4xl lg:text-5xl font-extrabold text-center bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-500">
         Pricing Plans
         </h2>
 
@@ -33,7 +36,11 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
           onValueChange={(value) => setIsAnnually(value === "annually")}
           >
           <div className="rounded-full transition-all has-[button[data-state='checked']]:bg-white dark:has-[button[data-state='checked']]:bg-gray-900">
-            <RadioGroupItem value="monthly" id="monthly" className="peer sr-only" />
+            <RadioGroupItem
+            value="monthly"
+            id="monthly"
+            className="peer sr-only"
+            />
             <Label
             htmlFor="monthly"
             className="flex h-full cursor-pointer items-center justify-center px-5 py-2 font-semibold text-gray-900 dark:text-white peer-data-[state=checked]:text-black dark:peer-data-[state=checked]:text-white"
@@ -42,7 +49,11 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
             </Label>
           </div>
           <div className="rounded-full transition-all has-[button[data-state='checked']]:bg-white dark:has-[button[data-state='checked']]:bg-gray-900">
-            <RadioGroupItem value="annually" id="annually" className="peer sr-only" />
+            <RadioGroupItem
+            value="annually"
+            id="annually"
+            className="peer sr-only"
+            />
             <Label
             htmlFor="annually"
             className="flex h-full cursor-pointer items-center justify-center px-5 py-2 font-semibold text-gray-900 dark:text-white peer-data-[state=checked]:text-black dark:peer-data-[state=checked]:text-white"
