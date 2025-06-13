@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Product } from "../types";
 import DemoLinks from "./DemoLinks";
-import RichTextRenderer from "@/components/RichTextRenderer";
+import RichTextRenderer from "@/components/rich-text/rich-text-renderer";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   return (

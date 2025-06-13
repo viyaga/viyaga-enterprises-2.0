@@ -1,9 +1,12 @@
+
 "use client";
 
 import {
   PayloadLexicalReact,
   PayloadLexicalReactContent,
 } from "@zapal/payload-lexical-react";
+
+import "./rich-text-renderer.css"
 
 interface RichTextRendererProps {
   content: PayloadLexicalReactContent; // Lexical state from Payload
