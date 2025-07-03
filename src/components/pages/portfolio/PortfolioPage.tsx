@@ -60,14 +60,14 @@ export default function PortfolioPage() {
         variants={fadeInUp}
         className="text-3xl sm:text-5xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400"
       >
-        Projects We've Transformed
+        Projects We&apos;ve Transformed
       </motion.h2>
 
       <motion.p
         variants={fadeInUp}
         className="text-center max-w-xl sm:max-w-2xl mx-auto text-base sm:text-lg text-gray-200 mb-10"
       >
-        Explore how we've helped businesses around the world level up their
+        Explore how we&apos;ve helped businesses around the world level up their
         digital experience with elegant designs, technical depth, and
         problem-solving.
       </motion.p>
