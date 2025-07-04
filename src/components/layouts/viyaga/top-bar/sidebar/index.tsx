@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { navLinks, socialLinks } from "../top-bar-data";
 
 const Sidebar = ({ onClose }: { onClose: () => void }) => {
   const pathname = usePathname();
@@ -18,21 +19,7 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
     setIsDark(theme === "dark");
   }, [theme]);
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/products", label: "Products" },
-    { href: "/services", label: "Services" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/about-us", label: "About" },
-    { href: "https://take.app/viyaga", label: "Learn" },
-  ];
-
-  const socialLinks = [
-    { href: "https://twitter.com/yourhandle", icon: X, label: "Twitter" },
-    { href: "https://instagram.com/yourhandle", icon: X, label: "Instagram" },
-    { href: "https://linkedin.com/in/yourhandle", icon: X, label: "LinkedIn" },
-    { href: "https://github.com/yourhandle", icon: X, label: "GitHub" },
-  ];
+  
 
   return (
     <SheetContent

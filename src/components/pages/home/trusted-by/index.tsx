@@ -21,10 +21,11 @@ export default function TrustedBy() {
     <section className="py-10 md:py-15 bg-gradient-to-b from-[#00182e] to-gray-900">
       <div className="mx-auto px-4 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          Trusted By Industry Leaders
+          Trusted by Global Brands and Fast-Growth Startups
         </h2>
         <p className="text-gray-400 text-sm mb-6 max-w-xl mx-auto">
-          The world&apos;s top companies trust us to build and scale their software.
+          Our software powers innovation at scale—from Fortune 500s to next-gen
+          disruptors.
         </p>
 
         <div

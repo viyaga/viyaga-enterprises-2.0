@@ -6,9 +6,24 @@ import Counter from "./Counter";
 import Image from "next/image";
 
 const services = [
-  { id: 1, img: "/images/ai-services.png", title: "AI Agent & Chatbot", counter: 46 },
-  { id: 2, img: "/images/web-services.png", title: "Web Development", counter: 35 },
-  { id: 3, img: "/images/mobile-app-services.png", title: "Mobile App Development", counter: 23 },
+  {
+    id: 1,
+    img: "/images/ai-services.png",
+    title: "AI Agents & Automation",
+    counter: 46,
+  },
+  {
+    id: 2,
+    img: "/images/web-services.png",
+    title: "Full-Stack Web Applications",
+    counter: 35,
+  },
+  {
+    id: 3,
+    img: "/images/mobile-app-services.png",
+    title: "Scalable Mobile Solutions",
+    counter: 23,
+  },
 ];
 
 const ServicesSection = () => {
@@ -69,8 +84,8 @@ const ServicesSection = () => {
                     service.id === 1
                       ? "bg-red-500"
                       : service.id === 2
-                      ? "bg-teal-600"
-                      : "bg-yellow-600"
+                        ? "bg-teal-600"
+                        : "bg-yellow-600"
                   }`}
                 >
                   <Image
@@ -94,8 +109,8 @@ const ServicesSection = () => {
           </motion.div>
 
           <div className="flex gap-6 mt-6">
-            <Counter from={0} to={104} text="Projects Completed" />
-            <Counter from={0} to={98} text="Happy Clients" />
+            <Counter from={0} to={100} text="Projects Completed" />
+            <Counter from={0} to={98} symbol="%" text="Client Satisfaction" />
           </div>
         </div>
 

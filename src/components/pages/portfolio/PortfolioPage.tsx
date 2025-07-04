@@ -6,7 +6,7 @@ import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { projects, Project } from "./projects";
+import { projects, Project } from "../../../constants/projects";
 
 const containerVariants: Variants = {
   hidden: {},

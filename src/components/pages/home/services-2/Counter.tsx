@@ -4,10 +4,11 @@ import { useMotionValue, animate } from "framer-motion";
 interface CounterProps {
   from: number;
   to: number;
+  symbol?: string;
   text: string;
 }
 
-const Counter: React.FC<CounterProps> = ({ from, to, text }) => {
+const Counter: React.FC<CounterProps> = ({ from, to, symbol = "+", text }) => {
   const count = useMotionValue(from);
   const [display, setDisplay] = useState(from);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -31,7 +32,8 @@ const Counter: React.FC<CounterProps> = ({ from, to, text }) => {
       className="flex flex-col items-start gap-1 bg-white/5 p-4 rounded-xl backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300"
     >
       <h1 className="text-[56px] lg:text-[64px] font-extrabold text-pink-400 drop-shadow-lg">
-        {display}+
+        {display}
+        {symbol}
       </h1>
       <p className="text-sm text-white/80 font-medium">{text}</p>
     </div>

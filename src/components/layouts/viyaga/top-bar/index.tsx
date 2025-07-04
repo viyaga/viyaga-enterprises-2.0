@@ -10,6 +10,7 @@ import Link from "next/link";
 import Sidebar from "./sidebar";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { navLinks } from "./top-bar-data";
 
 const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,15 +22,6 @@ const TopBar = () => {
       setIsDark(theme === "dark");
     }
   }, [theme]);
-
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/products", label: "Products" },
-    { href: "/services", label: "Services" },
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/about-us", label: "About" },
-    { href: "https://take.app/viyaga", label: "Learn" },
-  ];
 
   return (
     <motion.header
@@ -75,7 +67,7 @@ const TopBar = () => {
             variant="default"
             className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
           >
-            <Link href="/hire-us">Hire Us</Link>
+            <Link href="/hire-us">Partner With Us</Link>
           </Button>
 
           {/* Mobile Drawer */}

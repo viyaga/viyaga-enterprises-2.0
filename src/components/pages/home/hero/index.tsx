@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { staggerContainer, textVariant } from '@/constants/motion';
-import { Button } from '@/components/ui/button';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { staggerContainer, textVariant } from "@/constants/motion";
+import { Button } from "@/components/ui/button";
+import { ArrowDown, ArrowRight } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -46,31 +46,38 @@ export default function Hero() {
           variants={textVariant(1.1)}
           className="text-balance text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-xl text-white"
         >
-          Turning Bold Ideas Into Digital Impact
+          Transforming Ambition Into Scalable Software
         </motion.h1>
 
         <motion.p
           variants={textVariant(1.3)}
-          className="text-muted-foreground text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 drop-shadow-sm text-pretty text-white"
+          className="text-lg md:text-xl font-bold max-w-2xl mx-auto mb-8 drop-shadow-sm text-pretty text-white"
         >
-          We craft high-performance software for ambitious businesses.
+          Transforming Ambition Into Scalable Software We build world-class
+          digital products for tomorrow&apos;s market leaders.
         </motion.p>
 
         <motion.div
           variants={textVariant(1.4)}
           className="flex flex-col md:flex-row gap-4 justify-center"
         >
-          <Link href="/demo-designs" aria-label="Explore our work">
+          <Link href="/work" aria-label="Explore our work">
             <Button
               size="lg"
               className="gap-2 bg-gradient-to-r from-blue-500 to-green-500 text-white hover:brightness-110 transition"
             >
-              Explore Our Work <ArrowRight className="w-4 h-4" />
+              See What We&apos;ve Built <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
-          <Link href="/contact-us" aria-label="Contact us to start your project">
-            <Button variant="outline" size="lg" className="gap-2 text-black bg-white">
-              Let&apos;s Talk
+          <Link
+            href="/contact-us"
+            aria-label="Contact us to start your project"
+          >
+            <Button
+              size="lg"
+              className="gap-2 text-black bg-white dark:bg-[#151b2f]/90 dark:text-white"
+            >
+              Launch With Us
             </Button>
           </Link>
         </motion.div>
@@ -80,7 +87,12 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2, duration: 0.6, repeat: Infinity, repeatType: 'reverse' }}
+        transition={{
+          delay: 2,
+          duration: 0.6,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
       >
         <ArrowDown className="w-6 h-6 text-white animate-bounce" />
