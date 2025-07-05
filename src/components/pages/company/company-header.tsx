@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
 
 export function CompanyHeader() {
   return (
@@ -54,9 +55,9 @@ export function CompanyHeader() {
               className="flex flex-wrap text-white text-sm font-semibold space-x-3 mb-6"
             >
               <li>
-                <a href="/" className="hover:underline">
+                <Link href="/" className="hover:underline">
                   Home
-                </a>
+                </Link>
               </li>
               <li>/</li>
               <li className="text-gray-300">About Us</li>
