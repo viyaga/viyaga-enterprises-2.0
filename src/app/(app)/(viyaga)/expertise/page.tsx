@@ -1,11 +1,8 @@
+import ExpertisePage from '@/components/pages/expertise/expertise'
 import React from 'react'
 
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <ExpertisePage />
 }
 
 export default page
