@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   console.log({ thumbnailUrl });
 
   return (
-    <Link href={`/products/${product.slug}`}>
+    <Link href={`/solutions/${product.slug}`}>
       <motion.div
         variants={fadeInUp}
         whileHover={{ scale: 1.02, y: -4 }}
