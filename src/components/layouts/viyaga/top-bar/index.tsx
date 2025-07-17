@@ -15,13 +15,13 @@ import { navLinks } from "./top-bar-data";
 const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    if (theme) {
-      setIsDark(theme === "dark");
+    if (resolvedTheme) {
+      setIsDark(resolvedTheme === "dark");
     }
-  }, [theme]);
+  }, [resolvedTheme]);
 
   return (
     <motion.header

@@ -13,13 +13,13 @@ import { navLinks, socialLinks } from "../top-bar-data";
 const Sidebar = ({ onClose }: { onClose: () => void }) => {
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    setIsDark(theme === "dark");
-  }, [theme]);
+    setIsDark(resolvedTheme === "dark");
+  }, [resolvedTheme]);
 
-  
+
 
   return (
     <SheetContent
@@ -58,11 +58,10 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
                 href={href}
                 onClick={onClose}
                 className={`block px-4 py-2 rounded-xl font-medium text-md transition-all duration-200 text-black dark:text-white
-                ${
-                  pathname === href
+                ${pathname === href
                     ? "underline underline-offset-4 text-primary dark:text-primary"
                     : ""
-                }`}
+                  }`}
               >
                 {label}
               </Link>
