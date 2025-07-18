@@ -28,61 +28,20 @@ const Products: CollectionConfig = {
     },
     {
       name: 'subscriptionPlans',
-      type: 'array',
+      type: 'relationship',
+      relationTo: 'subscription-plans' as CollectionSlug,
+      hasMany: true,
       label: 'Subscription Plans',
+      filterOptions: ({ relationTo, siblingData }) => {
+        return {
+          isActive: {
+            equals: true,
+          },
+        };
+      },
       admin: {
         condition: (_, siblingData) => siblingData?.isSubscription === true,
       },
-      fields: [
-        {
-          name: 'planName',
-          type: 'text',
-          label: 'Plan Name',
-          required: true,
-        },
-        {
-          name: 'billingCycle',
-          type: 'select',
-          label: 'Billing Cycle',
-          options: [
-            { label: 'Monthly', value: 'monthly' },
-            { label: 'Yearly', value: 'yearly' },
-            { label: 'One-time', value: 'one-time' },
-          ],
-          required: true,
-        },
-        {
-          name: 'priceUSD',
-          type: 'number',
-          label: 'Price (USD)',
-          required: true,
-        },
-        {
-          name: 'priceINR',
-          type: 'number',
-          label: 'Price (INR)',
-          required: true,
-        },
-        {
-          name: 'trialPeriodDays',
-          type: 'number',
-          label: 'Free Trial (Days)',
-          defaultValue: 0,
-        },
-        {
-          name: 'features',
-          type: 'array',
-          label: 'Plan Features',
-          fields: [
-            {
-              name: 'feature',
-              type: 'text',
-              label: 'Feature',
-              required: true,
-            },
-          ],
-        },
-      ],
     },
     {
       name: 'price',

@@ -72,6 +72,7 @@ export interface Config {
     categories: Category;
     tags: Tag;
     products: Product;
+    'subscription-plans': SubscriptionPlan;
     orders: Order;
     'bank-details': BankDetail;
     'affiliate-commission-settings': AffiliateCommissionSetting;
@@ -88,6 +89,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    'subscription-plans': SubscriptionPlansSelect<false> | SubscriptionPlansSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     'bank-details': BankDetailsSelect<false> | BankDetailsSelect<true>;
     'affiliate-commission-settings': AffiliateCommissionSettingsSelect<false> | AffiliateCommissionSettingsSelect<true>;
@@ -330,22 +332,7 @@ export interface Product {
   category?: (string | Category)[] | null;
   tags?: (string | Tag)[] | null;
   isSubscription?: boolean | null;
-  subscriptionPlans?:
-    | {
-        planName: string;
-        billingCycle: 'monthly' | 'yearly' | 'one-time';
-        priceUSD: number;
-        priceINR: number;
-        trialPeriodDays?: number | null;
-        features?:
-          | {
-              feature: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
+  subscriptionPlans?: (string | SubscriptionPlan)[] | null;
   price: number;
   discount_price: number;
   inr_price: number;
@@ -395,6 +382,47 @@ export interface Product {
       }[]
     | null;
   seo?: (string | null) | Seo;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscription-plans".
+ */
+export interface SubscriptionPlan {
+  id: string;
+  label: string;
+  planName: string;
+  billingCycle: 'monthly' | 'yearly' | 'one-time';
+  /**
+   * Price in USD
+   */
+  priceUSD: number;
+  /**
+   * Price in INR
+   */
+  priceINR: number;
+  /**
+   * Number of free trial days
+   */
+  trialPeriodDays?: number | null;
+  /**
+   * List of features included in this plan
+   */
+  features?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  isActive?: boolean | null;
+  /**
+   * Mark this plan as popular
+   */
+  isPopular?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -495,6 +523,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'products';
         value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'subscription-plans';
+        value: string | SubscriptionPlan;
       } | null)
     | ({
         relationTo: 'orders';
@@ -653,22 +685,7 @@ export interface ProductsSelect<T extends boolean = true> {
   category?: T;
   tags?: T;
   isSubscription?: T;
-  subscriptionPlans?:
-    | T
-    | {
-        planName?: T;
-        billingCycle?: T;
-        priceUSD?: T;
-        priceINR?: T;
-        trialPeriodDays?: T;
-        features?:
-          | T
-          | {
-              feature?: T;
-              id?: T;
-            };
-        id?: T;
-      };
+  subscriptionPlans?: T;
   price?: T;
   discount_price?: T;
   inr_price?: T;
@@ -690,6 +707,23 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   seo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscription-plans_select".
+ */
+export interface SubscriptionPlansSelect<T extends boolean = true> {
+  label?: T;
+  planName?: T;
+  billingCycle?: T;
+  priceUSD?: T;
+  priceINR?: T;
+  trialPeriodDays?: T;
+  features?: T;
+  isActive?: T;
+  isPopular?: T;
   updatedAt?: T;
   createdAt?: T;
 }

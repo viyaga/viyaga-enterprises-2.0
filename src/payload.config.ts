@@ -17,6 +17,7 @@ import AffiliateCommissionSettings from './collections/AffiliateCommissionSettin
 import SEO from './collections/Seo'
 import AffiliateCommissions from './collections/AffiliateCommissions'
 import { requiredEnv } from './lib/utils'
+import SubscriptionPlans from './collections/SubscriptionPlans'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,7 +41,7 @@ export default buildConfig({
     },
   },
   collections: [
-    Users, Media, Categories, Tags, Products, Orders, BankDetails,
+    Users, Media, Categories, Tags, Products, SubscriptionPlans, Orders, BankDetails,
     AffiliateCommissionSettings, AffiliateCommissions, SEO
   ],
   editor: lexicalEditor(),

@@ -13,17 +13,14 @@ export interface DemoUrl {
   url: string;
 }
 
-export type Feature = {
-  feature:string;
-}
-
 export interface SubscriptionPlan {
   planName: string;
   billingCycle: "monthly" | "yearly" | "one-time";
   priceUSD: number;
   priceINR: number;
   trialPeriodDays: number;
-  features?: Feature[];
+  features?: string[];
+  isPopular?: boolean;
 }
 
 export interface Product {

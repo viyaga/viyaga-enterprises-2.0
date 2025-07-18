@@ -13,6 +13,7 @@ import {
   Layers,
   Folder,
   FileText,
+  BarChart3
 } from "lucide-react";
 
 export const navLinks = [
@@ -110,6 +111,12 @@ export const navLinks = [
     href: "/dashboard/collections/seo",
     label: "SEO",
     icon: <Globe size={16} />,
+    roles: ["admin"],
+  },
+  {
+    href: "/dashboard/collections/subscription-plans",
+    label: "Subscription Plans",
+    icon: <BarChart3 size={16} />,
     roles: ["admin"],
   },
 ];

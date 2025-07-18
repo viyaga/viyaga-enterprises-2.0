@@ -74,13 +74,11 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
           ? Math.round(plan.priceINR * 12 * 0.85)
           : plan.priceINR;
 
-          const isPopular = index === plans.length - 1;
-
           return (
           <div
             key={index}
             className={`group relative flex flex-col justify-between rounded-2xl p-[1px] transition-all duration-300 ${
-            isPopular
+            plan.isPopular
               ? "bg-gradient-to-br from-blue-500 to-purple-500 shadow-2xl dark:from-blue-600 dark:to-purple-700"
               : "bg-white/10 dark:bg-gray-800/60"
             }`}
@@ -106,17 +104,17 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
             <Separator className="my-4 bg-white/10 dark:bg-gray-700" />
 
             <ul className="space-y-4 text-muted-foreground mb-6 dark:text-gray-300">
-              {plan.features?.map((obj, i) => (
+              {plan.features?.map((feature, i) => (
               <li key={i} className="flex items-center gap-2">
                 <Check className="size-4 text-primary dark:text-blue-400" />
-                <span>{obj.feature}</span>
+                <span>{feature}</span>
               </li>
               ))}
             </ul>
 
             <Button
               className={`w-full mt-auto ${
-              isPopular
+              plan.isPopular
                 ? "bg-white text-black hover:bg-gray-100 dark:bg-gray-100 dark:text-black dark:hover:bg-gray-200"
                 : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 dark:from-blue-700 dark:to-purple-800"
               }`}
