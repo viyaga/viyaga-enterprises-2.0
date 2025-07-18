@@ -32,7 +32,7 @@ const Products: CollectionConfig = {
       relationTo: 'subscription-plans' as CollectionSlug,
       hasMany: true,
       label: 'Subscription Plans',
-      filterOptions: ({ relationTo, siblingData }) => {
+      filterOptions: () => {
         return {
           isActive: {
             equals: true,
