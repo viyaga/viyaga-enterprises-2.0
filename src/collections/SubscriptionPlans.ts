@@ -4,7 +4,7 @@ const SubscriptionPlans: CollectionConfig = {
   slug: 'subscription-plans',
   admin: {
     useAsTitle: 'label',
-    defaultColumns: ['planName', 'billingCycle', 'priceUSD', 'priceINR'],
+    defaultColumns: ['planName', 'label', 'billingOptions'],
   },
   access: {
     read: () => true,
@@ -28,38 +28,49 @@ const SubscriptionPlans: CollectionConfig = {
       defaultValue: 'basic',
     },
     {
-      name: 'billingCycle',
-      type: 'select',
+      name: 'billingOptions',
+      type: 'array',
+      label: 'Billing Options',
       required: true,
-      label: 'Billing Cycle',
-      options: [
-        { label: 'Monthly', value: 'monthly' },
-        { label: 'Yearly', value: 'yearly' },
-        { label: 'One-Time', value: 'one-time' },
+      minRows: 1,
+      maxRows: 3,
+      labels: {
+        singular: 'Billing Option',
+        plural: 'Billing Options',
+      },
+      fields: [
+        {
+          name: 'billingCycle',
+          type: 'select',
+          required: true,
+          label: 'Billing Cycle',
+          options: [
+            { label: 'Monthly', value: 'monthly' },
+            { label: 'Yearly', value: 'yearly' },
+            { label: 'One-Time', value: 'one-time' },
+          ],
+        },
+        {
+          name: 'priceUSD',
+          type: 'number',
+          required: true,
+          label: 'Price (USD)',
+          admin: {
+            step: 0.01,
+            description: 'Price in USD',
+          },
+        },
+        {
+          name: 'priceINR',
+          type: 'number',
+          required: true,
+          label: 'Price (INR)',
+          admin: {
+            step: 1,
+            description: 'Price in INR',
+          },
+        },
       ],
-      defaultValue: 'monthly',
-    },
-    {
-      name: 'priceUSD',
-      type: 'number',
-      required: true,
-      label: 'Price (USD)',
-      admin: {
-        step: 0.01,
-        description: 'Price in USD',
-      },
-      defaultValue: 10.0,
-    },
-    {
-      name: 'priceINR',
-      type: 'number',
-      required: true,
-      label: 'Price (INR)',
-      admin: {
-        step: 1,
-        description: 'Price in INR',
-      },
-      defaultValue: 799,
     },
     {
       name: 'trialPeriodDays',
@@ -103,4 +114,5 @@ const SubscriptionPlans: CollectionConfig = {
 };
 
 export default SubscriptionPlans;
+
 

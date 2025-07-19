@@ -61,10 +61,10 @@ type GetProductBySlugOptions = {
 };
 
 export async function getProductDetailsBySlug({ slug, depth = 0 }: GetProductBySlugOptions) {
-  const query = { depth };
+  const query = { depth: 1, where: { slug: { equals: slug } } };
   return await payloadFetch({
     path: `products`,
-    query: { ...query, where: { slug: { equals: slug } } },
+    query: { ...query },
     tags: ['products', `product-slug-${slug}`],
   });
 }

@@ -13,15 +13,19 @@ export interface DemoUrl {
   url: string;
 }
 
-export interface SubscriptionPlan {
+export type SubscriptionPlan = {
+  label: string;
   planName: string;
-  billingCycle: "monthly" | "yearly" | "one-time";
-  priceUSD: number;
-  priceINR: number;
   trialPeriodDays: number;
+  isActive: boolean;
+  isPopular: boolean;
   features?: string[];
-  isPopular?: boolean;
-}
+  billingOptions: {
+    billingCycle: "monthly" | "yearly" | "one-time";
+    priceUSD: number;
+    priceINR: number;
+  }[];
+};
 
 export interface Product {
   id: string;

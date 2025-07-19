@@ -14,7 +14,7 @@ const ScreenshotsGallery = ({ screenshots }: { screenshots: Screenshot[] }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <div className=" text-black dark:text-white bg-gradient-to-b from-[#e0f2ff] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]">
+    <div className=" text-black dark:text-white">
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-16 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-4">App Screenshots</h2>
         <p className="text-muted-foreground text-center mb-8 max-w-xl mx-auto">

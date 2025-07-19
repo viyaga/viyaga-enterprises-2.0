@@ -393,15 +393,18 @@ export interface SubscriptionPlan {
   id: string;
   label: string;
   planName: string;
-  billingCycle: 'monthly' | 'yearly' | 'one-time';
-  /**
-   * Price in USD
-   */
-  priceUSD: number;
-  /**
-   * Price in INR
-   */
-  priceINR: number;
+  billingOptions: {
+    billingCycle: 'monthly' | 'yearly' | 'one-time';
+    /**
+     * Price in USD
+     */
+    priceUSD: number;
+    /**
+     * Price in INR
+     */
+    priceINR: number;
+    id?: string | null;
+  }[];
   /**
    * Number of free trial days
    */
@@ -717,9 +720,14 @@ export interface ProductsSelect<T extends boolean = true> {
 export interface SubscriptionPlansSelect<T extends boolean = true> {
   label?: T;
   planName?: T;
-  billingCycle?: T;
-  priceUSD?: T;
-  priceINR?: T;
+  billingOptions?:
+    | T
+    | {
+        billingCycle?: T;
+        priceUSD?: T;
+        priceINR?: T;
+        id?: T;
+      };
   trialPeriodDays?: T;
   features?: T;
   isActive?: T;
