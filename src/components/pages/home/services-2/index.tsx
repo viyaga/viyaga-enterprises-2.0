@@ -73,20 +73,18 @@ const ServicesSection = () => {
                 key={service.id}
                 onClick={() => setActiveServiceId(service.id)}
                 variants={listVariants}
-                className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 ${
-                  activeServiceId === service.id
-                    ? "bg-white/20"
-                    : "bg-white/10 hover:bg-white/20"
-                }`}
+                className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 cursor-pointer ${activeServiceId === service.id
+                  ? "bg-white/20"
+                  : "bg-white/10 hover:bg-white/20"
+                  }`}
               >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    service.id === 1
-                      ? "bg-red-500"
-                      : service.id === 2
-                        ? "bg-teal-600"
-                        : "bg-yellow-600"
-                  }`}
+                  className={`w-12 h-12 rounded-full flex items-center justify-center ${service.id === 1
+                    ? "bg-red-500"
+                    : service.id === 2
+                      ? "bg-teal-600"
+                      : "bg-yellow-600"
+                    }`}
                 >
                   <Image
                     src={service.img}

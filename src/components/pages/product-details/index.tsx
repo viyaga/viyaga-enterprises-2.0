@@ -19,7 +19,7 @@ const ProductDetailsPage = ({ docs }: { docs: Product[] }) => {
         </div>
       </div>
       {product.isSubscription && product.subscriptionPlans?.length > 0 && (
-        <SubscriptionPlans plans={product.subscriptionPlans} />
+        <SubscriptionPlans plans={product.subscriptionPlans} productId={product.id} />
       )}
       {product.screenshots?.length > 0 && (
         <ScreenshotsGallery screenshots={product.screenshots} />

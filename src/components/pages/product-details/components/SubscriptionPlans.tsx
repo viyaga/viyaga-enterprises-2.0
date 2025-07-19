@@ -9,8 +9,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { SubscriptionPlan } from "../types"; // Updated to match new structure
+import Link from "next/link";
 
-const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
+type SubscriptionPlansProps = {
+  plans: SubscriptionPlan[];
+  productId: string;
+};
+
+const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
   const availableBillingCycles = useMemo(() => {
     const cycles = new Set<string>();
     plans.forEach((plan) => {
@@ -110,7 +116,7 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
                   key={index}
                   className={`group relative flex flex-col justify-between rounded-2xl p-[1px] transition-all duration-300 ${plan.isPopular
                     ? "bg-gradient-to-br from-blue-500 to-purple-500 shadow-2xl dark:from-blue-600 dark:to-purple-700"
-                    : "bg-white/10 dark:bg-gray-800/60"
+                    : "bg-white/30 dark:bg-gray-800/60"
                     }`}
                 >
                   <div className="flex flex-col h-full rounded-2xl bg-background dark:bg-gray-900 p-6 text-left group-hover:shadow-lg transition-all">
@@ -144,14 +150,19 @@ const SubscriptionPlans = ({ plans }: { plans: SubscriptionPlan[] }) => {
                         ))}
                     </ul>
 
-                    <Button
-                      className={`w-full mt-auto ${plan.isPopular
-                        ? "bg-white text-black hover:bg-gray-100 dark:bg-gray-100 dark:text-black dark:hover:bg-gray-200"
-                        : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 dark:from-blue-700 dark:to-purple-800"
-                        }`}
+                    <Link
+                      href={`/checkout/${productId}?plan=${encodeURIComponent(plan.planName)}&billingcycle=${encodeURIComponent(billingCycle)}`}
+                      className="w-full mt-auto"
                     >
-                      Choose Plan
-                    </Button>
+                      <Button
+                        className={`w-full cursor-pointer ${plan.isPopular
+                            ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white hover:from-pink-600 hover:to-yellow-600 dark:bg-gray-100 dark:text-white dark:hover:bg-gray-200"
+                            : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500 dark:from-blue-700 dark:to-purple-800"
+                          }`}
+                      >
+                        Choose Plan
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               );
