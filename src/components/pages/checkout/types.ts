@@ -1,28 +1,22 @@
-import { Order } from "@/payload-types";
+import { Order, SubscriptionPlan } from "@/payload-types";
 
 export type CheckoutProduct = {
-    id:string;
-    thumbnail: {
-        alt: string,
-        url: string
-        id: string
-    };
-    title: string,
+    id: string;
+    title: string;
+    slug: string;
+    isFeatured?: boolean;
+    isFree?: boolean;
+    isSubscription?: boolean;
+    subscriptionPlans: SubscriptionPlan[];
     affiliateCommission: number;
-} & (
-        | {
-            inr_price: number;
-            inr_discount_price: number;
-            price?: never;
-            discount_price?: never;
-        }
-        | {
-            price: number;
-            discount_price: number;
-            inr_price?: never;
-            inr_discount_price?: never;
-        }
-    );
+    setupCostUSD?: number;
+    setupCostINR?: number;
+    thumbnail: {
+        alt: string;
+        url: string;
+        id: string;
+    };
+}
 
 export interface OrderSummaryProps {
     product: CheckoutProduct;
@@ -31,14 +25,11 @@ export interface OrderSummaryProps {
     taxes: number;
     shipping: number;
     total: number;
+    setupCost?: number;
 }
 
-export type PaymentOption = "card" | "paypal" | "bank transfer";
+export type PaymentOption = "razorpay";
 
-export interface PaymentOptionsProps {
-    paymentOptions: PaymentOption[];
-    selectedOption: PaymentOption;
-    onSelect: (option: PaymentOption) => void;
-}
-
-export type CreateOrderInput = Omit<Order, "id" | "createdAt" | "updatedAt">;
+export type CreateOrderInput = Omit<Order, "id" | "createdAt" | "updatedAt"> & {
+    setupCost?: number;
+};

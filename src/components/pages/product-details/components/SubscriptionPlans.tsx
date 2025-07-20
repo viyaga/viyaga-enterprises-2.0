@@ -41,7 +41,7 @@ const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
             Pricing Plans
           </h2>
 
-          {availableBillingCycles.length > 1 && (
+          {availableBillingCycles.length > 0 && (
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <p className="text-muted-foreground text-center md:text-left max-w-xl lg:text-xl dark:text-gray-300">
                 Choose the plan that suits your business needs best.

@@ -32,28 +32,24 @@ export const getAllProductsQuery = (
     };
 };
 
-export const getProductByIdForCheckoutQuery = async ({ depth = 0 }: { depth?: number }) => {
-    const { country } = await getUserGeoLocation()
-    const select = country === "IN"
-        ? {
-            "thumbnail": true,
-            "title": true,
-            "affiliateCommission": true,
-            "inr_price": true,
-            "inr_discount_price": true
-        }
-        : {
-            "thumbnail": true,
-            "title": true,
-            "affiliateCommission": true,
-            "price": true,
-            "discount_price": true
-        };
+export const getProductByIdForCheckoutQuery = async ({
+  depth = 2,
+}: {
+  depth?: number;
+}) => {
+  const { country } = await getUserGeoLocation();
 
-    return {
-        depth,
-        select
-    };
+  return {
+    depth,
+    select: {
+      title: true,
+      thumbnail: true,
+      affiliateCommission: true,
+      setupCostINR: true,
+      setupCostUSD: true,
+      subscriptionPlans: true,
+    },
+  };
 };
 
 export const getProductDetailsBySlugQuery = (

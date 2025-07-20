@@ -333,10 +333,8 @@ export interface Product {
   tags?: (string | Tag)[] | null;
   isSubscription?: boolean | null;
   subscriptionPlans?: (string | SubscriptionPlan)[] | null;
-  price: number;
-  discount_price: number;
-  inr_price: number;
-  inr_discount_price: number;
+  setupCostUSD?: number | null;
+  setupCostINR?: number | null;
   affiliateCommission?: number | null;
   screenshots?:
     | {
@@ -443,7 +441,7 @@ export interface Order {
   subtotal: number;
   taxes: number;
   total: number;
-  paymentMethod: 'card' | 'paypal' | 'bank transfer';
+  paymentMethod: 'card' | 'paypal' | 'bank transfer' | 'razorpay';
   countryCode?: string | null;
   billingDetails: {
     fullName: string;
@@ -462,6 +460,9 @@ export interface Order {
     paymentStatus: 'pending' | 'paid' | 'failed';
     commissionPercentage: number;
   };
+  razorpayOrderId?: string | null;
+  razorpayPaymentId?: string | null;
+  razorpaySignature?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -689,10 +690,8 @@ export interface ProductsSelect<T extends boolean = true> {
   tags?: T;
   isSubscription?: T;
   subscriptionPlans?: T;
-  price?: T;
-  discount_price?: T;
-  inr_price?: T;
-  inr_discount_price?: T;
+  setupCostUSD?: T;
+  setupCostINR?: T;
   affiliateCommission?: T;
   screenshots?:
     | T
@@ -771,6 +770,9 @@ export interface OrdersSelect<T extends boolean = true> {
         paymentStatus?: T;
         commissionPercentage?: T;
       };
+  razorpayOrderId?: T;
+  razorpayPaymentId?: T;
+  razorpaySignature?: T;
   updatedAt?: T;
   createdAt?: T;
 }

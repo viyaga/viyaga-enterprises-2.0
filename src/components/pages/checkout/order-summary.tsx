@@ -9,6 +9,7 @@ export function OrderSummary({
   total,
   originalPrice,
   discountedPrice,
+  setupCost,
 }: {
   product: CheckoutProduct;
   formatPrice: (price: number) => string;
@@ -16,6 +17,7 @@ export function OrderSummary({
   total: number;
   originalPrice: number;
   discountedPrice: number;
+  setupCost?: number;
 }) {
   return (
     <div className="rounded-lg shadow-md bg-white dark:bg-gray-900 p-6">
@@ -23,18 +25,18 @@ export function OrderSummary({
         Order Summary
       </h2>
 
-      {/* Full-width Product Image */}
-      <div className="w-full mb-2">
+      {/* Product Image */}
+      <div className="w-full mb-2 aspect-video relative">
         <Image
           src={product.thumbnail.url}
           alt={product.thumbnail.alt || product.title}
-          width={800}
-          height={500}
-          className="w-full h-auto rounded-md object-cover border border-gray-200 dark:border-gray-700"
+          fill
+          className="rounded-md object-cover border border-gray-200 dark:border-gray-700"
+          sizes="100vw"
         />
       </div>
 
-      {/* Title Below Image */}
+      {/* Product Title */}
       <div className="mb-4">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">
           {product.title}
@@ -53,6 +55,18 @@ export function OrderSummary({
           </span>
         </span>
       </div>
+
+      {/* Setup Cost (if applicable) */}
+      {setupCost && setupCost > 0 && (
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-gray-700 dark:text-gray-300">
+            Setup Cost:
+          </span>
+          <span className="text-gray-900 dark:text-white">
+            {formatPrice(setupCost)}
+          </span>
+        </div>
+      )}
 
       {/* Taxes */}
       <div className="flex items-center justify-between mb-2">

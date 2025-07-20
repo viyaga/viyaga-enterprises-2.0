@@ -116,6 +116,7 @@ const Orders: CollectionConfig = {
         { label: 'Credit or Debit Card', value: 'card' },
         { label: 'PayPal', value: 'paypal' },
         { label: 'Bank Transfer', value: 'bank transfer' },
+        { label: 'Razorpay', value: 'razorpay' }, // Added Razorpay
       ],
     },
     {
@@ -265,6 +266,40 @@ const Orders: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    // Razorpay specific fields (optional, add if you want to store Razorpay details)
+    {
+      name: 'razorpayOrderId',
+      label: 'Razorpay Order ID',
+      type: 'text',
+      required: false,
+      admin: {
+        position: 'sidebar',
+        disableListColumn: true,
+        disableListFilter: true,
+      },
+    },
+    {
+      name: 'razorpayPaymentId',
+      label: 'Razorpay Payment ID',
+      type: 'text',
+      required: false,
+      admin: {
+        position: 'sidebar',
+        disableListColumn: true,
+        disableListFilter: true,
+      },
+    },
+    {
+      name: 'razorpaySignature',
+      label: 'Razorpay Signature',
+      type: 'text',
+      required: false,
+      admin: {
+        position: 'sidebar',
+        disableListColumn: true,
+        disableListFilter: true,
+      },
     },
   ],
 };

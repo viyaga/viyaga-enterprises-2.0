@@ -44,26 +44,24 @@ const Products: CollectionConfig = {
       },
     },
     {
-      name: 'price',
+      name: 'setupCostUSD',
       type: 'number',
-      required: true,
+      label: 'Initial Setup Cost (USD)',
+      defaultValue: 0,
+      admin: {
+        placeholder: 'e.g. 99',
+        step: 0.01,
+      },
     },
     {
-      name: 'discount_price',
+      name: 'setupCostINR',
       type: 'number',
-      required: true,
-      index: true,
-    },
-    {
-      name: 'inr_price',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'inr_discount_price',
-      type: 'number',
-      required: true,
-      index: true,
+      label: 'Initial Setup Cost (INR)',
+      defaultValue: 0,
+      admin: {
+        placeholder: 'e.g. 7999',
+        step: 1,
+      },
     },
     {
       name: 'affiliateCommission',

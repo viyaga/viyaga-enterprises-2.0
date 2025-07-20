@@ -46,6 +46,7 @@
     "nuqs": "^2.4.3",
     "payload": "^3.39.1",
     "qs-esm": "^7.0.2",
+    "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.4",

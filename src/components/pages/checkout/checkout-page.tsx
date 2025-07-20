@@ -1,19 +1,36 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { PaymentMethodSelector } from "./payment-method-selector";
-import { CardNumberInput } from "./card-number-input";
-import { BankTransferDetails } from "./bank-transfer-details";
 import { BillingDetailsForm, BillingFormData } from "./billing-details-form";
 import { OrderSummary } from "./order-summary";
 
 import { getReferralCode, getUserGeoLocation } from "@/lib/services/cookies";
-import { createOrder } from "@/lib/payload/orders";
-import { CheckoutProduct, CreateOrderInput, PaymentOption } from "./types";
+import { CheckoutProduct, CreateOrderInput } from "./types";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
+// ✅ Load Razorpay SDK dynamically
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") return resolve(false);
+
+    if (window.Razorpay) return resolve(true);
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 export default function CheckoutPage({
   product,
@@ -21,13 +38,12 @@ export default function CheckoutPage({
   product: CheckoutProduct;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [countryCode, setCountryCode] = useState<string>("");
-  const [paymentOptions, setPaymentOptions] = useState<PaymentOption[]>([
-    "bank transfer",
-  ]);
-  const [selectedPayment, setSelectedPayment] =
-    useState<PaymentOption>("bank transfer");
+  const plan = searchParams.get("plan");
+  const billingCycle = searchParams.get("billingcycle");
+
+  const [countryCode, setCountryCode] = useState<string>("IN");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -35,32 +51,43 @@ export default function CheckoutPage({
       try {
         const { country } = await getUserGeoLocation();
         setCountryCode(country);
-
-        if (country !== "IN")
-          setPaymentOptions(["card", "paypal", "bank transfer"]);
       } catch (e) {
         console.error("Geo lookup failed", e);
       }
     }
-
     fetchGeo();
   }, []);
 
-  const availablePaymentOptions: PaymentOption[] = useMemo(
-    () => paymentOptions,
-    [paymentOptions]
-  );
+  const selectedPlan = useMemo(() => {
+    return product.subscriptionPlans?.find(
+      (p) =>
+        p.planName === plan &&
+        p.billingOptions?.some((b) => b.billingCycle === billingCycle)
+    );
+  }, [plan, billingCycle, product.subscriptionPlans]);
 
-  const currency = product?.inr_price ? "INR" : "USD";
-  const unitPrice = product?.inr_discount_price ?? product?.discount_price;
-  const originalPrice = product?.inr_price ?? product?.price;
+  const selectedBillingOption = useMemo(() => {
+    return selectedPlan?.billingOptions?.find(
+      (b) => b.billingCycle === billingCycle
+    );
+  }, [selectedPlan, billingCycle]);
 
-  if (unitPrice === undefined || originalPrice === undefined) {
-    throw new Error("Product is missing unitPrice");
-  }
+  const currency = countryCode === "IN" ? "INR" : "USD";
+  const unitPrice =
+    currency === "INR"
+      ? selectedBillingOption?.priceINR
+      : selectedBillingOption?.priceUSD;
+
+  const originalPrice = unitPrice ?? 0;
+  if (unitPrice === undefined) throw new Error("Invalid plan/billing cycle.");
+
+  const setupCost =
+    countryCode === "IN"
+      ? product.setupCostINR ?? 0
+      : product.setupCostUSD ?? 0;
 
   const quantity = 1;
-  const subtotal = unitPrice * quantity;
+  const subtotal = unitPrice * quantity + (setupCost > 0 ? setupCost : 0);
   const taxes = +(subtotal * 0.18).toFixed(2);
   const shipping = 0;
   const total = +(subtotal + taxes + shipping).toFixed(2);
@@ -73,12 +100,6 @@ export default function CheckoutPage({
       }).format(price),
     [currency]
   );
-
-  const triggerFormSubmit = () => {
-    document
-      .getElementById("billing-form")
-      ?.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
-  };
 
   const onBillingSubmit = async (data: BillingFormData) => {
     setIsSubmitting(true);
@@ -94,7 +115,8 @@ export default function CheckoutPage({
       subtotal,
       taxes,
       total,
-      paymentMethod: selectedPayment,
+      setupCost: setupCost > 0 ? setupCost : undefined,
+      paymentMethod: "razorpay",
       countryCode,
       billingDetails: {
         fullName: data.fullName,
@@ -114,20 +136,50 @@ export default function CheckoutPage({
       },
     };
 
-    console.log({ orderData });
+    try {
+      const isRazorpayLoaded = await loadRazorpayScript();
+      if (!isRazorpayLoaded) {
+        toast.error("Razorpay SDK failed to load. Please try again.");
+        return;
+      }
 
-    const response = await createOrder(orderData);
-    console.log({ response });
-    setIsSubmitting(false);
+      const res = await fetch('/routes/create-razorpay-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: total }),
+      });
 
-    if (response?.error) {
-      return toast.error(
-        response.error || "Something went wrong. Please try again."
-      );
+      const order = await res.json();
+
+      const razorpay = new window.Razorpay({
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: order.amount,
+        currency: order.currency,
+        name: "Viyaga",
+        description: "Product Payment",
+        order_id: order.id,
+        handler: function (response: any) {
+          toast.success("Payment successful!");
+          // Optionally verify on server: response.razorpay_order_id, payment_id, signature
+          // router.push("/dashboard/collections/orders");
+        },
+        prefill: {
+          name: data.fullName,
+          email: data.email,
+          contact: data.phone,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      });
+
+      razorpay.open();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to process payment.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast.success("Order placed successfully! Please login to continue.");
-    router.push("/dashboard/collections/orders");
   };
 
   return (
@@ -153,22 +205,19 @@ export default function CheckoutPage({
               total={total}
               originalPrice={originalPrice}
               discountedPrice={unitPrice}
+              setupCost={setupCost > 0 ? setupCost : undefined}
             />
-
-            <div className="mt-6">
-              <PaymentMethodSelector
-                paymentOptions={availablePaymentOptions}
-                selectedOption={selectedPayment}
-                onSelect={setSelectedPayment}
-              />
-              {selectedPayment === "card" && <CardNumberInput />}
-              {selectedPayment === "bank transfer" && <BankTransferDetails />}
-            </div>
 
             <Button
               className="w-full mt-6"
-              disabled={!selectedPayment || isSubmitting}
-              onClick={triggerFormSubmit}
+              disabled={isSubmitting}
+              onClick={() =>
+                document
+                  .getElementById("billing-form")
+                  ?.dispatchEvent(
+                    new Event("submit", { cancelable: true, bubbles: true })
+                  )
+              }
             >
               {isSubmitting ? "Processing..." : "Pay Now"}
             </Button>
