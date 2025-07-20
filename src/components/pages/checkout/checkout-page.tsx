@@ -136,6 +136,8 @@ export default function CheckoutPage({
       },
     };
 
+    console.log({orderData});
+    
     try {
       const isRazorpayLoaded = await loadRazorpayScript();
       if (!isRazorpayLoaded) {
