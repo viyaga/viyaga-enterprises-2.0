@@ -1,63 +1,81 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion, Variants } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { services } from "./services-data";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+const containerVariants: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.2 } },
+};
+
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 export default function ExpertisePage() {
   return (
-    <section className="min-h-screen bg-background text-foreground py-20 px-4 md:px-8 lg:px-16">
-      <div className="max-w-5xl mx-auto text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Our Areas of <span className="text-primary">Expertise</span>
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          From startup MVPs to enterprise systems, we bring deep technical skill and business context to every solution we build.
-        </p>
-      </div>
-
-      <motion.div
-        className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
+    <motion.section
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+      className="py-12 md:py-24 px-4 min-h-screen text-black dark:text-white bg-gradient-to-b from-[#113a65] to-[#f0f9ff] dark:to-[#0f172a]"
+    >
+      <motion.h2
+        variants={fadeInUp}
+        className="text-4xl font-bold mb-2 text-center bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text"
       >
-        {services.map((service) => (
-          <motion.div variants={fadeInUp} key={service.id}>
-            <Card className="rounded-2xl border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow duration-300">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-muted">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      width={32}
-                      height={32}
-                      className="object-contain"
-                    />
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className="text-xs font-medium border"
-                    style={{ color: service.color, borderColor: service.color }}
-                  >
-                    {service.badge}
-                  </Badge>
-                </div>
-                <h3 className="text-xl font-semibold">{service.title}</h3>
-                <p className="text-sm text-muted-foreground">{service.desc}</p>
-              </CardContent>
-            </Card>
+        Our Areas of Expertise
+      </motion.h2>
+      <motion.p
+        variants={fadeInUp}
+        className="max-w-2xl mx-auto text-center text-lg text-white/80 mb-12"
+      >
+        We combine innovation, best practices, and hands‑on experience to deliver solutions that drive growth, efficiency,
+        and competitive advantage.
+      </motion.p>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+        {services.map((svc) => (
+          <motion.div
+            key={svc.id}
+            variants={fadeInUp}
+            whileHover={{ scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="flex flex-col items-start space-y-4 p-6 group"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 flex-shrink-0">
+                <Image src={svc.image} alt={svc.title} width={48} height={48} />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                  {svc.title}
+                </h3>
+                <Badge
+                  // variant="ghost"
+                  className="text-xs font-medium px-2 py-1 mt-1"
+                  style={{ color: svc.color }}
+                >
+                  {svc.badge}
+                </Badge>
+              </div>
+            </div>
+            <p className="text-sm text-gray-800 dark:text-gray-200">
+              {svc.desc}
+            </p>
+            <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1 pl-4">
+              {svc.features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
           </motion.div>
         ))}
-      </motion.div>
-    </section>
+      </div>
+    </motion.section>
   );
 }

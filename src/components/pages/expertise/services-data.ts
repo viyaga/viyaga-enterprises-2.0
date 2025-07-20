@@ -1,83 +1,130 @@
-export type Service = {
+// services-data.ts
+export interface Service {
   id: number;
   title: string;
   desc: string;
+  features: string[];
   image: string;
   badge: string;
-  color: string; // Accent color only
-};
+  color: string;
+}
 
 export const services: Service[] = [
   {
     id: 1,
     title: "Full Stack Web Development",
-    desc: "We build scalable, performant apps using React, Next.js, Node.js, and modern frameworks.",
+    desc: "End‑to‑end web applications that scale with your business.",
+    features: [
+      "Responsive UIs with Next.js & Tailwind",
+      "Server‑side rendering & static export",
+      "Secure auth & role‑based access",
+    ],
     image: "/icons/web.svg",
     badge: "Web",
-    color: "#38bdf8", // sky-400
+    color: "#38bdf8",
   },
   {
     id: 2,
     title: "Mobile App Development",
-    desc: "Cross-platform mobile apps with Flutter and React Native for seamless user experiences.",
+    desc: "Cross‑platform apps delivering native‑grade performance.",
+    features: [
+      "Single codebase with Flutter or React Native",
+      "Push notifications & offline support",
+      "App Store & Play Store submission",
+    ],
     image: "/icons/mobile.svg",
     badge: "Mobile",
-    color: "#f472b6", // pink-400
+    color: "#f472b6",
   },
   {
     id: 3,
     title: "DevOps & Cloud Engineering",
-    desc: "CI/CD, Docker, Kubernetes, and scalable infrastructure on AWS, GCP, and Vercel.",
+    desc: "Automated pipelines & resilient infrastructure in the cloud.",
+    features: [
+      "Docker & Kubernetes orchestration",
+      "CI/CD with GitHub Actions & Jenkins",
+      "Cost‑optimized AWS/GCP architectures",
+    ],
     image: "/icons/cloud.svg",
     badge: "Cloud",
-    color: "#34d399", // green-400
+    color: "#34d399",
   },
   {
     id: 4,
     title: "API Development & Integration",
-    desc: "Robust REST & GraphQL APIs using Express.js, NestJS, and third-party services integration.",
+    desc: "Robust back‑ends and seamless third‑party integrations.",
+    features: [
+      "REST & GraphQL endpoints",
+      "OAuth2 / JWT authentication",
+      "Payment, SMS, email gateways",
+    ],
     image: "/icons/api.svg",
     badge: "API",
-    color: "#facc15", // yellow-400
+    color: "#facc15",
   },
   {
     id: 5,
     title: "Custom CRM & ERP Solutions",
-    desc: "Tailored internal tools and platforms for operations, customer management, and automation.",
+    desc: "Streamline your operations with tailored business platforms.",
+    features: [
+      "Lead & pipeline management",
+      "Automated billing & invoicing",
+      "Role‑based dashboards & reporting",
+    ],
     image: "/icons/crm.svg",
     badge: "Enterprise",
-    color: "#a78bfa", // violet-400
+    color: "#a78bfa",
   },
   {
     id: 6,
     title: "CMS Development & Headless Setup",
-    desc: "Flexible content systems using Payload CMS, Strapi, or custom-built headless CMS solutions.",
+    desc: "Flexible content workflows with modern headless CMS.",
+    features: [
+      "Payload CMS / Strapi / Sanity",
+      "GraphQL & REST APIs",
+      "Preview & staging environments",
+    ],
     image: "/icons/cms.svg",
     badge: "CMS",
-    color: "#f472b6", // pink-400
+    color: "#f472b6",
   },
   {
     id: 7,
     title: "MVP Development for Startups",
-    desc: "Rapid prototyping and lean MVPs to validate your business idea with real users.",
+    desc: "Validate ideas fast with lean, user‑driven prototypes.",
+    features: [
+      "Rapid wireframing & prototyping",
+      "User feedback loops",
+      "Iterative feature rollouts",
+    ],
     image: "/icons/startup.svg",
     badge: "Startup",
-    color: "#4ade80", // emerald-400
+    color: "#4ade80",
   },
   {
     id: 8,
     title: "System Architecture & Consulting",
-    desc: "Strategic planning, architecture design, and technical leadership for complex systems.",
+    desc: "Future‑proof designs and expert guidance for complex systems.",
+    features: [
+      "Microservices & event‑driven patterns",
+      "Scalability & high‑availability",
+      "Cost vs. performance tradeoffs",
+    ],
     image: "/icons/architecture.svg",
     badge: "Consulting",
-    color: "#60a5fa", // blue-400
+    color: "#60a5fa",
   },
   {
     id: 9,
     title: "UI/UX Design & Frontend Engineering",
-    desc: "Pixel-perfect interfaces using Tailwind CSS, Framer Motion, and accessible design systems.",
+    desc: "Delight users with pixel‑perfect, accessible interfaces.",
+    features: [
+      "Design systems with Figma & Tailwind",
+      "Framer Motion interactions",
+      "WCAG AA accessibility compliance",
+    ],
     image: "/icons/uiux.svg",
     badge: "Design",
-    color: "#f87171", // red-400
+    color: "#f87171",
   },
 ];

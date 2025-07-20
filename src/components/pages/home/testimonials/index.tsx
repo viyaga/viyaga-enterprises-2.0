@@ -18,13 +18,13 @@ const testimonials = [
 ];
 
 const cardVariant = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
       delay: 0.2 * i,
-      duration: 0.5,
+      duration: 0.6,
       ease: "easeOut",
     },
   }),
@@ -32,15 +32,14 @@ const cardVariant = {
 
 export default function TestimonialsSection() {
   return (
-    <section
-      className="px-4 py-10 md:py-12 lg:py-16 bg-muted dark:bg-background text-black 
-      dark:text-white bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]"
-    >
-      <div className="max-w-4xl mx-auto text-center mb-14">
-        <h2 className="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
+    <section className="px-4 py-16 md:py-24 bg-gradient-to-b from-[#f0f9ff] to-[#f0f9ff] dark:from-[#0f172a] dark:to-[#0f172a] text-black dark:text-white">
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-clip-text">
+          What Our Clients Say
+        </h2>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
         {testimonials.map((t, i) => (
           <motion.div
             key={i}
@@ -50,12 +49,14 @@ export default function TestimonialsSection() {
             viewport={{ once: true }}
             custom={i}
           >
-            <Card className="p-6 rounded-2xl border-none shadow-xl bg-gradient-to-br from-[#f0f4ff] via-white to-[#e2e8f0] dark:from-[#1f2937] dark:via-[#111827] dark:to-[#1f2937] transition-all duration-300">
-              <CardContent className="space-y-4">
-                <p className="italic text-muted-foreground">“{t.text}”</p>
-                <div className="flex items-center gap-4">
+            <Card className="p-6 md:p-8 rounded-2xl border-none shadow-lg bg-gradient-to-br from-[#f9fbff] to-[#e5edf7] dark:from-[#1f2937] dark:to-[#111827] transition-all duration-300">
+              <CardContent className="space-y-6">
+                <p className="italic text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+                  “{t.text}”
+                </p>
+                <div className="flex items-center gap-4 pt-2">
                   <Avatar className="bg-primary text-white">
-                    <AvatarFallback className="font-bold">
+                    <AvatarFallback className="font-bold uppercase">
                       {t.name
                         .split(" ")
                         .map((n) => n[0])
@@ -63,7 +64,7 @@ export default function TestimonialsSection() {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-semibold">{t.name}</p>
+                    <p className="font-semibold text-base">{t.name}</p>
                     <p className="text-sm text-muted-foreground">{t.role}</p>
                   </div>
                 </div>
