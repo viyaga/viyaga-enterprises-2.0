@@ -18,14 +18,16 @@ export default function TrustedBy() {
   const logos = [...companies, ...companies];
 
   return (
-    <section className="py-10 md:py-15 bg-gradient-to-b from-[#00182e] to-gray-900">
+    <section className="py-10 md:py-15 
+                        bg-white dark:bg-gradient-to-b dark:from-[#00182e] dark:to-gray-900">
       <div className="mx-auto px-4 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          Trusted by Global Brands and Fast-Growth Startups
+        <h2 className="text-2xl md:text-3xl font-bold 
+                       text-black dark:text-white mb-2">
+          Trusted by Global Brands and Fast‑Growth Startups
         </h2>
-        <p className="text-gray-400 text-sm mb-6 max-w-xl mx-auto">
-          Our software powers innovation at scale—from Fortune 500s to next-gen
-          disruptors.
+        <p className="text-sm mb-6 max-w-xl mx-auto 
+                      text-gray-700 dark:text-gray-400">
+          Our software powers innovation at scale—from Fortune 500s to next‑gen disruptors.
         </p>
 
         <div
@@ -48,7 +50,12 @@ export default function TrustedBy() {
             {logos.map(({ src, name }, idx) => (
               <div
                 key={idx}
-                className="flex-shrink-0 w-28 sm:w-32 md:w-36 lg:w-40 h-12 sm:h-14 md:h-16 relative bg-white/90 rounded-lg shadow-md p-3 transition duration-300 hover:ring-2 hover:ring-blue-400"
+                className="flex-shrink-0 w-28 sm:w-32 md:w-36 lg:w-40 
+                           h-12 sm:h-14 md:h-16 relative
+                           bg-gray-100 dark:bg-white/90
+                           rounded-lg shadow-md p-3
+                           transition duration-300
+                           hover:ring-2 hover:ring-blue-400"
               >
                 <div className="relative w-full h-full">
                   <Image

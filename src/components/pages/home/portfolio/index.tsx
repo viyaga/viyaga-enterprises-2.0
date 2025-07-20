@@ -1,32 +1,21 @@
 "use client";
 
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
-import Image from "next/image";
 import { projects } from "@/constants/projects";
-import Link from "next/link";
 
 // Animation Variants
-const containerVariants: Variants = {
+const containerVariants = {
   hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
+  show: { transition: { staggerChildren: 0.2 } },
 };
 
-const fadeInUp: Variants = {
+const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 export default function PortfolioSection() {
@@ -36,17 +25,28 @@ export default function PortfolioSection() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.2 }}
-      className="py-12 md:py-24 px-4 min-h-screen text-black dark:text-white bg-gradient-to-b from-[#113a65] to-[#f0f9ff] dark:from-[#113a65] dark:to-[#0f172a]"
+      className="
+        py-12 md:py-24 px-4 min-h-screen
+        bg-white text-black
+        dark:bg-gradient-to-b dark:from-[#113a65] dark:to-[#0f172a] dark:text-white
+      "
     >
       <motion.h2
         variants={fadeInUp}
-        className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text drop-shadow-md"
+        className="
+          text-4xl font-bold mb-4 text-center
+          bg-gradient-to-r from-blue-500 to-green-500 text-transparent bg-clip-text drop-shadow-md
+        "
       >
         Case Studies
       </motion.h2>
+
       <motion.h3
         variants={fadeInUp}
-        className="text-xl md:text-2xl mb-12 font-medium text-center text-white/80"
+        className="
+          text-xl md:text-2xl mb-12 font-medium text-center
+          text-gray-700 dark:text-white/80
+        "
       >
         How We Helped Businesses Scale, Transform, and Win
       </motion.h3>
@@ -63,7 +63,15 @@ export default function PortfolioSection() {
               transition={{ type: "spring", stiffness: 200 }}
               className="rounded-2xl shadow-xl hover:shadow-2xl"
             >
-              <Card className="p-0 border border-white/20 bg-white/90 dark:bg-white/5 backdrop-blur-md rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-full overflow-hidden group">
+              <Card
+                className="
+                  p-0 border
+                  bg-gray-50 border-gray-200
+                  dark:bg-white/5 dark:border-white/20
+                  backdrop-blur-md rounded-2xl shadow-lg hover:shadow-2xl
+                  transition-all duration-300 h-full overflow-hidden group
+                "
+              >
                 <div className="relative h-48 sm:h-56 w-full overflow-hidden">
                   <Image
                     src={project.image}
@@ -73,7 +81,7 @@ export default function PortfolioSection() {
                     blurDataURL="/images/placeholder.jpg"
                     className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition" />
+                  <div className="absolute inset-0 bg-black/5 dark:bg-black/10 group-hover:bg-black/10 transition" />
                 </div>
 
                 <CardContent className="p-5 sm:p-6 text-left">
@@ -81,11 +89,11 @@ export default function PortfolioSection() {
                     {project.title}
                   </CardTitle>
 
-                  <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
+                  <p className="text-sm text-gray-800 dark:text-gray-300 mb-3">
                     {project.description}
                   </p>
 
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  <p className="text-sm text-gray-700 dark:text-gray-400 mb-3">
                     <span className="font-medium">The Challenge:</span>{" "}
                     {project.problem}
                   </p>
@@ -99,7 +107,10 @@ export default function PortfolioSection() {
                     {project.tags.map((tag, idx) => (
                       <span
                         key={idx}
-                        className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"
+                        className="
+                          bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded
+                          dark:bg-blue-900 dark:text-blue-300
+                        "
                       >
                         {tag}
                       </span>
@@ -108,7 +119,10 @@ export default function PortfolioSection() {
 
                   <Button
                     variant="link"
-                    className="text-primary dark:text-blue-400 underline hover:text-primary/80 p-0"
+                    className="
+                      underline hover:text-primary/80
+                      text-blue-600 dark:text-blue-400 p-0
+                    "
                     asChild
                   >
                     <Link
@@ -132,7 +146,11 @@ export default function PortfolioSection() {
           transition={{ type: "spring", stiffness: 300 }}
         >
           <Link href="/work">
-            <Button className="sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 cursor-pointer rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600">
+            <Button className="
+              sm:w-auto text-base sm:text-lg px-6 py-3 md:mt-5 rounded-full
+              bg-gradient-to-r from-blue-500 to-green-500 text-white
+              hover:from-green-600 hover:to-blue-600
+            ">
               Explore All Case Studies
             </Button>
           </Link>

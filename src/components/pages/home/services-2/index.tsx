@@ -48,17 +48,22 @@ const ServicesSection = () => {
   const selectedService = services.find((s) => s.id === activeServiceId);
 
   return (
-    <section className="w-full h-full bg-gradient-to-b from-gray-900 via-[#012a55] to-[#113a65] overflow-hidden text-white py-3 lg:py-5">
-      <div
-        ref={ref}
-        className="flex flex-col lg:flex-row w-full h-full py-12 gap-1 md:gap-12 max-w-6xl mx-auto"
-      >
+    <section
+      ref={ref}
+      className="
+        w-full h-full 
+        bg-gray-50 text-black 
+        dark:bg-gradient-to-b dark:from-gray-900 dark:via-[#012a55] dark:to-[#113a65] dark:text-white
+        overflow-hidden py-3 lg:py-5
+      "
+    >
+      <div className="flex flex-col lg:flex-row w-full h-full py-12 gap-1 md:gap-12 max-w-6xl mx-auto px-3">
         {/* Left Content */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center gap-10 px-3">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center gap-10">
           <motion.h1
             variants={textVariants}
             animate={isInView ? "animate" : "initial"}
-            className="text-4xl lg:text-6xl font-bold leading-tight text-white"
+            className="text-4xl lg:text-6xl font-bold leading-tight"
           >
             How We Help You Grow?
           </motion.h1>
@@ -73,18 +78,24 @@ const ServicesSection = () => {
                 key={service.id}
                 onClick={() => setActiveServiceId(service.id)}
                 variants={listVariants}
-                className={`flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 cursor-pointer ${activeServiceId === service.id
-                  ? "bg-white/20"
-                  : "bg-white/10 hover:bg-white/20"
-                  }`}
+                className={`
+                  flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 cursor-pointer
+                  ${
+                    activeServiceId === service.id
+                      ? "bg-gray-200 dark:bg-white/20"
+                      : "bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:hover:bg-white/20"
+                  }
+                `}
               >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center ${service.id === 1
-                    ? "bg-red-500"
-                    : service.id === 2
+                  className={`
+                    w-12 h-12 rounded-full flex items-center justify-center
+                    ${service.id === 1
+                      ? "bg-red-500"
+                      : service.id === 2
                       ? "bg-teal-600"
-                      : "bg-yellow-600"
-                    }`}
+                      : "bg-yellow-600"}
+                  `}
                 >
                   <Image
                     src={service.img}
@@ -95,10 +106,10 @@ const ServicesSection = () => {
                   />
                 </div>
                 <div className="text-left">
-                  <h2 className="text-lg font-semibold text-white">
+                  <h2 className="text-lg font-semibold">
                     {service.title}
                   </h2>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     {service.counter} Projects
                   </p>
                 </div>
@@ -107,11 +118,12 @@ const ServicesSection = () => {
           </motion.div>
 
           <div className="flex gap-6 mt-6">
-            <Counter from={0} to={100} text="Projects Completed" />
-            <Counter from={0} to={98} symbol="%" text="Client Satisfaction" />
+            <Counter from={0} to={100} text="Projects Completed" className="text-black dark:text-white" />
+            <Counter from={0} to={98} symbol="%" text="Client Satisfaction" className="text-black dark:text-white" />
           </div>
         </div>
 
+        {/* Right Image */}
         <div className="w-full py-4 lg:w-1/2 h-[400px] lg:h-auto flex justify-center items-center mx-auto px-4 sm:px-8">
           <Image
             key={selectedService?.img}
