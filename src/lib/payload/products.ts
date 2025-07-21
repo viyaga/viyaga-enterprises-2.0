@@ -1,7 +1,7 @@
 "use server";
 
 import { payloadFetch } from "./payloadFetch";
-import { getAllProductsQuery, getProductByIdForCheckoutQuery } from "./queries";
+import { getAllProductsQuery, getProductByIdForCheckoutQuery, getProductDetailsBySlugQuery } from "./queries";
 
 type GetFilteredProductsOptions = {
   page: number;
@@ -61,7 +61,7 @@ type GetProductBySlugOptions = {
 };
 
 export async function getProductDetailsBySlug({ slug, depth = 0 }: GetProductBySlugOptions) {
-  const query = { depth: 1, where: { slug: { equals: slug } } };
+  const query = getProductDetailsBySlugQuery({ slug, depth });
   return await payloadFetch({
     path: `products`,
     query: { ...query },

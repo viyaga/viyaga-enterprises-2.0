@@ -37,7 +37,6 @@ export const getProductByIdForCheckoutQuery = async ({
 }: {
   depth?: number;
 }) => {
-  const { country } = await getUserGeoLocation();
 
   return {
     depth,
@@ -56,24 +55,42 @@ export const getProductDetailsBySlugQuery = (
     { slug, depth = 0 }: { slug: string; depth?: number }
 ) => {
     const select = {
-        "thumbnail": true,
-        "title": true,
-        "description": true,
-        "features": true,
-        "affiliateCommission": true,
-        "inr_price": true,
-        "inr_discount_price": true,
-        "price": true,
-        "discount_price": true,
-        "category": true,
-        "tags": true,
-        "isSubscription": true,
-        "subscriptionPlans": true,
-        "screenshots": true,
-        "demo_urls": true,
-        "seo": true,
-        "slug": true
-    }
+        id: true,
+        title: true,
+        isFree: true,
+        isSubscription: true,
+        thumbnail: { url: true },
+        price: true,
+        discount_price: true,
+        inr_price: true,
+        inr_discount_price: true,
+        description: true,
+        features: true,
+        subscriptionPlans: {
+            label: true,
+            planName: true,
+            trialPeriodDays: true,
+            isActive: true,
+            isPopular: true,
+            features: true,
+            billingOptions: {
+                billingCycle: true,
+                priceUSD: true,
+                priceINR: true,
+            },
+        },
+        demo_urls: {
+            label: true,
+            url: true,
+        },
+        screenshots: {
+            image: { url: true },
+        },
+        category: true,
+        tags: true,
+        seo: true,
+        slug: true,
+    };
 
     const where = { slug: { equals: slug } };
 

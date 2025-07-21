@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
-import { services } from "../../expertise/services-data";
+import { services } from "./services-data";
 
 const containerVariants: Variants = {
   hidden: {},
