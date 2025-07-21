@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 
 const geistSans = Geist({
@@ -82,6 +83,7 @@ export default function RootLayout({
         >
           <NuqsAdapter>{children}</NuqsAdapter>
           <Toaster />
+          <SpeedInsights/>
         </ThemeProvider>
       </body>
     </html>
