@@ -19,36 +19,49 @@ const fadeInUp: Variants = {
 };
 
 // 1. FullStack Hero w/ code typing
+const codeSnippets = [
+  'import express from "express";',
+  'const app = express();',
+  'app.listen(3000, () => console.log("Live"));',
+  '#[get("/")] async fn hello() -> &\'static str\' { "Hi" }',
+];
+
 const FullStackHero: React.FC = () => (
   <motion.section
-    id={String(services[0].id)}
+    id="fullstack-hero"
+    initial="hidden"
+    whileInView="show"
+    viewport={{ once: true, amount: 0.5 }}
     variants={fadeInUp}
-    className="relative flex flex-col lg:flex-row items-center p-12 bg-gradient-to-r from-[#0E1A2B] to-[#1D2D44] rounded-3xl overflow-hidden"
+    className="relative flex flex-col lg:flex-row lg:gap-x-20 items-center p-12 bg-gradient-to-r from-[#0E1A2B] to-[#1D2D44] rounded-3xl overflow-hidden"
   >
-    <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
-      <code className="block bg-[#0a1f3a] p-4 rounded-lg overflow-auto text-sm text-green-400 font-mono">
+    {/* Left - Code */}
+    <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
+      <code className="block bg-[#0a1f3a] p-6 rounded-lg overflow-auto text-sm text-green-400 font-mono leading-relaxed shadow-xl">
         <Typewriter
-          words={[
-            'import express from "express";',
-            'const app = express();',
-            'app.listen(3000, () => console.log("Live"));',
-            '#[get("/")] async fn hello() -> &"static str" { "Hi" }',
-          ]}
+          words={codeSnippets}
           loop={0}
           cursor
           cursorStyle="|"
-          typeSpeed={70}
-          deleteSpeed={30}
-          delaySpeed={2000}
+          typeSpeed={50}
+          deleteSpeed={20}
+          delaySpeed={1500}
         />
       </code>
     </div>
-    <div className="w-full lg:w-1/2 space-y-6 text-white">
-      <h2 className="text-5xl font-mono">Full‑Stack Craftsmanship</h2>
-      <p className="text-lg opacity-80">
-        From scalable backends to polished UIs, integrated end‑to‑end for e‑commerce success.
+
+    {/* Right - Text */}
+    <div className="w-full lg:w-1/2 space-y-6 text-white text-center lg:text-left">
+      <h2 className="text-4xl lg:text-5xl font-mono font-semibold">
+        Full‑Stack Craftsmanship
+      </h2>
+      <p className="text-lg opacity-80 leading-relaxed">
+        From scalable APIs to beautiful UIs, we build robust digital solutions
+        for startups, enterprises, and every kind of business.
       </p>
-      <Button className="px-8 py-4 bg-blue-500 hover:bg-blue-600">Start an E‑Com Project</Button>
+      <Button className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-base">
+        Start Your Project
+      </Button>
     </div>
   </motion.section>
 );
@@ -59,7 +72,7 @@ const ServicesCarousel: React.FC = () => {
   const [index, setIndex] = useState(0);
   const visible = services.slice(1, 4);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [cardWidth, setCardWidth] = useState(320);
+  const [cardWidth, setCardWidth] = useState(400);
 
   // Measure card width dynamically
   useEffect(() => {
@@ -98,7 +111,7 @@ const ServicesCarousel: React.FC = () => {
           <motion.div
             ref={i === 0 ? cardRef : null}
             key={svc.id}
-            className="min-w-[300px] backdrop-blur-lg bg-white/20 dark:bg-black/20 rounded-2xl p-6"
+            className="min-w-[400px] backdrop-blur-lg bg-white/20 dark:bg-black/20 rounded-2xl p-6"
             whileHover={{ scale: 1.05 }}
           >
             <div className="flex items-center gap-4 mb-4">
