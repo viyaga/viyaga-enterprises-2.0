@@ -1,4 +1,3 @@
-import { getUserGeoLocation } from "@/lib/services/cookies";
 import { Where } from "payload";
 
 export const getAllProductsQuery = (

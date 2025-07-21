@@ -123,6 +123,8 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
       },
     };
 
+    console.log({ orderData });
+
     try {
       const loaded = await loadRazorpayScript();
       if (!loaded) {

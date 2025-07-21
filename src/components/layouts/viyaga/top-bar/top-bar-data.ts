@@ -3,7 +3,6 @@ import { X } from "lucide-react";
 export const navLinks = [
     { href: "/", label: "Home" },
     { href: "/solutions", label: "Solutions" },
-    { href: "/expertise", label: "Expertise" },
     { href: "/work", label: "Work" },
     { href: "/company", label: "Company" },
     { href: "https://take.app/viyaga", label: "Insights" },
