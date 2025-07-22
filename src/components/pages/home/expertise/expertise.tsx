@@ -1,238 +1,22 @@
-// ExpertiseSection.tsx
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { motion, Variants, useAnimation, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import { Typewriter } from 'react-simple-typewriter';
-import { services } from './services-data';
+import { motion } from "framer-motion";
+import JumpNav from "./jump-nav";
+import FullStackHero from "./full-stack-hero";
+import ServicesCarousel from "./services-carousel";
+import CRMSection from "./crm-section";
+import ServicesMosaic from "./services-mosaic";
 
-// Reusable Badge component
-const ServiceBadge: React.FC<{ text: string; color: string }> = ({ text, color }) => (
-  <Badge
-    className="px-2 py-1 text-xs"
-    style={{
-      color,
-      borderColor: color,
-      backgroundColor: `${color}20`,
-    }}
-  >
-    {text}
-  </Badge>
-);
-
-// Motion variants
-const containerVariants: Variants = {
+const containerVariants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.2, delayChildren: 0.1 } },
 };
 
-const fadeInUp: Variants = {
+const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-// 1. FullStack Hero w/ code typing
-const codeSnippets = [
-  'import express from "express";',
-  'const app = express();',
-  'app.listen(3000, () => console.log("Live"));',
-  '#[get("/")] async fn hello() -> &\'static str\' { "Hi" }',
-];
-
-const FullStackHero: React.FC = () => (
-  <motion.section
-    id="full-stack"
-    initial="hidden"
-    whileInView="show"
-    viewport={{ once: true, amount: 0.5 }}
-    variants={fadeInUp}
-    className="relative flex flex-col lg:flex-row lg:gap-x-20 items-center p-12 bg-gradient-to-r from-[#0E1A2B] to-[#1D2D44] rounded-3xl overflow-hidden"
-  >
-    {/* Left - Code */}
-    <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
-      <code className="block bg-[#0a1f3a] p-6 rounded-lg overflow-auto text-sm text-green-400 font-mono leading-relaxed shadow-xl">
-        <Typewriter
-          words={codeSnippets}
-          loop={0}
-          cursor
-          cursorStyle="|"
-          typeSpeed={50}
-          deleteSpeed={20}
-          delaySpeed={1500}
-        />
-      </code>
-    </div>
-
-    {/* Right - Text */}
-    <div className="w-full lg:w-1/2 space-y-6 text-white text-center lg:text-left">
-      <h2 className="text-4xl lg:text-5xl font-mono font-semibold">
-        Full‑Stack Craftsmanship
-      </h2>
-      <p className="text-lg opacity-80 leading-relaxed">
-        From scalable APIs to beautiful UIs, we build robust digital solutions for startups, enterprises, and every kind of business.
-      </p>
-      <Button className="px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white text-base">
-        Start Your Project
-      </Button>
-    </div>
-  </motion.section>
-);
-
-// 2. Carousel for services 2–4
-const ServicesCarousel: React.FC = () => {
-  const controls = useAnimation();
-  const [index, setIndex] = useState(0);
-  const visible = services.slice(1, 4);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [cardWidth, setCardWidth] = useState(400);
-
-  useEffect(() => {
-    if (cardRef.current) {
-      setCardWidth(cardRef.current.offsetWidth + 24);
-    }
-  }, []);
-
-  useEffect(() => {
-    controls.start({ x: -index * cardWidth });
-  }, [index, controls, cardWidth]);
-
-  const handleDragEnd = (_: any, info: any) => {
-    const offset = info.offset.x;
-    const direction = offset > 0 ? -1 : 1;
-    const newIndex = Math.min(Math.max(index + direction, 0), visible.length - 1);
-    setIndex(newIndex);
-  };
-
-  return (
-    <div className="relative overflow-hidden py-8">
-      <motion.div
-        animate={controls}
-        transition={{ type: 'spring', stiffness: 100 }}
-        className="flex gap-6 px-4"
-        drag="x"
-        dragConstraints={{ left: -cardWidth * (visible.length - 1), right: 0 }}
-        dragElastic={0.2}
-        onDragEnd={handleDragEnd}
-      >
-        {visible.map((svc, i) => (
-          <motion.div
-            ref={i === 0 ? cardRef : null}
-            key={svc.slug}
-            className="min-w-[400px] backdrop-blur-lg bg-white/20 dark:bg-black/20 rounded-2xl p-6"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <Image src={svc.image} alt={svc.title} width={40} height={40} />
-              <h4 className="text-xl font-semibold text-black dark:text-white">{svc.title}</h4>
-            </div>
-            <p className="text-sm text-gray-800 dark:text-gray-200 mb-2">{svc.desc}</p>
-            <ServiceBadge text={svc.badge} color={svc.color} />
-          </motion.div>
-        ))}
-      </motion.div>
-      <div className="absolute inset-x-0 bottom-0 flex justify-center space-x-2 mt-4">
-        {visible.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            className={`h-2 w-2 rounded-full ${i === index ? 'bg-blue-500' : 'bg-gray-400'}`}
-            aria-label={`Go to service ${i + 1}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// 3. CRM/ERP Accordion for service #5
-const CRMAccordion: React.FC = () => {
-  const crm = services.find(s => s.slug === 'crm-erp');
-  const [open, setOpen] = useState<number | null>(null);
-  if (!crm) return null;
-
-  return (
-    <section id={crm.slug} className="py-24 bg-gradient-to-r from-purple-700 to-purple-500 text-white">
-      <h3 className="text-4xl font-bold text-center mb-12">{crm.title}</h3>
-      <div className="max-w-4xl mx-auto space-y-4">
-        {crm.features.map((feat, idx) => (
-          <motion.div key={idx} layout className="bg-white/10 backdrop-blur-xl rounded-xl overflow-hidden" onClick={() => setOpen(open === idx ? null : idx)}>
-            <motion.div className="p-6 flex justify-between items-center cursor-pointer">
-              <span>{feat}</span>
-              <span className="text-2xl">{open === idx ? '−' : '+'}</span>
-            </motion.div>
-            <AnimatePresence>
-              {open === idx && (
-                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="px-6 pb-6 text-sm">
-                  Detailed info about {feat.toLowerCase()}. KPI, graphs, stats, whatever!
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-// 4. Mosaic for services 6–9
-const ServicesMosaic: React.FC = () => {
-  const mosaic = services.slice(5);
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6 p-4">
-      {mosaic.map(svc => (
-        <motion.div key={svc.slug} className="bg-white dark:bg-gray-900 rounded-2xl p-6 relative overflow-hidden group" whileHover={{ scale: 1.02 }}>
-          <span className="absolute left-0 top-0 h-full w-1 origin-top scale-y-0 group-hover:scale-y-100 transition-transform" style={{ backgroundColor: svc.color }} />
-          <div className="flex items-center gap-3 mb-4">
-            <Image src={svc.image} alt={svc.title} width={36} height={36} />
-            <h5 className="text-lg font-semibold text-gray-900 dark:text-white">{svc.title}</h5>
-          </div>
-          <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">{svc.desc}</p>
-          <ServiceBadge text={svc.badge} color={svc.color} />
-          <motion.a href={svc.link ?? '#'} className="absolute inset-0 flex items-center justify-center text-blue-500 opacity-0 bg-white/20 dark:bg-black/20 transition-opacity" whileHover={{ opacity: 1 }}>
-            {svc.ctaText || 'Learn More'}
-          </motion.a>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-// 5. Sticky JumpNav for services
-const JumpNav: React.FC = () => {
-  const [active, setActive] = useState<string>(services[0].slug);
-
-  useEffect(() => {
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('section[id]'));
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: '-50% 0px -50% 0px', threshold: 0.1 }
-    );
-    sections.forEach(sec => obs.observe(sec));
-    return () => sections.forEach(sec => obs.unobserve(sec));
-  }, []);
-
-  return (
-    <nav className="bg-white dark:bg-gray-900 py-2 z-10 sticky top-0">
-      <ul className="flex justify-center gap-4 flex-wrap">
-        {services.map(svc => (
-          <li key={svc.slug}>
-            <a href={`#${svc.slug}`} title={svc.title} onClick={e => {
-              e.preventDefault();
-              document.getElementById(svc.slug)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }} className={`px-4 py-1 rounded-full text-sm transition-colors ${active === svc.slug ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`} aria-current={active === svc.slug ? 'page' : undefined}>
-              {svc.badge}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
-
-// Main Section
 export default function ExpertiseSection() {
   return (
     <motion.section
@@ -253,10 +37,9 @@ export default function ExpertiseSection() {
             We blend innovation, proven methodologies, and practical expertise to deliver impactful solutions that fuel growth and efficiency.
           </p>
         </motion.div>
-
         <FullStackHero />
         <ServicesCarousel />
-        <CRMAccordion />
+        <CRMSection />
         <ServicesMosaic />
       </div>
     </motion.section>
