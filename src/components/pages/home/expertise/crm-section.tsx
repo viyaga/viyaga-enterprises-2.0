@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { LucideChevronDown, LucideChevronUp } from "lucide-react";
+import { LucideChevronDown } from "lucide-react";
 import Image from "next/image";
 
 const crmData = {

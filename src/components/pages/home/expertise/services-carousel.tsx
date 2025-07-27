@@ -1,20 +1,29 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, PanInfo } from "framer-motion";
 import Image from "next/image";
 import { services } from "./services-data";
 import ServiceBadge from "./service-badge";
 
+type Service = {
+  slug: string;
+  title: string;
+  desc: string;
+  image: string;
+  badge: string;
+  color: string;
+};
+
 const ServicesCarousel: React.FC = () => {
   const controls = useAnimation();
   const [index, setIndex] = useState(0);
-  const visible = services.slice(1, 4);
+  const visible: Service[] = services.slice(1, 4);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [cardWidth, setCardWidth] = useState(400);
+  const [cardWidth, setCardWidth] = useState<number>(400);
 
   useEffect(() => {
     if (cardRef.current) {
-      setCardWidth(cardRef.current.offsetWidth + 24);
+      setCardWidth(cardRef.current.offsetWidth + 24); // 24px gap
     }
   }, []);
 
@@ -22,7 +31,7 @@ const ServicesCarousel: React.FC = () => {
     controls.start({ x: -index * cardWidth });
   }, [index, controls, cardWidth]);
 
-  const handleDragEnd = (_: any, info: any) => {
+  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const offset = info.offset.x;
     const direction = offset > 0 ? -1 : 1;
     const newIndex = Math.min(Math.max(index + direction, 0), visible.length - 1);

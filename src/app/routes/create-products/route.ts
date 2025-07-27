@@ -17,26 +17,6 @@ export const POST = async (req: Request) => {
     const createdProducts = await Promise.all(
       body.map(async (product) => {
         
-        if (product.thumbnail) {
-          // Search for the media entry by filename
-          const mediaResult = await payload.find({
-            collection: 'media',
-            where: {
-              filename: {
-                equals: product.thumbnail,
-              },
-            },
-            limit: 1,
-          })
-
-          const mediaItem = mediaResult.docs[0]
-          if (mediaItem) {
-            product.thumbnail = mediaItem.id // Set the relational ID
-          } else {
-            console.warn(`⚠️ Media not found for thumbnail filename: ${product.thumbnail}`)
-            product.thumbnail = "683e42baeacb159ea1c829c1"
-          }
-        }
 
         return payload.create({
           collection: 'products',

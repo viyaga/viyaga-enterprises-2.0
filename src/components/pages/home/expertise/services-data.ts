@@ -22,7 +22,7 @@ export interface Service {
   gradient: string;
   ctaText?: string;
   link?: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType;
 }
 
 export const services: Service[] = [
