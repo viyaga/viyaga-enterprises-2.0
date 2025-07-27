@@ -12,6 +12,8 @@ const page = async (props: {
 
   const data = await getProductDetailsBySlug({ slug, depth: 1 });
 
+  console.log({ data });
+
   if (!data || data?.docs?.length === 0) return notFound();
   console.log({ docs: data.docs });
 
