@@ -1,5 +1,3 @@
-"use server";
-
 import * as qs from 'qs-esm';
 import { Tquery } from './types';
 import { JsonObject } from 'payload';

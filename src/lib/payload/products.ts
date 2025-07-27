@@ -1,5 +1,3 @@
-"use server";
-
 import { payloadFetch } from "./payloadFetch";
 import { getAllProductsQuery, getProductByIdForCheckoutQuery, getProductDetailsBySlugQuery } from "./queries";
 

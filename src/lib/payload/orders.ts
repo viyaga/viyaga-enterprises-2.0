@@ -1,5 +1,3 @@
-"use server";
-
 import { payloadFetch } from './payloadFetch'; // Make sure path is correct based on your file structure
 import { Order } from '@/payload-types';
 
