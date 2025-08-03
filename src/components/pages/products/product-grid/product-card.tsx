@@ -18,7 +18,6 @@ const fadeInUp: Variants = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const thumbnailUrl = product.thumbnail?.url ?? "/fallback-thumbnail.jpg";
-  console.log({ thumbnailUrl });
 
   return (
     <Link href={`/solutions/${product.slug}`}>

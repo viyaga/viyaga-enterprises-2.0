@@ -8,57 +8,57 @@
      Dark Theme (Default)
      ------------------------ */
   :root {
-    /* Fonts & Sizing */
-    --font-body: 'Suisse Intl', system-ui;
-    --font-mono: monospace;
+    /* Typography & Layout */
+    --font-body: 'Suisse Intl', system-ui, sans-serif;
+    --font-mono: 'Fira Mono', monospace;
     --font-serif: 'Merriweather', serif;
-    --style-radius-s: 4px;
-    --style-radius-m: 8px;
+    --style-radius-s: 6px;
+    --style-radius-m: 12px;
     --nav-width: 275px;
 
-    /* Dark Backgrounds & Overlays */
-    --theme-bg: linear-gradient(to bottom, #111827, #040a10, #010508);
-    --theme-input-bg: #011934;
-    --theme-overlay: rgba(5, 5, 5, 0.5);
+    /* Backgrounds & Layers */
+    --theme-bg: linear-gradient(to bottom, #0f172a, #0a0f1c, #050709);
+    --theme-input-bg: #0f263d;
+    --theme-overlay: rgba(0, 0, 0, 0.6);
 
     /* Elevation Palette */
-    --theme-elevation-0: #011934;
-    --theme-elevation-50: #012a55;
-    --theme-elevation-100: #021c48;
-    --theme-elevation-200: #022053;
-    --theme-elevation-700: #86a0cc;
-    --theme-elevation-800: #eef1f8;
+    --theme-elevation-0: #0e1c2f;
+    --theme-elevation-50: #13283f;
+    --theme-elevation-100: #193251;
+    --theme-elevation-200: #1e3a63;
+    --theme-elevation-700: #cbd5e1;
+    --theme-elevation-800: #f1f5f9;
 
-    /* Text & Accent */
+    /* Text & Colors */
     --theme-text: var(--theme-elevation-800);
-    --color-base-100: #bac9e2;
-    --color-base-200: #bac9e2;
+    --color-base-100: #cbd5e1;
+    --color-base-200: #64748b;
     --color-accent-500: #0ba4a9;
   }
 
   /* ------------------------
-     Light Theme Overrides
+     Light Theme
      ------------------------ */
   [data-theme="light"] {
-    --theme-bg: linear-gradient(to bottom, #f5f5f5, #ffe1e1);
+    --theme-bg: linear-gradient(to bottom, #ffffff, #f9fafb);
     --theme-input-bg: #ffffff;
     --theme-overlay: rgba(0, 0, 0, 0.05);
 
     --theme-elevation-0: #ffffff;
-    --theme-elevation-50: #fefefe;
-    --theme-elevation-100: #f5f5f5;
-    --theme-elevation-200: #795757;
-    --theme-elevation-700: #4a3e3e;
-    --theme-elevation-800: #333333;
+    --theme-elevation-50: #f8fafc;
+    --theme-elevation-100: #e2e8f0;
+    --theme-elevation-200: #cbd5e1;
+    --theme-elevation-700: #1e293b;
+    --theme-elevation-800: #0f172a;
 
-    --theme-text: #333333;
-    --color-base-100: #bac9e2;
-    --color-base-200: #504f4f;
+    --theme-text: #1e293b;
+    --color-base-100: #0f172a;
+    --color-base-200: #334155;
     --color-accent-500: #0ba4a9;
   }
 
   /* ------------------------
-     Global styles
+     Global Styles
      ------------------------ */
   body,
   .template-default__wrap {
@@ -71,6 +71,7 @@
     background-size: cover;
     color: var(--theme-text);
     text-decoration: none;
+    line-height: 1.6;
   }
 }
 
@@ -94,17 +95,20 @@
     background-color: var(--theme-elevation-0);
     border-radius: var(--style-radius-s);
     border: 1px solid var(--theme-elevation-200);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
   .btn--style-primary {
-    background-color: var(--theme-elevation-200);
-    color: #fff;
+    background-color: var(--color-accent-500);
+    color: #ffffff;
     border-radius: var(--style-radius-m);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
     transition: background-color 0.3s ease;
   }
 
   .btn--style-primary:hover {
-    background-color: var(--theme-elevation-50);
+    background-color: #08868a;
   }
 
   .field-type.text:not(.has-many) input {
@@ -112,6 +116,7 @@
     border: 1px solid var(--theme-elevation-200);
     border-radius: var(--style-radius-s);
     color: var(--theme-text);
+    padding: 0.5rem;
   }
 
   .table tbody tr:nth-child(odd) {
@@ -128,7 +133,7 @@
   }
 
   .dashboard__group {
-    margin-top: 20px;
+    margin-top: 1.5rem;
   }
 
   .payload-settings {
@@ -143,7 +148,7 @@
     display: none;
   }
 
-  .field-description, 
+  .field-description,
   .field-description-role {
     color: var(--theme-elevation-700);
   }
@@ -152,13 +157,23 @@
     background-color: var(--theme-elevation-200);
     color: var(--color-base-100);
     border-radius: var(--style-radius-m);
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.75rem;
     font-size: 0.875rem;
+    font-weight: 500;
     transition: background-color 0.3s ease;
   }
 
+  .btn--style-pill:hover {
+    background-color: var(--theme-elevation-100);
+  }
+
   .pill--style-light {
-    background-color: var(--color-base-100);
-    color: var(--theme-text);
+    background-color: var(--theme-elevation-100);
+    color: var(--color-base-100);
+    border-radius: var(--style-radius-m);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
   }
 }
