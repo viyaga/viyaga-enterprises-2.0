@@ -78,6 +78,7 @@ export interface Config {
     'affiliate-commission-settings': AffiliateCommissionSetting;
     'affiliate-commissions': AffiliateCommission;
     seo: Seo;
+    leads: Lead;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -95,6 +96,7 @@ export interface Config {
     'affiliate-commission-settings': AffiliateCommissionSettingsSelect<false> | AffiliateCommissionSettingsSelect<true>;
     'affiliate-commissions': AffiliateCommissionsSelect<false> | AffiliateCommissionsSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
+    leads: LeadsSelect<false> | LeadsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -503,6 +505,30 @@ export interface AffiliateCommission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads".
+ */
+export interface Lead {
+  id: string;
+  user_username: string;
+  user_email: string;
+  user_phone?: string | null;
+  user_budget: 'below_10k' | '10k_50k' | '50k_1lakh' | 'above_1lakh';
+  user_message: string;
+  affiliate_id?: string | null;
+  activity_data?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -551,6 +577,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'seo';
         value: string | Seo;
+      } | null)
+    | ({
+        relationTo: 'leads';
+        value: string | Lead;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -841,6 +871,21 @@ export interface SeoSelect<T extends boolean = true> {
   twitterImage?: T;
   canonicalUrl?: T;
   structuredData?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads_select".
+ */
+export interface LeadsSelect<T extends boolean = true> {
+  user_username?: T;
+  user_email?: T;
+  user_phone?: T;
+  user_budget?: T;
+  user_message?: T;
+  affiliate_id?: T;
+  activity_data?: T;
   updatedAt?: T;
   createdAt?: T;
 }

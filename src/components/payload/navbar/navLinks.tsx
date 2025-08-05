@@ -13,22 +13,11 @@ import {
   Layers,
   Folder,
   FileText,
-  BarChart3
+  BarChart3,
+  Lightbulb
 } from "lucide-react";
 
 export const navLinks = [
-  {
-    href: "/dashboard",
-    label: "Dashboard",
-    icon: <Home size={16} />,
-    roles: ["admin"],
-  },
-  {
-    href: "/dashboard/collections/users",
-    label: "Affiliates",
-    icon: <Layers size={16} />,
-    roles: ["admin"],
-  },
   {
     href: "/dashboard/account",
     label: "Account",
@@ -36,10 +25,16 @@ export const navLinks = [
     roles: ["admin", "affiliate", "customer"],
   },
   {
-    href: "/dashboard/collections/media",
-    label: "Media",
-    icon: <Image size={16} />,
-    roles: ["admin"],
+    href: "/dashboard/collections/users",
+    label: "Affiliates",
+    icon: <Layers size={16} />,
+    roles: ["admin", "affiliate"],
+  },
+  {
+    href: "/dashboard/collections/bank-details",
+    label: "Bank Details",
+    icon: <Banknote size={16} />,
+    roles: ["admin", "affiliate"],
   },
   {
     href: "/dashboard/collections/banners",
@@ -54,15 +49,33 @@ export const navLinks = [
     roles: ["admin"],
   },
   {
-    href: "/dashboard/collections/pages",
-    label: "Pages",
-    icon: <FileText size={16} />,
+    href: "/dashboard/collections/affiliate-commission-settings",
+    label: "Commission Settings",
+    icon: <Settings size={16} />,
     roles: ["admin"],
   },
   {
-    href: "/dashboard/collections/tags",
-    label: "Tags",
-    icon: <Tag size={16} />,
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: <Home size={16} />,
+    roles: ["admin"],
+  },
+  {
+    href: "/dashboard/collections/affiliate-commissions",
+    label: "Earnings",
+    icon: <DollarSign size={16} />,
+    roles: ["admin", "affiliate"],
+  },
+  {
+    href: "/dashboard/collections/leads",
+    label: "Leads",
+    icon: <Lightbulb size={16} />,
+    roles: ["admin"],
+  },
+  {
+    href: "/dashboard/collections/pages",
+    label: "Pages",
+    icon: <FileText size={16} />,
     roles: ["admin"],
   },
   {
@@ -72,39 +85,15 @@ export const navLinks = [
     roles: ["admin"],
   },
   {
-    href: "/dashboard/collections/users",
-    label: "Affiliates",
-    icon: <Layers size={16} />,
-    roles: ["admin", "affiliate"],
-  },
-  {
-    href: "/dashboard/collections/affiliate-commissions",
-    label: "Earnings",
-    icon: <DollarSign size={16} />,
-    roles: ["admin", "affiliate"],
-  },
-  {
     href: "/dashboard/collections/orders",
     label: "Orders",
     icon: <ShoppingCart size={16} />,
     roles: ["admin", "affiliate", "customer"],
   },
   {
-    href: "/dashboard/collections/testimonials",
-    label: "Testimonials",
-    icon: <Star size={16} />,
-    roles: ["admin"],
-  },
-  {
-    href: "/dashboard/collections/bank-details",
-    label: "Bank Details",
-    icon: <Banknote size={16} />,
-    roles: ["admin", "affiliate"],
-  },
-  {
-    href: "/dashboard/collections/affiliate-commission-settings",
-    label: "Commission Settings",
-    icon: <Settings size={16} />,
+    href: "/dashboard/collections/media",
+    label: "Media",
+    icon: <Image size={16} />,
     roles: ["admin"],
   },
   {
@@ -119,7 +108,20 @@ export const navLinks = [
     icon: <BarChart3 size={16} />,
     roles: ["admin"],
   },
+  {
+    href: "/dashboard/collections/tags",
+    label: "Tags",
+    icon: <Tag size={16} />,
+    roles: ["admin"],
+  },
+  {
+    href: "/dashboard/collections/testimonials",
+    label: "Testimonials",
+    icon: <Star size={16} />,
+    roles: ["admin"],
+  },
 ];
+
 
 export function getNavLinksByRole(role: string) {
   if (role === "admin") return navLinks;

@@ -8,19 +8,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
 import ContactSvg from "./contact-svg";
+import { createLead } from "@/lib/payload/leads";
+import { getActivityData, getValidAffiliateId } from "@/lib/services/leads";
 
 const formSchema = z.object({
   user_username: z.string().min(1, "Name is required"),
   user_email: z.string().email("Invalid email"),
   user_phone: z.string().optional(),
-  user_budget: z.string().min(1, "Please select your budget"),
   user_message: z.string().min(1, "Message is required"),
 });
 
@@ -44,8 +39,6 @@ export default function Contact2() {
     register,
     handleSubmit,
     reset,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -53,13 +46,16 @@ export default function Contact2() {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const activity = getActivityData();
+      const affiliateId = getValidAffiliateId();
+
+      const obj = {
+        ...data,
+        activity_data: activity,
+        affiliate_id: affiliateId,
+      };
+
+      const res = await createLead(obj);
 
       if (!res.ok) throw new Error("Failed");
 
@@ -84,14 +80,14 @@ export default function Contact2() {
       bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]
       "
     >
-      {/* SVG Section on left in large screens */}
+      {/* SVG Section */}
       <div
         className="
-      w-full lg:w-1/2 lg:p-5
-      flex items-center justify-center
-      bg-[rgb(186,186,249)] dark:bg-[rgba(255,255,255,0.06)] 
-      p-8 md:p-12 rounded-[50%_0_0_50%]
-      max-h-[600px]
+        w-full lg:w-1/2 lg:p-5
+        flex items-center justify-center
+        bg-[rgb(186,186,249)] dark:bg-[rgba(255,255,255,0.06)] 
+        p-8 md:p-12 rounded-[50%_0_0_50%]
+        max-h-[600px]
       "
       >
         <div className="w-full h-auto md:max-w-lg">
@@ -99,25 +95,15 @@ export default function Contact2() {
         </div>
       </div>
 
-      {/* Form Section on right in large screens */}
-      <div
-        className="
-        w-full lg:w-1/2  lg:p-5
-        flex items-center justify-center
-        min-h-[600px] 
-        "
-      >
+      {/* Form Section */}
+      <div className="w-full lg:w-1/2  lg:p-5 flex items-center justify-center min-h-[600px]">
         <motion.form
           ref={formRef}
           onSubmit={handleSubmit(onSubmit)}
           variants={listVariant}
           initial="initial"
           animate="animate"
-          className="
-        w-full
-        bg-[rgba(2,2,45,0.066)] p-10 sm:p-12 rounded-[50px]
-        flex flex-col gap-6
-        "
+          className="w-full bg-[rgba(2,2,45,0.066)] p-10 sm:p-12 rounded-[50px] flex flex-col gap-6"
         >
           <motion.h1
             variants={listVariant}
@@ -176,30 +162,6 @@ export default function Contact2() {
             />
           </motion.div>
 
-          {/* Budget */}
-          <motion.div variants={listVariant} className="flex flex-col gap-2.5">
-            <label htmlFor="user_budget" className="text-xs font-medium">
-              Your Budget
-            </label>
-            <Select
-              onValueChange={(val) => setValue("user_budget", val)}
-              value={watch("user_budget")}
-            >
-              <SelectTrigger className="w-full p-3 rounded-md border-none" />
-              <SelectContent>
-                <SelectItem value="below_10k">Below ₹10,000</SelectItem>
-                <SelectItem value="10k_50k">₹10,000 - ₹50,000</SelectItem>
-                <SelectItem value="50k_1lakh">₹50,000 - ₹1,00,000</SelectItem>
-                <SelectItem value="above_1lakh">Above ₹1,00,000</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors.user_budget && (
-              <span className="text-sm text-red-500">
-                {errors.user_budget.message}
-              </span>
-            )}
-          </motion.div>
-
           {/* Message */}
           <motion.div variants={listVariant} className="flex flex-col gap-2.5">
             <label htmlFor="user_message" className="text-xs font-medium">
@@ -219,21 +181,17 @@ export default function Contact2() {
             )}
           </motion.div>
 
-          {/* Submit */}
+          {/* Submit Button */}
           <motion.div variants={listVariant}>
             <Button
               type="submit"
-              className="
-          bg-[#dd4c62] text-white p-5 rounded-lg cursor-pointer
-          hover:bg-[#c43f52] transition-colors duration-300
-          w-full
-          "
+              className="bg-[#dd4c62] text-white p-5 rounded-lg cursor-pointer hover:bg-[#c43f52] transition-colors duration-300 w-full"
             >
               Send
             </Button>
           </motion.div>
 
-          {/* Success / Error Messages */}
+          {/* Success / Error Message */}
           {success && (
             <p className="text-green-500 mt-3 text-center">
               Your message has been sent!

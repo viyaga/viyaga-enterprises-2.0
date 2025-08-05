@@ -2,45 +2,30 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { type ActivityData, type PathEntry } from "@/types/leads";
 
-interface TermEntry {
-  term: string;
-  t: string;
-}
-
-interface CheckoutEntry {
-  id: string;
-  plan: string;
-  billingcycle: string;
-  t: string;
-}
-
-interface ProductVisitEntry {
-  slug: string;
-  t: string;
-}
-
-interface PathEntry extends TermEntry {
-  duration: number; // milliseconds
-  scrollDepth: number; // 0 - 100
-}
-
-interface ActivityData {
-  searched: TermEntry[];
-  sorted: TermEntry[];
-  categories: TermEntry[];
-  paths: PathEntry[];
-  checkout?: CheckoutEntry[];
-  productsvisited?: ProductVisitEntry[];
-}
 
 const STORAGE_KEY = 'activity_data';
+const AFFILIATE_KEY = 'affiliate_info';
 const MAX_ITEMS = 50;
 
 function addEntry<T extends { t: string }>(array: T[], entry: T, key: keyof T) {
   const filtered = array.filter(item => item[key] !== entry[key]);
   filtered.unshift(entry);
   return filtered.slice(0, MAX_ITEMS);
+}
+
+function saveAffiliateId(affId: string) {
+  const now = new Date();
+  const expiry = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000); // 6 months
+
+  const affiliateInfo = {
+    id: affId,
+    setAt: now.toISOString(),
+    expiresAt: expiry.toISOString(),
+  };
+
+  localStorage.setItem(AFFILIATE_KEY, JSON.stringify(affiliateInfo));
 }
 
 export default function ActivityTracker() {
@@ -87,13 +72,11 @@ export default function ActivityTracker() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     };
 
-    // Save on tab close or switch
     window.addEventListener('beforeunload', savePageActivity);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') savePageActivity();
     });
 
-    // Save on route change
     return () => {
       savePageActivity();
       window.removeEventListener('beforeunload', savePageActivity);
@@ -115,6 +98,12 @@ export default function ActivityTracker() {
     startTimeRef.current = Date.now(); // reset time
     scrollDepthRef.current = 0;        // reset scroll
     const now = new Date().toISOString();
+
+    // Affiliate ID tracking
+    const affId = searchParams.get('aff');
+    if (affId) {
+      saveAffiliateId(affId);
+    }
 
     // Query params
     const q = searchParams.get('q');
