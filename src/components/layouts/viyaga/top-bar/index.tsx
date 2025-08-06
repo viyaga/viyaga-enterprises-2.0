@@ -67,7 +67,7 @@ const TopBar = () => {
             variant="default"
             className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
           >
-            <Link href="/hire-us">Login</Link>
+            <Link href="/login-register">Login</Link>
           </Button>
 
           {/* Mobile Drawer */}

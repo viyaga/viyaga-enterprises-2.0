@@ -72,7 +72,7 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
             variant="default"
             className="inline-flex md:hidden text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-12 py-4 mt-5"
           >
-            <Link href="/hire-us">Login</Link>
+            <Link href="/login-register">Login</Link>
           </Button>
         </ul>
       </div>

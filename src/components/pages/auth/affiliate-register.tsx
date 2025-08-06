@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-export default function AuthForm() {
+export default function AffiliateRegister() {
   const [tab, setTab] = useState<'register' | 'login'>('register')
 
   return (
