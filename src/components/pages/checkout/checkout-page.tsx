@@ -166,46 +166,44 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
   };
 
   return (
-    <div className="min-h-screen py-8 md:py-12 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
-      <div className="min-h-screen py-8 md:py-12 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
-            Checkout
-          </h1>
+    <div className="min-h-screen py-16 md:py-20 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
+          Checkout
+        </h1>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <BillingDetailsForm
-                defaultCountry={countryCode}
-                onSubmit={onBillingSubmit}
-              />
-            </div>
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <BillingDetailsForm
+              defaultCountry={countryCode}
+              onSubmit={onBillingSubmit}
+            />
+          </div>
 
-            <div>
-              <OrderSummary
-                product={product}
-                formatPrice={formatPrice}
-                taxes={taxes}
-                total={total}
-                originalPrice={originalPrice}
-                discountedPrice={unitPrice}
-                setupCost={setupCost > 0 ? setupCost : undefined}
-              />
+          <div>
+            <OrderSummary
+              product={product}
+              formatPrice={formatPrice}
+              taxes={taxes}
+              total={total}
+              originalPrice={originalPrice}
+              discountedPrice={unitPrice}
+              setupCost={setupCost > 0 ? setupCost : undefined}
+            />
 
-              <Button
-                className="w-full mt-6"
-                disabled={isSubmitting}
-                onClick={() =>
-                  document
-                    .getElementById('billing-form')
-                    ?.dispatchEvent(
-                      new Event('submit', { cancelable: true, bubbles: true })
-                    )
-                }
-              >
-                {isSubmitting ? 'Processing...' : 'Pay Now'}
-              </Button>
-            </div>
+            <Button
+              className="w-full mt-6"
+              disabled={isSubmitting}
+              onClick={() =>
+                document
+                  .getElementById('billing-form')
+                  ?.dispatchEvent(
+                    new Event('submit', { cancelable: true, bubbles: true })
+                  )
+              }
+            >
+              {isSubmitting ? 'Processing...' : 'Pay Now'}
+            </Button>
           </div>
         </div>
       </div>

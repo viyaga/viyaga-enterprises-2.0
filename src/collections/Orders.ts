@@ -10,7 +10,7 @@ const Orders: CollectionConfig = {
   },
   access: {
     read: hasOrderAccess,
-    create: isAdmin,
+    create: () => true,
     update: isAdmin,
     delete: isAdmin,
   },
