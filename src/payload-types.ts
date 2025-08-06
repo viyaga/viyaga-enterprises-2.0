@@ -512,9 +512,9 @@ export interface Lead {
   user_username: string;
   user_email: string;
   user_phone?: string | null;
-  user_budget: 'below_10k' | '10k_50k' | '50k_1lakh' | 'above_1lakh';
   user_message: string;
-  affiliate_id?: string | null;
+  user_country: string;
+  affiliate_id?: (string | null) | User;
   activity_data?:
     | {
         [k: string]: unknown;
@@ -882,8 +882,8 @@ export interface LeadsSelect<T extends boolean = true> {
   user_username?: T;
   user_email?: T;
   user_phone?: T;
-  user_budget?: T;
   user_message?: T;
+  user_country?: T;
   affiliate_id?: T;
   activity_data?: T;
   updatedAt?: T;

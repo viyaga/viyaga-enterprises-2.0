@@ -2,7 +2,7 @@ import * as qs from 'qs-esm';
 import { Tquery } from './types';
 import { JsonObject } from 'payload';
 
-const endpoint = process.env.PAYLOAD_API_URL;
+const endpoint = process.env.PAYLOAD_API_URL || process.env.NEXT_PUBLIC_PAYLOAD_API_URL;
 const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${process.env.PAYLOAD_API_KEY}`,
@@ -62,6 +62,7 @@ export async function payloadFetch({
         return data;
     } catch (err: unknown) {
         if (err instanceof Error) {
+            console.log(`Payload fetch error: ${err}`);
             return { error: err.message };
         }
         return { error: 'An unknown error occurred' };

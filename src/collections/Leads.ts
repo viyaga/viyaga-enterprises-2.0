@@ -38,34 +38,29 @@ const Leads: CollectionConfig = {
       required: false,
     },
     {
-      name: 'user_budget',
-      type: 'select',
-      label: 'Budget',
-      required: true,
-      options: [
-        { label: 'Below ₹10,000', value: 'below_10k' },
-        { label: '₹10,000 - ₹50,000', value: '10k_50k' },
-        { label: '₹50,000 - ₹1,00,000', value: '50k_1lakh' },
-        { label: 'Above ₹1,00,000', value: 'above_1lakh' },
-      ],
-    },
-    {
       name: 'user_message',
       type: 'textarea',
       label: 'Message',
       required: true,
     },
     {
-      name: 'affiliate_id',
+      name: 'user_country',
       type: 'text',
-      label: 'Affiliate ID',
-      required: false,
+      label: 'Country',
+      required: true,
+    },
+    {
+      name: 'affiliate_id',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'activity_data',
       type: 'json',
       label: 'Activity Data',
-      required: false,
     },
   ],
 };

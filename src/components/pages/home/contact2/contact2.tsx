@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,12 +11,20 @@ import { Button } from "@/components/ui/button";
 import ContactSvg from "./contact-svg";
 import { createLead } from "@/lib/payload/leads";
 import { getActivityData, getValidAffiliateId } from "@/lib/services/leads";
+import countries from "world-countries";
+
+// Format countries for select
+const formattedCountries = countries.map((country) => ({
+  value: country.cca2,
+  label: country.name.common,
+}));
 
 const formSchema = z.object({
   user_username: z.string().min(1, "Name is required"),
   user_email: z.string().email("Invalid email"),
   user_phone: z.string().optional(),
   user_message: z.string().min(1, "Message is required"),
+  user_country: z.string().min(1, "Country is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -33,6 +41,7 @@ const listVariant = {
 export default function Contact2() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -44,59 +53,46 @@ export default function Contact2() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: FormValues) => {
-    try {
-      const activity = getActivityData();
-      const affiliateId = getValidAffiliateId();
+  const onSubmit = (data: FormValues) => {
+    startTransition(async () => {
+      try {
+        const activity = getActivityData();
+        const affiliateId = getValidAffiliateId();
 
-      const obj = {
-        ...data,
-        activity_data: activity,
-        affiliate_id: affiliateId,
-      };
+        const obj = {
+          ...data,
+          activity_data: activity,
+          affiliate_id: affiliateId,
+        };
 
-      const res = await createLead(obj);
+        const res = await createLead(obj);
 
-      if (!res.ok) throw new Error("Failed");
+        if (res.error) throw new Error("Failed");
 
-      setSuccess(true);
-      setError(false);
-      reset();
-    } catch (err) {
-      console.error(err);
-      setError(true);
-      setSuccess(false);
-    }
+        setSuccess(true);
+        setError(false);
+        reset();
+      } catch (err) {
+        console.error(err);
+        setError(true);
+        setSuccess(false);
+      }
+    });
   };
 
   return (
     <div
-      className="
-      flex flex-col-reverse lg:flex-row lg:items-center
-      gap-12 lg:gap-20
-      min-h-screen
-      px-4 sm:px-8 md:px-16 
-      py-8 sm:py-12 md:py-20
-      bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]
-      "
+      className="flex flex-col-reverse lg:flex-row lg:items-center gap-12 lg:gap-20 min-h-screen px-4 sm:px-8 md:px-16 py-8 sm:py-12 md:py-20 bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]"
     >
       {/* SVG Section */}
-      <div
-        className="
-        w-full lg:w-1/2 lg:p-5
-        flex items-center justify-center
-        bg-[rgb(186,186,249)] dark:bg-[rgba(255,255,255,0.06)] 
-        p-8 md:p-12 rounded-[50%_0_0_50%]
-        max-h-[600px]
-      "
-      >
+      <div className="w-full lg:w-1/2 lg:p-5 flex items-center justify-center bg-[rgb(186,186,249)] dark:bg-[rgba(255,255,255,0.06)] p-8 md:p-12 rounded-[50%_0_0_50%] max-h-[600px]">
         <div className="w-full h-auto md:max-w-lg">
           <ContactSvg />
         </div>
       </div>
 
       {/* Form Section */}
-      <div className="w-full lg:w-1/2  lg:p-5 flex items-center justify-center min-h-[600px]">
+      <div className="w-full lg:w-1/2 lg:p-5 flex items-center justify-center min-h-[600px]">
         <motion.form
           ref={formRef}
           onSubmit={handleSubmit(onSubmit)}
@@ -162,6 +158,36 @@ export default function Contact2() {
             />
           </motion.div>
 
+          {/* Country */}
+          <motion.div variants={listVariant} className="flex flex-col gap-2.5">
+            <label htmlFor="user_country" className="text-xs font-medium">
+              Country
+            </label>
+            <select
+              id="user_country"
+              {...register("user_country")}
+              className="p-3 rounded-md border"
+            >
+              <option value="" className="text-gray-500 dark:text-gray-400">
+                Select a country
+              </option>
+              {formattedCountries.map((country) => (
+                <option
+                  key={country.value}
+                  value={country.label}
+                  className="capitalize bg-white dark:bg-gray-800 text-black dark:text-white"
+                >
+                  {country.label}
+                </option>
+              ))}
+            </select>
+            {errors.user_country && (
+              <span className="text-sm text-red-500">
+                {errors.user_country.message}
+              </span>
+            )}
+          </motion.div>
+
           {/* Message */}
           <motion.div variants={listVariant} className="flex flex-col gap-2.5">
             <label htmlFor="user_message" className="text-xs font-medium">
@@ -185,9 +211,17 @@ export default function Contact2() {
           <motion.div variants={listVariant}>
             <Button
               type="submit"
-              className="bg-[#dd4c62] text-white p-5 rounded-lg cursor-pointer hover:bg-[#c43f52] transition-colors duration-300 w-full"
+              className="bg-[#dd4c62] text-white p-5 rounded-lg cursor-pointer hover:bg-[#c43f52] transition-colors duration-300 w-full flex items-center justify-center gap-2"
+              disabled={isPending}
             >
-              Send
+              {isPending ? (
+                <>
+                  <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                "Send"
+              )}
             </Button>
           </motion.div>
 
