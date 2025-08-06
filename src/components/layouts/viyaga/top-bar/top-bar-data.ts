@@ -4,8 +4,8 @@ export const navLinks = [
     { href: "/", label: "Home" },
     { href: "/solutions", label: "Solutions" },
     { href: "/work", label: "Work" },
-    { href: "/company", label: "Company" },
-    { href: "https://take.app/viyaga", label: "Insights" },
+    { href: "/learn", label: "Learn" },
+    { href: "/contact", label: "Contact" },
 ];
 
 export const socialLinks = [

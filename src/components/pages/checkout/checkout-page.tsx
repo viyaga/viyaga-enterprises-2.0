@@ -10,8 +10,8 @@ import { OrderSummary } from './order-summary';
 
 import { getReferralCode, getUserGeoLocation } from '@/lib/services/cookies';
 import { CheckoutProduct, CreateOrderInput } from './types';
+import { createOrder } from '@/lib/payload/orders';
 
-// ✅ Load Razorpay SDK dynamically
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
     if (typeof window === 'undefined') return resolve(false);
@@ -34,6 +34,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
 
   const [countryCode, setCountryCode] = useState<string>('IN');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderData, setOrderData] = useState<CreateOrderInput | null>(null);
 
   useEffect(() => {
     const fetchGeo = async () => {
@@ -93,7 +94,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
     setIsSubmitting(true);
     const referralCode = await getReferralCode();
 
-    const orderData: CreateOrderInput = {
+    const orderInput: CreateOrderInput = {
       productTitle: product.title,
       productThumbnail: product.thumbnail?.id || undefined,
       currency,
@@ -104,6 +105,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
       total,
       setupCost: setupCost > 0 ? setupCost : undefined,
       paymentMethod: 'razorpay',
+      paymentStatus: 'pending',
       countryCode,
       billingDetails: {
         fullName: data.fullName,
@@ -123,7 +125,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
       },
     };
 
-    console.log({ orderData });
+    setOrderData(orderInput);
 
     try {
       const loaded = await loadRazorpayScript();
@@ -147,12 +149,34 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
         name: 'Viyaga',
         description: 'Product Payment',
         order_id: order.id,
-        handler: (response) => {
+        handler: async (response) => {
           toast.success('Payment successful!');
-          console.log({ PaymentResponse: response });
-          router.push('/dashboard/collections/orders');
+
+          try {
+            const orderData: CreateOrderInput = {
+              ...orderInput,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+              paymentStatus: 'paid',
+            }
+            const payloadRes = await createOrder(orderData)
+
+            if (payloadRes.error) {
+              throw new Error('Failed to create order');
+            }
+
+            router.push('/dashboard/collections/orders');
+          } catch (error) {
+            console.error('Order creation failed:', error);
+            toast.error('Failed to create order after payment. Please contact support.');
+          }
         },
-        prefill: { name: data.fullName, email: data.email, contact: data.phone },
+        prefill: {
+          name: data.fullName,
+          email: data.email,
+          contact: data.phone,
+        },
         theme: { color: '#3399cc' },
       });
 
@@ -167,8 +191,8 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
 
   return (
     <div className="min-h-screen py-16 md:py-20 bg-gradient-to-b from-[#f8fafc] via-[#e2e8f0] to-[#f8fafc] dark:from-[#00182e] dark:via-[#011925] dark:to-[#00182e]">
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
+      <div className="container mx-auto px-4  max-w-7xl">
+        <h1 className="text-3xl font-semibold mb-6 mt-6 text-gray-800 dark:text-gray-100">
           Checkout
         </h1>
 
@@ -192,7 +216,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
             />
 
             <Button
-              className="w-full mt-6"
+              className="w-full mt-6 cursor-pointer"
               disabled={isSubmitting}
               onClick={() =>
                 document
