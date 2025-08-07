@@ -5,7 +5,7 @@ import React from 'react'
 
 const page = async() => {
     const res = await getMe()
-    if(res.user) redirect('/dashboard')
+    if(res?.user) redirect('/dashboard')
         
     return (
         <CustomerAuthForm />

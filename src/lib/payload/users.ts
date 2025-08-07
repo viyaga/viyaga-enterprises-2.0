@@ -46,7 +46,7 @@ export async function redirectBasedOnRole(): Promise<void> {
 
   if (!role || role !== 'admin') {
     await logoutAction();
-    return redirect('/dashboard/login');
+    return redirect('/login-register');
   }
 }
 
@@ -99,29 +99,16 @@ export async function registerUser({ email, password }: AuthArgs): Promise<{
   success: boolean;
   error?: string;
 }> {
+
   try {
     const response = await payloadFetch({
       path: '/users',
       method: 'POST',
       body: { email, password },
-      customHeaders: {
-        'Content-Type': 'application/json',
-      },
     });
 
-    if (!response || !response.token) {
-      throw new Error('Invalid registration response');
-    }
-
-    const cookieStore = await cookies();
-    cookieStore.set('payload-token', response.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 365,
-    });
-
+    console.log('Registration response:', response);
+    
     return {
       success: true,
     };

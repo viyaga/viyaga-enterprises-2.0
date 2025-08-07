@@ -39,6 +39,7 @@ export default buildConfig({
       },
       Nav: './components/payload/navbar/nav.tsx',
       beforeDashboard: ['./components/payload/before-dashboard.tsx'],
+      beforeLogin: ['./components/payload/before-login.tsx'],
     },
   },
   collections: [

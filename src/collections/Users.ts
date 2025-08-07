@@ -15,7 +15,7 @@ export const Users: CollectionConfig = {
   },
   access: {
     read: canAccessUserDetails,
-    create: isAdmin,
+    create: () => true,
     update: canAccessUserDetails,
     delete: isAdmin,
   },

@@ -25,6 +25,7 @@ import { default as default_31053be7dec3c935e40de1cea1c4e21c } from '../../../co
 import { default as default_b47ecd02b675f4768cc002d26bfecd78 } from '../../../components/payload/icon.tsx'
 import { default as default_831cb38d1ca69ead05c2615a09b7de55 } from '../../../components/payload/logo.tsx'
 import { default as default_7ccc97a72f5a8bb52d645eb98ea99e85 } from '../../../components/payload/before-dashboard.tsx'
+import { default as default_8def89afe8dba470abf23f728855f80b } from '../../../components/payload/before-login.tsx'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 export const importMap = {
@@ -55,5 +56,6 @@ export const importMap = {
   "./components/payload/icon.tsx#default": default_b47ecd02b675f4768cc002d26bfecd78,
   "./components/payload/logo.tsx#default": default_831cb38d1ca69ead05c2615a09b7de55,
   "./components/payload/before-dashboard.tsx#default": default_7ccc97a72f5a8bb52d645eb98ea99e85,
+  "./components/payload/before-login.tsx#default": default_8def89afe8dba470abf23f728855f80b,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }
