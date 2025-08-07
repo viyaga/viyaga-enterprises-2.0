@@ -1,9 +1,8 @@
+import Learn from '@/components/pages/learn/learn'
 import React from 'react'
 
 const page = () => {
-  return (
-    <div>page</div>
-  )
+  return <Learn />
 }
 
 export default page

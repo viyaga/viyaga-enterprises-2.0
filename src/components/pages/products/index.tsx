@@ -14,12 +14,12 @@ export default function SoftwareProductsPage() {
       <HeroSection />
       <AutoScrollBanner />
       <SearchFilters />
-      <Suspense fallback={<ProductGridSkeleton/>}>
+      <Suspense fallback={<ProductGridSkeleton />}>
         <ProductGrid />
       </Suspense>
-      <Licensing />
-      <Testimonials />
-      <Newsletter />
+      {/* <Licensing />
+      <Testimonials /> */}
+      {/* <Newsletter /> */}
     </div>
   );
 }

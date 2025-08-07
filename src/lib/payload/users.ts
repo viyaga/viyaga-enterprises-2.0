@@ -100,23 +100,19 @@ export async function registerUser({ email, password }: AuthArgs): Promise<{
   error?: string;
 }> {
 
-  try {
-    const response = await payloadFetch({
-      path: '/users',
-      method: 'POST',
-      body: { email, password },
-    });
+  const response = await payloadFetch({
+    path: '/users',
+    method: 'POST',
+    body: { email, password },
+  });
 
-    console.log('Registration response:', response);
-    
-    return {
-      success: true,
-    };
-  } catch (err) {
-    console.error('Registration error:', err);
-    return {
-      success: false,
-      error: 'Registration failed',
-    };
+  console.log('Registration response:', response);
+
+  if (response?.error) {
+    return { error: response.error, success: false };
   }
+
+  return {
+    success: true,
+  };
 }

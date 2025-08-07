@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { loginUser, registerUser } from "@/lib/payload/users";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // -------------------------
 // Zod schema
@@ -42,6 +42,8 @@ export default function LoginRegister() {
   const [isDark, setIsDark] = useState(false);
   const { resolvedTheme } = useTheme();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   useEffect(() => {
     if (resolvedTheme) {
@@ -52,6 +54,7 @@ export default function LoginRegister() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -74,8 +77,11 @@ export default function LoginRegister() {
       }
 
       toast.success(`${isLogin ? "Login" : "Register"} success!`);
-      if (isLogin) return router.push('/dashboard');
-      router.push('/login-register');
+      
+      if (isLogin) return router.push(redirect || '/dashboard')
+
+      reset();
+      return setIsLogin(true);
 
     } catch (err) {
       toast.error("Error: " + (err as Error).message);

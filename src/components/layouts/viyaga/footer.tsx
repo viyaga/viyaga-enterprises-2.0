@@ -1,5 +1,10 @@
 import React from "react";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
 
 interface Footer7Props {
   logo?: {
@@ -47,9 +52,9 @@ const defaultSections = [
   {
     title: "Resources",
     links: [
-      { name: "Help", href: "#" },
-      { name: "Sales", href: "#" },
-      { name: "Advertise", href: "#" },
+      { name: "Help Center", href: "#" },
+      { name: "Support", href: "#" },
+      { name: "Partners", href: "#" },
       { name: "Privacy", href: "#" },
     ],
   },
@@ -69,9 +74,9 @@ const defaultLegalLinks = [
 
 const Footer7 = ({
   logo = {
-    url: "https://www.shadcnblocks.com",
+    url: "/",
     src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
+    alt: "Company Logo",
     title: "Shadcnblocks.com",
   },
   sections = defaultSections,
@@ -81,46 +86,56 @@ const Footer7 = ({
   legalLinks = defaultLegalLinks,
 }: Footer7Props) => {
   return (
-    <section className="py-32">
-      <div className="container">
-        <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
-          <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
-            {/* Logo */}
-            <div className="flex items-center gap-2 lg:justify-start">
-              <a href={logo.url}>
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  title={logo.title}
-                  className="h-8"
-                />
-              </a>
-              <h2 className="text-xl font-semibold">{logo.title}</h2>
-            </div>
-            <p className="text-muted-foreground max-w-[70%] text-sm">
+    <footer className="bg-gradient-to-b from-[#deecf5] to-[#deecf5] dark:from-[#0e172d] dark:to-[#0e172d] py-12">
+      <div className="container mx-auto max-w-7xl px-4">
+        {/* Top Section */}
+        <div className="flex flex-col gap-12 lg:flex-row lg:justify-between">
+          {/* Branding + Social */}
+          <div className="flex flex-col gap-6 lg:max-w-sm">
+            <a href={logo.url} className="flex items-center gap-2">
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                title={logo.title}
+                className="h-8"
+                loading="lazy"
+              />
+              <span className="text-xl font-semibold">{logo.title}</span>
+            </a>
+            <p className="text-muted-foreground text-sm leading-relaxed">
               {description}
             </p>
-            <ul className="text-muted-foreground flex items-center space-x-6">
+            <ul className="flex gap-4">
               {socialLinks.map((social, idx) => (
-                <li key={idx} className="hover:text-primary font-medium">
-                  <a href={social.href} aria-label={social.label}>
+                <li key={idx}>
+                  <a
+                    href={social.href}
+                    aria-label={social.label}
+                    className="hover:text-primary transition-colors"
+                  >
                     {social.icon}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="grid w-full gap-6 md:grid-cols-3 lg:gap-20">
-            {sections.map((section, sectionIdx) => (
-              <div key={sectionIdx}>
-                <h3 className="mb-4 font-bold">{section.title}</h3>
-                <ul className="text-muted-foreground space-y-3 text-sm">
+
+          {/* Link Sections */}
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3">
+            {sections.map((section, idx) => (
+              <div key={idx}>
+                <h4 className="mb-4 text-sm font-semibold tracking-wide uppercase">
+                  {section.title}
+                </h4>
+                <ul className="space-y-3 text-sm text-muted-foreground">
                   {section.links.map((link, linkIdx) => (
-                    <li
-                      key={linkIdx}
-                      className="hover:text-primary font-medium"
-                    >
-                      <a href={link.href}>{link.name}</a>
+                    <li key={linkIdx}>
+                      <a
+                        href={link.href}
+                        className="hover:text-primary transition-colors"
+                      >
+                        {link.name}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -128,18 +143,25 @@ const Footer7 = ({
             ))}
           </div>
         </div>
-        <div className="text-muted-foreground mt-8 flex flex-col justify-between gap-4 border-t py-8 text-xs font-medium md:flex-row md:items-center md:text-left">
-          <p className="order-2 lg:order-1">{copyright}</p>
-          <ul className="order-1 flex flex-col gap-2 md:order-2 md:flex-row">
+
+        {/* Bottom Section */}
+        <div className="mt-12 border-t pt-6 text-sm text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>{copyright}</p>
+          <ul className="flex flex-wrap gap-4">
             {legalLinks.map((link, idx) => (
-              <li key={idx} className="hover:text-primary">
-                <a href={link.href}> {link.name}</a>
+              <li key={idx}>
+                <a
+                  href={link.href}
+                  className="hover:text-primary transition-colors"
+                >
+                  {link.name}
+                </a>
               </li>
             ))}
           </ul>
         </div>
       </div>
-    </section>
+    </footer>
   );
 };
 
