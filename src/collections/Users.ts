@@ -51,7 +51,6 @@ export const Users: CollectionConfig = {
       name: 'name',
       label: 'Full Name',
       type: 'text',
-      required: true,
       admin: {
         placeholder: 'e.g. Jane Doe',
         description: 'Please enter your full legal name.',

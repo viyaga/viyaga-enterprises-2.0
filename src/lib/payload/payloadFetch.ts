@@ -1,8 +1,10 @@
+"use server";
+
 import * as qs from 'qs-esm';
 import { Tquery } from './types';
 import { JsonObject } from 'payload';
 
-const endpoint = process.env.PAYLOAD_API_URL || process.env.NEXT_PUBLIC_PAYLOAD_API_URL;
+const endpoint = process.env.PAYLOAD_API_URL;
 const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${process.env.PAYLOAD_API_KEY}`,

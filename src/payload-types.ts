@@ -146,7 +146,7 @@ export interface User {
   /**
    * Please enter your full legal name.
    */
-  name: string;
+  name?: string | null;
   /**
    * Auto-generated unique code used for referring others.
    */

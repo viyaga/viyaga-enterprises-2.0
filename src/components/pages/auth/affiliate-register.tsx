@@ -1,147 +1,140 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
+import { useTransition, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
-export default function AffiliateRegister() {
-  const [tab, setTab] = useState<'register' | 'login'>('register')
+const formSchema = z.object({
+  username: z.string().min(3, "Username is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm your password"),
+  sponsoredBy: z.string().optional(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+export default function AffiliateRegisterForm() {
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    setError(null);
+    setSuccess(null);
+
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/affiliate/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          throw new Error(result.message || "Registration failed");
+        }
+
+        setSuccess("Registration successful!");
+        reset();
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      }
+    });
+  };
 
   return (
-    <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-      <div className="flex justify-center mb-6">
-        <Image src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" width={32} height={32} />
-        <span className="ml-2 text-2xl font-semibold text-gray-900 dark:text-white">Affiliate Portal</span>
-      </div>
+    <motion.section
+      className="w-full max-w-md mx-auto mt-12 bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
+        Affiliate Registration
+      </h2>
 
-      <div className="mb-4 flex justify-between border-b border-gray-200 dark:border-gray-600">
-        <button
-          onClick={() => setTab('register')}
-          className={`py-2 px-4 font-medium text-sm ${
-            tab === 'register'
-              ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400'
-              : 'text-gray-500 hover:text-blue-600 dark:text-gray-400'
-          }`}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <div>
+          <Label htmlFor="username" className="text-gray-700 dark:text-gray-200 mb-2 block">
+            Username
+          </Label>
+          <Input id="username" {...register("username")} />
+          {errors.username && (
+            <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="email" className="text-gray-700 dark:text-gray-200 mb-2 block">
+            Email
+          </Label>
+          <Input id="email" type="email" {...register("email")} />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="password" className="text-gray-700 dark:text-gray-200 mb-2 block">
+            Password
+          </Label>
+          <Input id="password" type="password" {...register("password")} />
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="confirmPassword" className="text-gray-700 dark:text-gray-200 mb-2 block">
+            Confirm Password
+          </Label>
+          <Input id="confirmPassword" type="password" {...register("confirmPassword")} />
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
+          )}
+        </div>
+
+        <div>
+          <Label htmlFor="sponsoredBy" className="text-gray-700 dark:text-gray-200 mb-2 block">
+            Sponsored By (optional)
+          </Label>
+          <Input id="sponsoredBy" {...register("sponsoredBy")} />
+        </div>
+
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {success && <p className="text-green-500 text-center">{success}</p>}
+
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:brightness-110 font-semibold py-2 px-5 rounded-xl transition"
         >
-          Register
-        </button>
-        <button
-          onClick={() => setTab('login')}
-          className={`py-2 px-4 font-medium text-sm ${
-            tab === 'login'
-              ? 'text-blue-600 border-b-2 border-blue-600 dark:text-blue-400'
-              : 'text-gray-500 hover:text-blue-600 dark:text-gray-400'
-          }`}
-        >
-          Login
-        </button>
-      </div>
-
-      {tab === 'register' ? <RegisterForm /> : <LoginForm />}
-    </div>
-  )
-}
-
-function RegisterForm() {
-  return (
-    <form className="space-y-4">
-      <div>
-        <label htmlFor="registerEmail" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Your email
-        </label>
-        <input
-          type="email"
-          id="registerEmail"
-          className="w-full p-2.5 text-sm border rounded-lg bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="you@example.com"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="registerPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Password
-        </label>
-        <input
-          type="password"
-          id="registerPassword"
-          className="w-full p-2.5 text-sm border rounded-lg bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="••••••••"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Confirm password
-        </label>
-        <input
-          type="password"
-          id="confirmPassword"
-          className="w-full p-2.5 text-sm border rounded-lg bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="••••••••"
-          required
-        />
-      </div>
-      <div className="flex items-start">
-        <input
-          id="terms"
-          type="checkbox"
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600"
-          required
-        />
-        <label htmlFor="terms" className="ml-2 text-sm text-gray-500 dark:text-gray-300">
-          I agree to the{' '}
-          <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-            terms and conditions
-          </a>
-        </label>
-      </div>
-      <button
-        type="submit"
-        className="w-full text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-sm px-5 py-2.5"
-      >
-        Create account
-      </button>
-    </form>
-  )
-}
-
-function LoginForm() {
-  return (
-    <form className="space-y-4">
-      <div>
-        <label htmlFor="loginEmail" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Your email
-        </label>
-        <input
-          type="email"
-          id="loginEmail"
-          className="w-full p-2.5 text-sm border rounded-lg bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="you@example.com"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="loginPassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          Password
-        </label>
-        <input
-          type="password"
-          id="loginPassword"
-          className="w-full p-2.5 text-sm border rounded-lg bg-gray-50 border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="••••••••"
-          required
-        />
-      </div>
-      <div className="flex justify-between text-sm">
-        <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-          Forgot password?
-        </a>
-      </div>
-      <button
-        type="submit"
-        className="w-full text-white bg-blue-600 hover:bg-blue-700 rounded-lg text-sm px-5 py-2.5"
-      >
-        Login
-      </button>
-    </form>
-  )
+          {isPending ? "Registering..." : "Register"}
+        </Button>
+      </form>
+    </motion.section>
+  );
 }

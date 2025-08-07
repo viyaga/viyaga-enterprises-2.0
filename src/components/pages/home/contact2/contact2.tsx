@@ -82,6 +82,7 @@ export default function Contact2() {
 
   return (
     <div
+      id="contact"
       className="flex flex-col-reverse lg:flex-row lg:items-center gap-12 lg:gap-20 min-h-screen px-4 sm:px-8 md:px-16 py-8 sm:py-12 md:py-20 bg-gradient-to-b from-[#f0f9ff] to-[#deecf5] dark:from-[#0f172a] dark:to-[#0e172d]"
     >
       {/* SVG Section */}

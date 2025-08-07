@@ -5,7 +5,9 @@ export const navLinks = [
     { href: "/solutions", label: "Solutions" },
     { href: "/work", label: "Work" },
     { href: "/learn", label: "Learn" },
-    { href: "/contact", label: "Contact" },
+    {
+        href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}#contact`, label: "Contact"
+    },
 ];
 
 export const socialLinks = [
