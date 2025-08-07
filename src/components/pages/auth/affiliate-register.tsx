@@ -58,8 +58,8 @@ export default function AffiliateRegisterForm() {
 
         setSuccess("Registration successful!");
         reset();
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
+      } catch (err) {
+        setError("Something went wrong");
       }
     });
   };

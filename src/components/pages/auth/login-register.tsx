@@ -60,8 +60,7 @@ export default function LoginRegister() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: FormSchema) => {
-    const { confirmPassword, ...authData } = data;
+  const onSubmit = async (authData: FormSchema) => {
 
     try {
       let result;

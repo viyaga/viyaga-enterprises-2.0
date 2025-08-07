@@ -34,7 +34,6 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
 
   const [countryCode, setCountryCode] = useState<string>('IN');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderData, setOrderData] = useState<CreateOrderInput | null>(null);
 
   useEffect(() => {
     const fetchGeo = async () => {
@@ -124,8 +123,6 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
         commissionPercentage: product.affiliateCommission || 0,
       },
     };
-
-    setOrderData(orderInput);
 
     try {
       const loaded = await loadRazorpayScript();
