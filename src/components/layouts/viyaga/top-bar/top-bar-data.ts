@@ -6,7 +6,7 @@ export const navLinks = [
     { href: "/work", label: "Work" },
     { href: "/learn", label: "Learn" },
     {
-        href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}#contact`, label: "Contact"
+        href: "/#contact", label: "Contact"
     },
 ];
 
