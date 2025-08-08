@@ -253,7 +253,7 @@ export interface BankDetail {
  */
 export interface Media {
   id: string;
-  alt?: string | null;
+  alt: string;
   uploaded_by?: (string | null) | User;
   prefix?: string | null;
   updatedAt: string;
@@ -326,14 +326,15 @@ export interface Tag {
  */
 export interface Product {
   id: string;
-  thumbnail?: (string | null) | Media;
+  thumbnail: string | Media;
   title: string;
   slug: string;
   isFeatured?: boolean | null;
   isFree?: boolean | null;
+  status: 'draft' | 'published';
+  sortOrder?: number | null;
   category?: (string | Category)[] | null;
   tags?: (string | Tag)[] | null;
-  isSubscription?: boolean | null;
   subscriptionPlans?: (string | SubscriptionPlan)[] | null;
   setupCostUSD?: number | null;
   setupCostINR?: number | null;
@@ -716,9 +717,10 @@ export interface ProductsSelect<T extends boolean = true> {
   slug?: T;
   isFeatured?: T;
   isFree?: T;
+  status?: T;
+  sortOrder?: T;
   category?: T;
   tags?: T;
-  isSubscription?: T;
   subscriptionPlans?: T;
   setupCostUSD?: T;
   setupCostINR?: T;

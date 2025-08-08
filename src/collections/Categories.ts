@@ -1,5 +1,6 @@
 import { CollectionConfig, CollectionSlug } from 'payload';
 import { isAdmin } from './access';
+import { generateAndEnsureUniqueSlug } from './hooks/generate-slug';
 
 const Categories: CollectionConfig = {
   slug: 'categories',
@@ -13,6 +14,11 @@ const Categories: CollectionConfig = {
   defaultPopulate: {
     title: true,
     slug: true
+  },
+  hooks: {
+    beforeValidate: [
+      generateAndEnsureUniqueSlug('categories', 'title', 'slug'),
+    ],
   },
   fields: [
     { name: 'title', type: 'text', required: true },

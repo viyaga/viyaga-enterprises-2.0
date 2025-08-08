@@ -20,7 +20,7 @@ const DemoLinks = ({ demoUrls }: { demoUrls: DemoLink[] }) => {
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          <Link href={demo.url} target="_blank">
+          <Link href={demo?.url} target="_blank">
             <Button
               className="px-4 py-2 text-xs rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white hover:from-green-600 hover:to-blue-600"
               variant="ghost"

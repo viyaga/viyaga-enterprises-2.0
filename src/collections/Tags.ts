@@ -1,6 +1,7 @@
 // payload/collections/tags.js
 import { CollectionConfig } from 'payload';
 import { isAdmin } from './access';
+import { generateAndEnsureUniqueSlug } from './hooks/generate-slug';
 
 const Tags: CollectionConfig = {
   slug: 'tags',
@@ -13,6 +14,11 @@ const Tags: CollectionConfig = {
   },
   defaultPopulate: {
     name: true
+  },
+  hooks: {
+    beforeValidate: [
+      generateAndEnsureUniqueSlug('tags', 'title', 'slug'),
+    ],
   },
   fields: [
     { name: 'name', type: 'text', required: true },

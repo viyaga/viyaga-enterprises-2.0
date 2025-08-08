@@ -80,14 +80,16 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
   const shipping = 0;
   const total = +(subtotal + taxes + shipping).toFixed(2);
 
-  const formatPrice = useMemo(
-    () => (price: number) =>
-      new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en-US', {
-        style: 'currency',
-        currency,
-      }).format(price),
+  const formatPrice = useMemo(() => (price: number) => {
+    if (price === 0) return 'Free';
+    return new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en-US', {
+      style: 'currency',
+      currency,
+    }).format(price);
+  },
     [currency]
   );
+
 
   const onBillingSubmit = async (data: BillingFormData) => {
     setIsSubmitting(true);
@@ -209,7 +211,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
               total={total}
               originalPrice={originalPrice}
               discountedPrice={unitPrice}
-              setupCost={setupCost > 0 ? setupCost : undefined}
+              setupCost={setupCost}
             />
 
             <Button

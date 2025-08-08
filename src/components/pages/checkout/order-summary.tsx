@@ -57,12 +57,12 @@ export function OrderSummary({
       </div>
 
       {/* Setup Cost (if applicable) */}
-      {setupCost && setupCost > 0 && (
+      {setupCost !== undefined && (
         <div className="flex items-center justify-between mb-2">
           <span className="text-gray-700 dark:text-gray-300">
             Setup Cost:
           </span>
-          <span className="text-gray-900 dark:text-white">
+          <span className={`${setupCost === 0 ? 'text-green-600' : 'text-gray-900 dark:text-white'}`}>
             {formatPrice(setupCost)}
           </span>
         </div>

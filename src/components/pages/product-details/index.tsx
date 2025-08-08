@@ -18,7 +18,7 @@ const ProductDetailsPage = ({ docs }: { docs: Product[] }) => {
           <ProductInfo product={product} />
         </div>
       </div>
-      {product.isSubscription && product.subscriptionPlans?.length > 0 && (
+      {product.subscriptionPlans?.length > 0 && (
         <SubscriptionPlans plans={product.subscriptionPlans} productId={product.id} />
       )}
       {product.screenshots?.length > 0 && (

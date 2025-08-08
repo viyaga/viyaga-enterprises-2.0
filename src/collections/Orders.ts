@@ -116,7 +116,7 @@ const Orders: CollectionConfig = {
         { label: 'Credit or Debit Card', value: 'card' },
         { label: 'PayPal', value: 'paypal' },
         { label: 'Bank Transfer', value: 'bank transfer' },
-        { label: 'Razorpay', value: 'razorpay' }, // Added Razorpay
+        { label: 'Razorpay', value: 'razorpay' },
       ],
     },
     {
