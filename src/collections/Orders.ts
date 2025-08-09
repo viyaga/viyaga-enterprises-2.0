@@ -50,6 +50,7 @@ const Orders: CollectionConfig = {
       label: 'Original Price',
       type: 'number',
       required: true,
+      min: 0,
       access: {
         read: isAdmin,
         update: isAdmin,
@@ -64,6 +65,7 @@ const Orders: CollectionConfig = {
       label: 'Discounted Price',
       type: 'number',
       required: true,
+      min: 0,
       access: {
         read: isAdmin,
         update: isAdmin,
@@ -74,10 +76,21 @@ const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'discountCode',
+      label: 'Discount Code',
+      type: 'text',
+      required: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Optional promo or discount code used during checkout',
+      },
+    },
+    {
       name: 'subtotal',
       label: 'Subtotal',
       type: 'number',
       required: true,
+      min: 0,
       access: {
         read: isAdmin,
         update: isAdmin,
@@ -92,6 +105,7 @@ const Orders: CollectionConfig = {
       label: 'Taxes',
       type: 'number',
       required: true,
+      min: 0,
       access: {
         read: isAdmin,
         update: isAdmin,
@@ -106,6 +120,7 @@ const Orders: CollectionConfig = {
       label: 'Total Amount',
       type: 'number',
       required: true,
+      min: 0,
     },
     {
       name: 'paymentMethod',
@@ -123,7 +138,6 @@ const Orders: CollectionConfig = {
       name: 'countryCode',
       label: 'Country Code',
       type: 'text',
-      required: false,
       access: {
         read: isAdmin,
         update: isAdmin,
@@ -142,61 +156,21 @@ const Orders: CollectionConfig = {
         disableListFilter: true,
       },
       fields: [
-        {
-          name: 'fullName',
-          label: 'Full Name',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'email',
-          label: 'Email Address',
-          type: 'email',
-          required: true,
-        },
-        {
-          name: 'phone',
-          label: 'Phone Number',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'address',
-          label: 'Address',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'city',
-          label: 'City',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'state',
-          label: 'State / Province',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'postalCode',
-          label: 'Postal Code',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'country',
-          label: 'Country',
-          type: 'text',
-          required: true,
-        },
+        { name: 'fullName', label: 'Full Name', type: 'text', required: true },
+        { name: 'email', label: 'Email Address', type: 'email', required: true },
+        { name: 'phone', label: 'Phone Number', type: 'text', required: true },
+        { name: 'address', label: 'Address', type: 'text', required: true },
+        { name: 'city', label: 'City', type: 'text', required: true },
+        { name: 'state', label: 'State / Province', type: 'text', required: true },
+        { name: 'postalCode', label: 'Postal Code', type: 'text', required: true },
+        { name: 'country', label: 'Country', type: 'text', required: true },
       ],
     },
     {
       name: 'paymentStatus',
-      type: 'select',
       label: 'Payment Status',
-      defaultValue: "awaiting verification",
+      type: 'select',
+      defaultValue: 'awaiting verification',
       options: [
         { label: 'Pending', value: 'pending' },
         { label: 'Awaiting Verification', value: 'awaiting verification' },
@@ -207,10 +181,10 @@ const Orders: CollectionConfig = {
     },
     {
       name: 'orderStatus',
-      type: 'select',
       label: 'Order Status',
+      type: 'select',
       required: true,
-      defaultValue: "pending",
+      defaultValue: 'pending',
       options: [
         { label: 'Pending', value: 'pending' },
         { label: 'Processing', value: 'processing' },
@@ -218,6 +192,18 @@ const Orders: CollectionConfig = {
         { label: 'On Hold', value: 'on_hold' },
         { label: 'Cancelled', value: 'cancelled' },
       ],
+    },
+    {
+      name: 'paymentVerifiedAt',
+      label: 'Payment Verified At',
+      type: 'date',
+      admin: { position: 'sidebar' },
+    },
+    {
+      name: 'orderCompletedAt',
+      label: 'Order Completed At',
+      type: 'date',
+      admin: { position: 'sidebar' },
     },
     {
       name: 'referralCode',
@@ -263,16 +249,16 @@ const Orders: CollectionConfig = {
           name: 'commissionPercentage',
           label: 'Commission (%)',
           type: 'number',
+          min: 0,
+          max: 100,
           required: true,
         },
       ],
     },
-    // Razorpay specific fields (optional, add if you want to store Razorpay details)
     {
       name: 'razorpayOrderId',
       label: 'Razorpay Order ID',
       type: 'text',
-      required: false,
       admin: {
         position: 'sidebar',
         disableListColumn: true,
@@ -283,7 +269,6 @@ const Orders: CollectionConfig = {
       name: 'razorpayPaymentId',
       label: 'Razorpay Payment ID',
       type: 'text',
-      required: false,
       admin: {
         position: 'sidebar',
         disableListColumn: true,
@@ -294,11 +279,22 @@ const Orders: CollectionConfig = {
       name: 'razorpaySignature',
       label: 'Razorpay Signature',
       type: 'text',
-      required: false,
       admin: {
         position: 'sidebar',
         disableListColumn: true,
         disableListFilter: true,
+      },
+    },
+    {
+      name: 'user',
+      label: 'User',
+      type: 'relationship',
+      relationTo: 'users',
+      required: false,
+      access: { read: isAdmin },
+      admin: {
+        position: 'sidebar',
+        description: 'Associated user for this order',
       },
     },
   ],

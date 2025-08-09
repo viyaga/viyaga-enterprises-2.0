@@ -441,6 +441,10 @@ export interface Order {
   currency: 'USD' | 'INR';
   originalPrice: number;
   discountedPrice: number;
+  /**
+   * Optional promo or discount code used during checkout
+   */
+  discountCode?: string | null;
   subtotal: number;
   taxes: number;
   total: number;
@@ -458,6 +462,8 @@ export interface Order {
   };
   paymentStatus?: ('pending' | 'awaiting verification' | 'paid' | 'failed' | 'refunded') | null;
   orderStatus: 'pending' | 'processing' | 'completed' | 'on_hold' | 'cancelled';
+  paymentVerifiedAt?: string | null;
+  orderCompletedAt?: string | null;
   referralCode: string;
   affiliate: {
     paymentStatus: 'pending' | 'paid' | 'failed';
@@ -466,6 +472,10 @@ export interface Order {
   razorpayOrderId?: string | null;
   razorpayPaymentId?: string | null;
   razorpaySignature?: string | null;
+  /**
+   * Associated user for this order
+   */
+  user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -776,6 +786,7 @@ export interface OrdersSelect<T extends boolean = true> {
   currency?: T;
   originalPrice?: T;
   discountedPrice?: T;
+  discountCode?: T;
   subtotal?: T;
   taxes?: T;
   total?: T;
@@ -795,6 +806,8 @@ export interface OrdersSelect<T extends boolean = true> {
       };
   paymentStatus?: T;
   orderStatus?: T;
+  paymentVerifiedAt?: T;
+  orderCompletedAt?: T;
   referralCode?: T;
   affiliate?:
     | T
@@ -805,6 +818,7 @@ export interface OrdersSelect<T extends boolean = true> {
   razorpayOrderId?: T;
   razorpayPaymentId?: T;
   razorpaySignature?: T;
+  user?: T;
   updatedAt?: T;
   createdAt?: T;
 }

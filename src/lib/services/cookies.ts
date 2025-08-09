@@ -34,8 +34,3 @@ export async function getPurchasingPower(): Promise<number> {
 
   return ppp
 }
-
-export async function getReferralCode(): Promise<string> {
-  const cookieStore = await cookies();
-  return cookieStore.get('referralCode')?.value || 'company';
-}

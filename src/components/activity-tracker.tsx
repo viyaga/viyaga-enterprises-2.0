@@ -15,12 +15,12 @@ function addEntry<T extends { t: string }>(array: T[], entry: T, key: keyof T) {
   return filtered.slice(0, MAX_ITEMS);
 }
 
-function saveAffiliateId(affId: string) {
+function saveAffiliateCode(affCode: string) {
   const now = new Date();
   const expiry = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000); // 6 months
 
   const affiliateInfo = {
-    id: affId,
+    referalCode: affCode,
     setAt: now.toISOString(),
     expiresAt: expiry.toISOString(),
   };
@@ -100,9 +100,9 @@ export default function ActivityTracker() {
     const now = new Date().toISOString();
 
     // Affiliate ID tracking
-    const affId = searchParams.get('aff');
-    if (affId) {
-      saveAffiliateId(affId);
+    const affCode = searchParams.get('aff');
+    if (affCode) {
+      saveAffiliateCode(affCode);
     }
 
     // Query params
