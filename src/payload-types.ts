@@ -79,6 +79,7 @@ export interface Config {
     'affiliate-commissions': AffiliateCommission;
     seo: Seo;
     leads: Lead;
+    discountCodes: DiscountCode;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -97,6 +98,7 @@ export interface Config {
     'affiliate-commissions': AffiliateCommissionsSelect<false> | AffiliateCommissionsSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
+    discountCodes: DiscountCodesSelect<false> | DiscountCodesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -539,6 +541,30 @@ export interface Lead {
   createdAt: string;
 }
 /**
+ * Manage discount codes available for checkout.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discountCodes".
+ */
+export interface DiscountCode {
+  id: string;
+  code: string;
+  referralCode: string;
+  discountType: 'percentage';
+  discountValue: number;
+  active?: boolean | null;
+  validFrom?: string | null;
+  validUntil?: string | null;
+  /**
+   * Leave blank for unlimited
+   */
+  maxUses?: number | null;
+  timesUsed?: number | null;
+  createdBy: string | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
@@ -592,6 +618,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'leads';
         value: string | Lead;
+      } | null)
+    | ({
+        relationTo: 'discountCodes';
+        value: string | DiscountCode;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -902,6 +932,24 @@ export interface LeadsSelect<T extends boolean = true> {
   user_country?: T;
   affiliate_id?: T;
   activity_data?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discountCodes_select".
+ */
+export interface DiscountCodesSelect<T extends boolean = true> {
+  code?: T;
+  referralCode?: T;
+  discountType?: T;
+  discountValue?: T;
+  active?: T;
+  validFrom?: T;
+  validUntil?: T;
+  maxUses?: T;
+  timesUsed?: T;
+  createdBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }

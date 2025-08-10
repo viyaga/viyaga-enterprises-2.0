@@ -5,93 +5,53 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { BillingDetailsForm, BillingFormData } from './billing-details-form';
-import { getUserGeoLocation } from '@/lib/services/cookies';
 import { CheckoutProduct, CreateOrderInput } from './types';
 import { createOrder } from '@/lib/payload/orders';
 import { getReferralCode } from '@/lib/services/affiliate';
 import { OrderSummary } from './order-summary';
 import { getCountryByCode } from '@/constants/countries';
 
-const DISCOUNT_CODE = 'DISCOUNT10';
-const DISCOUNT_PERCENTAGE = 10;
+import {
+  loadRazorpayScript,
+  formatProductPricing,
+  createPriceFormatter,
+  calculateTotals,
+  DISCOUNT_CODE,
+} from './utils';
 
-const loadRazorpayScript = (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    if (typeof window === 'undefined') return resolve(false);
-    if ('Razorpay' in window) return resolve(true);
-
-    const script = document.createElement('script');
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
-
-export default function CheckoutPage({ product, countryCode }: { product: CheckoutProduct, countryCode: string }) {
+export default function CheckoutPage({
+  product,
+  countryCode,
+}: {
+  product: CheckoutProduct;
+  countryCode: string;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get('plan');
   const billingCycle = searchParams.get('billingcycle');
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const selectedPlan = useMemo(() => {
-    return product.subscriptionPlans?.find(
-      (p) =>
-        p.planName === plan &&
-        p.billingOptions?.some((b) => b.billingCycle === billingCycle)
-    );
-  }, [plan, billingCycle, product.subscriptionPlans]);
-
-  const selectedBillingOption = useMemo(() => {
-    return selectedPlan?.billingOptions?.find(
-      (b) => b.billingCycle === billingCycle
-    );
-  }, [selectedPlan, billingCycle]);
-
-  const currency = countryCode === 'IN' ? 'INR' : 'USD';
-  const unitPrice =
-    currency === 'INR'
-      ? selectedBillingOption?.priceINR
-      : selectedBillingOption?.priceUSD;
+  // Format pricing details
+  const { currency, unitPrice, setupCost } = useMemo(
+    () => formatProductPricing(product, countryCode, plan, billingCycle),
+    [product, countryCode, plan, billingCycle]
+  );
 
   if (unitPrice === undefined) throw new Error('Invalid plan/billing cycle.');
 
-  const setupCost =
-    countryCode === 'IN'
-      ? product.setupCostINR ?? 0
-      : product.setupCostUSD ?? 0;
+  // Price formatter
+  const formatPrice = useMemo(() => createPriceFormatter(currency), [currency]);
 
-  const formatPrice = useMemo(
-    () => (price: number) => {
-      if (price === 0) return 'Free';
-      return new Intl.NumberFormat(currency === 'INR' ? 'en-IN' : 'en-US', {
-        style: 'currency',
-        currency,
-      }).format(price);
-    },
-    [currency]
-  );
-
+  /** Submit billing details & handle payment */
   const onBillingSubmit = async (
     data: BillingFormData,
     isDiscountApplied: boolean
   ) => {
     setIsSubmitting(true);
     const referralCode = getReferralCode();
-
-    // Pricing calculations
-    const originalPrice = unitPrice ?? 0;
-    const discountedUnitPrice =
-      isDiscountApplied && unitPrice
-        ? +(unitPrice * (1 - DISCOUNT_PERCENTAGE / 100)).toFixed(2)
-        : unitPrice;
-
-    const subtotal = discountedUnitPrice + setupCost;
-    const taxes = +(subtotal * 0.18).toFixed(2);
-    const shipping = 0;
-    const total = +(subtotal + taxes + shipping).toFixed(2);
+    const { originalPrice, discountedUnitPrice, subtotal, taxes, total } =
+      calculateTotals(unitPrice, setupCost, isDiscountApplied);
 
     const orderInput: CreateOrderInput = {
       productTitle: product.title,
@@ -194,9 +154,12 @@ export default function CheckoutPage({ product, countryCode }: { product: Checko
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             <BillingDetailsForm
-              defaultCountry={getCountryByCode(countryCode) || "United States"}
+              defaultCountry={getCountryByCode(countryCode) || 'United States'}
               onSubmit={(data) =>
-                onBillingSubmit(data, (document.getElementById('discount-applied') as HTMLInputElement)?.value === 'true')
+                onBillingSubmit(
+                  data,
+                  (document.getElementById('discount-applied') as HTMLInputElement)?.value === 'true'
+                )
               }
             />
           </div>
@@ -207,7 +170,6 @@ export default function CheckoutPage({ product, countryCode }: { product: Checko
               formatPrice={formatPrice}
               setupCost={setupCost}
               originalPrice={unitPrice}
-              currency={currency}
             />
 
             <Button

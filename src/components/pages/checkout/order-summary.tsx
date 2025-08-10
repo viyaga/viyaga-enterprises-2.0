@@ -1,65 +1,83 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { CheckoutProduct } from './types';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { CheckoutProduct } from './types';
 
 const DISCOUNT_CODE = 'DISCOUNT10';
 const DISCOUNT_PERCENTAGE = 10;
+const TAX_RATE = 0.18;
 
 export function OrderSummary({
   product,
   formatPrice,
-  setupCost,
+  setupCost = 0,
   originalPrice,
-  currency,
 }: {
   product: CheckoutProduct;
   formatPrice: (price: number) => string;
   setupCost?: number;
   originalPrice: number;
-  currency: string;
 }) {
   const [discountCode, setDiscountCode] = useState('');
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
-  const discountAmount = isDiscountApplied
-    ? +(originalPrice * (DISCOUNT_PERCENTAGE / 100)).toFixed(2)
-    : 0;
+  /** --- Derived Calculations --- **/
+  const discountAmount = useMemo(
+    () => (isDiscountApplied ? +(originalPrice * (DISCOUNT_PERCENTAGE / 100)).toFixed(2) : 0),
+    [isDiscountApplied, originalPrice]
+  );
 
   const discountedPrice = originalPrice - discountAmount;
-  const subtotal = discountedPrice + (setupCost ?? 0);
-  const taxes = +(subtotal * 0.18).toFixed(2);
+  const subtotal = discountedPrice + setupCost;
+  const taxes = +(subtotal * TAX_RATE).toFixed(2);
   const total = +(subtotal + taxes).toFixed(2);
 
+  /** --- Effects --- **/
   useEffect(() => {
-    const codeFromURL = new URLSearchParams(window.location.search).get('discount');
-    if (codeFromURL?.toUpperCase() === DISCOUNT_CODE) {
+    const codeFromURL = new URLSearchParams(window.location.search).get('discount') ?? '';
+    if (codeFromURL.toUpperCase() === DISCOUNT_CODE) {
       setDiscountCode(codeFromURL);
       setIsDiscountApplied(true);
       toast.success(`Discount code "${codeFromURL}" applied automatically.`);
     }
   }, []);
 
-  const applyDiscount = () => {
+  /** --- Handlers --- **/
+  const handleDiscountToggle = () => {
+    if (isDiscountApplied) {
+      setDiscountCode('');
+      setIsDiscountApplied(false);
+      toast.info('Discount removed.');
+      return;
+    }
+
     if (discountCode.trim().toUpperCase() === DISCOUNT_CODE) {
       setIsDiscountApplied(true);
       toast.success(`Discount applied! You saved ${DISCOUNT_PERCENTAGE}%.`);
     } else {
-      setIsDiscountApplied(false);
       toast.error('Invalid discount code. Please try again.');
     }
   };
 
+  /** --- Motion Props --- **/
+  const motionProps = {
+    initial: { opacity: 0, y: -5 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 5 },
+    transition: { duration: 0.2 },
+  };
+
   return (
-    <div className="rounded-lg shadow-md bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-lg shadow-lg bg-white dark:bg-[#102035] p-6">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
         Order Summary
       </h2>
 
+      {/* Product Image */}
       <div className="w-full mb-2 aspect-video relative">
         <Image
           src={product.thumbnail.url}
@@ -70,6 +88,7 @@ export function OrderSummary({
         />
       </div>
 
+      {/* Product Title */}
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
         {product.title}
       </h3>
@@ -84,22 +103,15 @@ export function OrderSummary({
           className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Button
+          className="cursor-pointer"
           variant={isDiscountApplied ? 'destructive' : 'default'}
-          onClick={() => {
-            if (isDiscountApplied) {
-              setDiscountCode('');
-              setIsDiscountApplied(false);
-              toast.info('Discount removed.');
-            } else {
-              applyDiscount();
-            }
-          }}
+          onClick={handleDiscountToggle}
         >
           {isDiscountApplied ? 'Remove' : 'Apply'}
         </Button>
       </div>
 
-      <input type="hidden" id="discount-applied" value={isDiscountApplied.toString()} />
+      <input type="hidden" id="discount-applied" value={String(isDiscountApplied)} />
 
       {/* Price */}
       <div className="flex items-center justify-between mb-2">
@@ -111,66 +123,42 @@ export function OrderSummary({
             </span>
           )}
           <AnimatePresence mode="wait">
-            <motion.span
-              key={discountedPrice}
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 5 }}
-              transition={{ duration: 0.2 }}
-              className="text-green-600 font-semibold"
-            >
+            <motion.span key={discountedPrice} {...motionProps} className="text-green-600 font-semibold">
               {formatPrice(discountedPrice)}
             </motion.span>
           </AnimatePresence>
         </span>
       </div>
 
-      {setupCost !== undefined && (
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-gray-700 dark:text-gray-300">Setup Cost:</span>
-          <span
-            className={`${
-              setupCost === 0
-                ? 'text-green-600'
-                : 'text-gray-900 dark:text-white'
-            }`}
-          >
-            {formatPrice(setupCost)}
-          </span>
-        </div>
-      )}
+      {/* Setup Cost */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-gray-700 dark:text-gray-300">Setup Cost:</span>
+        <span className={setupCost === 0 ? 'text-green-600' : 'text-gray-900 dark:text-white'}>
+          {formatPrice(setupCost)}
+        </span>
+      </div>
 
+      {/* Discount */}
       {isDiscountApplied && (
         <div className="flex items-center justify-between mb-2">
           <span className="text-gray-700 dark:text-gray-300">Discount:</span>
-          <span className="text-green-600">
-            -{formatPrice(discountAmount)}
-          </span>
+          <span className="text-green-600">-{formatPrice(discountAmount)}</span>
         </div>
       )}
 
+      {/* Taxes */}
       <div className="flex items-center justify-between mb-2">
         <span className="text-gray-700 dark:text-gray-300">Taxes:</span>
-        <span className="text-gray-900 dark:text-white">
-          {formatPrice(taxes)}
-        </span>
+        <span className="text-gray-900 dark:text-white">{formatPrice(taxes)}</span>
       </div>
 
       <hr className="my-4 border-gray-300 dark:border-gray-700" />
 
+      {/* Total */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold text-gray-900 dark:text-white">
-          Total:
-        </span>
+        <span className="text-lg font-semibold text-gray-900 dark:text-white">Total:</span>
         <AnimatePresence mode="wait">
-          <motion.span
-            key={total}
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            transition={{ duration: 0.2 }}
-            className="text-lg font-semibold text-green-600"
-          >
+          <motion.span key={total} {...motionProps} className="text-lg font-semibold text-green-600">
             {formatPrice(total)}
           </motion.span>
         </AnimatePresence>

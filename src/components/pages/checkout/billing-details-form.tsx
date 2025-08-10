@@ -46,7 +46,7 @@ export function BillingDetailsForm({
   });
 
   return (
-    <Card className="rounded-lg shadow-md bg-white dark:bg-gray-900/50 p-2 sm:p-4 md:p-6 border-none">
+    <Card className="sm:p-4 md:p-6 border-none rounded-lg shadow-lg bg-white dark:bg-[#102035]">
       <CardHeader className="py-4">
         <CardTitle>BILLING DETAILS</CardTitle>
       </CardHeader>

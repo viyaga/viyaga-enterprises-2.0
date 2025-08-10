@@ -33,3 +33,5 @@ export type PaymentOption = "razorpay";
 export type CreateOrderInput = Omit<Order, "id" | "createdAt" | "updatedAt"> & {
     setupCost?: number;
 };
+
+export type Currency = "INR" | "USD";
