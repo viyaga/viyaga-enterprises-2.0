@@ -32,7 +32,7 @@ export async function payloadFetch({
     const queryString = query ? `?${qs.stringify(query, { encode: false })}` : '';
     const url = `${endpoint}/${path}${queryString}`;
 
-    console.log({ url, query, endpoint, apikey: process.env.PAYLOAD_API_KEY });
+    console.log({ url, query, endpoint, customHeaders });
 
     try {
         const res = await fetch(url, {
@@ -47,6 +47,8 @@ export async function payloadFetch({
 
         const data = await res.json();
 
+        console.log({data});
+        
         if (!res.ok) {
             console.error(`Payload fetch failed (${res.status})`, data);
 

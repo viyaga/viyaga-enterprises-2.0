@@ -8,7 +8,6 @@ const Products: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'thumbnail', 'slug', 'category', 'isFeatured'],
   },
-  defaultSort: '-sortOrder',
   access: {
     read: isAdminOrAffiliate,
     create: isAdmin,

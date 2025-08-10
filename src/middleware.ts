@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import countries from '@/constants/countries';
 
-const allowedOrigins = ['https://your-frontend.com', 'https://admin.your-frontend.com', 'http://localhost:3000'];
+const allowedOrigins = ['https://viyaga.com', 'https://www.viyaga.com', 'http://localhost:3000'];
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
