@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { CheckoutProduct, CreateOrderInput } from './types';
 import { createOrder } from '@/lib/payload/orders';
 import { getReferralCode } from '@/lib/services/affiliate';
 import { OrderSummary } from './order-summary';
+import { getCountryByCode } from '@/constants/countries';
 
 const DISCOUNT_CODE = 'DISCOUNT10';
 const DISCOUNT_PERCENTAGE = 10;
@@ -27,26 +28,13 @@ const loadRazorpayScript = (): Promise<boolean> => {
   });
 };
 
-export default function CheckoutPage({ product }: { product: CheckoutProduct }) {
+export default function CheckoutPage({ product, countryCode }: { product: CheckoutProduct, countryCode: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get('plan');
   const billingCycle = searchParams.get('billingcycle');
 
-  const [countryCode, setCountryCode] = useState<string>('IN');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    const fetchGeo = async () => {
-      try {
-        const { country } = await getUserGeoLocation();
-        setCountryCode(country);
-      } catch (err) {
-        console.error('Geo lookup failed', err);
-      }
-    };
-    fetchGeo();
-  }, []);
 
   const selectedPlan = useMemo(() => {
     return product.subscriptionPlans?.find(
@@ -206,7 +194,7 @@ export default function CheckoutPage({ product }: { product: CheckoutProduct }) 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             <BillingDetailsForm
-              defaultCountry={countryCode}
+              defaultCountry={getCountryByCode(countryCode) || "United States"}
               onSubmit={(data) =>
                 onBillingSubmit(data, (document.getElementById('discount-applied') as HTMLInputElement)?.value === 'true')
               }

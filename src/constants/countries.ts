@@ -49,4 +49,14 @@ const countries = [
     { "id": 45, "country": "Egypt", "country_code": "EG", "currency_prefix": "E£", "currency_code": "EGP", "tier": 3, "purchasing_power": 0.24 }
 ];
 
+export function getCountryName(code: string): string | null {
+  const match = countries.find(c => c.country_code.toUpperCase() === code.toUpperCase());
+  return match ? match.country : null;
+}
+
+export function getCountryByCode(code: string) {
+  const countryObj = countries.find(c => c.country_code.toUpperCase() === code.toUpperCase());
+  return countryObj ? countryObj.country : null; // returns null if not found
+}
+
 export default countries;

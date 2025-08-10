@@ -26,10 +26,11 @@ export function OrderSummary({
   const [discountCode, setDiscountCode] = useState('');
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
-  const discountedPrice = isDiscountApplied
-    ? +(originalPrice * (1 - DISCOUNT_PERCENTAGE / 100)).toFixed(2)
-    : originalPrice;
+  const discountAmount = isDiscountApplied
+    ? +(originalPrice * (DISCOUNT_PERCENTAGE / 100)).toFixed(2)
+    : 0;
 
+  const discountedPrice = originalPrice - discountAmount;
   const subtotal = discountedPrice + (setupCost ?? 0);
   const taxes = +(subtotal * 0.18).toFixed(2);
   const total = +(subtotal + taxes).toFixed(2);
@@ -100,12 +101,6 @@ export function OrderSummary({
 
       <input type="hidden" id="discount-applied" value={isDiscountApplied.toString()} />
 
-      {isDiscountApplied && (
-        <p className="text-green-600 text-sm mb-2">
-          ✅ {DISCOUNT_PERCENTAGE}% discount applied!
-        </p>
-      )}
-
       {/* Price */}
       <div className="flex items-center justify-between mb-2">
         <span className="text-gray-700 dark:text-gray-300">Price:</span>
@@ -141,6 +136,15 @@ export function OrderSummary({
             }`}
           >
             {formatPrice(setupCost)}
+          </span>
+        </div>
+      )}
+
+      {isDiscountApplied && (
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-gray-700 dark:text-gray-300">Discount:</span>
+          <span className="text-green-600">
+            -{formatPrice(discountAmount)}
           </span>
         </div>
       )}
