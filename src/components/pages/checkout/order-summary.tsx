@@ -8,8 +8,6 @@ import { toast } from 'sonner';
 import { CheckoutProduct } from './types';
 
 const DISCOUNT_CODE = 'DISCOUNT10';
-const DISCOUNT_PERCENTAGE = 10;
-const TAX_RATE = 0.18;
 
 /**
  * OrderSummary component (kept in same file for convenience)

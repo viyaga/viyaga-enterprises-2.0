@@ -32,7 +32,7 @@ export async function payloadFetch({
     const queryString = query ? `?${qs.stringify(query, { encode: false })}` : '';
     const url = `${endpoint}/${path}${queryString}`;
 
-    console.log({ url, query });
+    console.log({ url, query, endpoint, apikey: process.env.PAYLOAD_API_KEY });
 
     try {
         const res = await fetch(url, {
