@@ -6,7 +6,6 @@ export type CheckoutProduct = {
     slug: string;
     isFeatured?: boolean;
     isFree?: boolean;
-    isSubscription?: boolean;
     subscriptionPlans: SubscriptionPlan[];
     affiliateCommission: number;
     setupCostUSD?: number;

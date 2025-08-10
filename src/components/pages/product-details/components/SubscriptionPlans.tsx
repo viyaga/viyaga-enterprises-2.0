@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { SubscriptionPlan } from "../types";
-import { getPlanPrice } from "@/lib/services/getPlanPrice";
+import { calculatePlanPrice, getPricingContext } from "@/lib/services/getPricing";
 
 type SubscriptionPlansProps = {
   plans: SubscriptionPlan[];
@@ -35,7 +35,6 @@ const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
     { planName: string; amount: number; currencySymbol: string }[]
   >([]);
 
-  // Fetch prices when billing cycle changes
   useEffect(() => {
     async function fetchPrices() {
       const priceData = await Promise.all(
@@ -44,7 +43,8 @@ const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
             (b) => b.billingCycle === billingCycle
           );
           if (!billing) return { planName: plan.planName, amount: 0, currencySymbol: "" };
-          const { amount, currencySymbol } = await getPlanPrice(billing);
+          const { country, ppp } = await getPricingContext();
+          const { amount, currencySymbol } = calculatePlanPrice(billing, country, ppp);
           return { planName: plan.planName, amount, currencySymbol };
         })
       );
@@ -140,8 +140,8 @@ const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
                 <div
                   key={index}
                   className={`group relative flex flex-col justify-between rounded-2xl p-[1px] transition-all duration-300 ${plan.isPopular
-                      ? "bg-gradient-to-br from-blue-500 to-purple-500 shadow-2xl"
-                      : "bg-white/30"
+                    ? "bg-gradient-to-br from-blue-500 to-purple-500 shadow-2xl"
+                    : "bg-white/30"
                     }`}
                 >
                   <div className="flex flex-col h-full rounded-2xl bg-background p-6 text-left group-hover:shadow-lg transition-all">
@@ -185,8 +185,8 @@ const SubscriptionPlans = ({ plans, productId }: SubscriptionPlansProps) => {
                     >
                       <Button
                         className={`w-full cursor-pointer ${plan.isPopular
-                            ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white hover:from-pink-600 hover:to-yellow-600"
-                            : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500"
+                          ? "bg-gradient-to-r from-pink-500 to-yellow-500 text-white hover:from-pink-600 hover:to-yellow-600"
+                          : "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-500 hover:to-purple-500"
                           }`}
                       >
                         Choose Plan

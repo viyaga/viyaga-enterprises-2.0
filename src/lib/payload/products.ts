@@ -1,3 +1,5 @@
+"use server";
+
 import { payloadFetch } from "./payloadFetch";
 import { getAllProductsQuery, getProductByIdForCheckoutQuery, getProductDetailsBySlugQuery } from "./queries";
 
@@ -19,10 +21,10 @@ type GetProductByIdOptions = {
 export async function getAllProducts({
   page,
   limit,
-  search, //"Invoicy"
-  categoryId, //"ecommerce"
-  tagId, //"6"
-  sort = "createdAt", //"title,-createdAt"
+  search,
+  categoryId,
+  tagId,
+  sort = "createdAt",
   depth = 0,
 }: GetFilteredProductsOptions) {
 

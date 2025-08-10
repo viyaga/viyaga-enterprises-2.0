@@ -11,6 +11,9 @@ const DISCOUNT_CODE = 'DISCOUNT10';
 const DISCOUNT_PERCENTAGE = 10;
 const TAX_RATE = 0.18;
 
+/**
+ * OrderSummary component (kept in same file for convenience)
+ */
 export function OrderSummary({
   product,
   formatPrice,
@@ -25,6 +28,9 @@ export function OrderSummary({
   const [discountCode, setDiscountCode] = useState('');
   const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
+  const DISCOUNT_PERCENTAGE = 10;
+  const TAX_RATE = 0.18;
+
   /** --- Derived Calculations --- **/
   const discountAmount = useMemo(
     () => (isDiscountApplied ? +(originalPrice * (DISCOUNT_PERCENTAGE / 100)).toFixed(2) : 0),
@@ -32,7 +38,7 @@ export function OrderSummary({
   );
 
   const discountedPrice = originalPrice - discountAmount;
-  const subtotal = discountedPrice + setupCost;
+  const subtotal = +(discountedPrice + setupCost).toFixed(2);
   const taxes = +(subtotal * TAX_RATE).toFixed(2);
   const total = +(subtotal + taxes).toFixed(2);
 
@@ -73,25 +79,25 @@ export function OrderSummary({
 
   return (
     <div className="rounded-lg shadow-lg bg-white dark:bg-[#102035] p-6">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-        Order Summary
-      </h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Order Summary</h2>
 
       {/* Product Image */}
       <div className="w-full mb-2 aspect-video relative">
-        <Image
-          src={product.thumbnail.url}
-          alt={product.thumbnail.alt || product.title}
-          fill
-          className="rounded-md object-cover border border-gray-200 dark:border-gray-700"
-          sizes="100vw"
-        />
+        {product.thumbnail?.url ? (
+          <Image
+            src={product.thumbnail.url}
+            alt={product.thumbnail.alt || product.title}
+            fill
+            className="rounded-md object-cover border border-gray-200 dark:border-gray-700"
+            sizes="100vw"
+          />
+        ) : (
+          <div className="w-full h-40 rounded-md bg-gray-100 dark:bg-gray-800 flex items-center justify-center">No image</div>
+        )}
       </div>
 
       {/* Product Title */}
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        {product.title}
-      </h3>
+      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">{product.title}</h3>
 
       {/* Discount Input */}
       <div className="flex items-center gap-2 mb-3">
@@ -102,11 +108,7 @@ export function OrderSummary({
           onChange={(e) => setDiscountCode(e.target.value)}
           className="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <Button
-          className="cursor-pointer"
-          variant={isDiscountApplied ? 'destructive' : 'default'}
-          onClick={handleDiscountToggle}
-        >
+        <Button className="cursor-pointer" variant={isDiscountApplied ? 'destructive' : 'default'} onClick={handleDiscountToggle}>
           {isDiscountApplied ? 'Remove' : 'Apply'}
         </Button>
       </div>
@@ -118,9 +120,7 @@ export function OrderSummary({
         <span className="text-gray-700 dark:text-gray-300">Price:</span>
         <span className="text-gray-900 dark:text-white flex items-center gap-2">
           {isDiscountApplied && (
-            <span className="line-through text-sm text-gray-500">
-              {formatPrice(originalPrice)}
-            </span>
+            <span className="line-through text-sm text-gray-500">{formatPrice(originalPrice)}</span>
           )}
           <AnimatePresence mode="wait">
             <motion.span key={discountedPrice} {...motionProps} className="text-green-600 font-semibold">

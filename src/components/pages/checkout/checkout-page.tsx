@@ -1,16 +1,18 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { BillingDetailsForm, BillingFormData } from './billing-details-form';
-import { CheckoutProduct, CreateOrderInput } from './types';
+import { CheckoutProduct, CreateOrderInput, Currency } from './types';
 import { createOrder } from '@/lib/payload/orders';
 import { getReferralCode } from '@/lib/services/affiliate';
-import { OrderSummary } from './order-summary';
 import { getCountryByCode } from '@/constants/countries';
 
+// utils (existing)
 import {
   loadRazorpayScript,
   formatProductPricing,
@@ -18,6 +20,24 @@ import {
   calculateTotals,
   DISCOUNT_CODE,
 } from './utils';
+
+// new pricing helpers (as requested)
+import {
+  getPricingContext,
+  calculatePlanPrice,
+  calculateSetupPrice,
+} from '@/lib/services/getPricing';
+import { OrderSummary } from './order-summary';
+
+/**
+ * Note:
+ * - subscriptionPlans in CheckoutProduct is an array of SubscriptionPlan
+ *   (per your types). This file treats it as an array and finds the chosen
+ *   plan + billing option by id or planName (or falls back to the first).
+ *
+ * - We build the billing option with `billingCycle` (required by the pricing helpers)
+ *   and a setup option with setupCostUSD/setupCostINR where available.
+ */
 
 export default function CheckoutPage({
   product,
@@ -28,41 +48,173 @@ export default function CheckoutPage({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const plan = searchParams.get('plan');
-  const billingCycle = searchParams.get('billingcycle');
+  const plan = searchParams.get('plan') ?? undefined;
+  const billingCycle = (searchParams.get('billingcycle') ?? undefined) as
+    | 'monthly'
+    | 'yearly'
+    | 'one-time'
+    | undefined;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Format pricing details
-  const { currency, unitPrice, setupCost } = useMemo(
+  // pricing state (computed async so we can use getPricingContext)
+  const [unitPrice, setUnitPrice] = useState<number | undefined>(undefined);
+  const [setupCost, setSetupCost] = useState<number>(0);
+  const [currencyCode, setCurrencyCode] = useState<Currency>('USD');
+
+  // synchronous fallback using existing util so UI doesn't break while async resolves
+  const fallback = useMemo(
     () => formatProductPricing(product, countryCode, plan, billingCycle),
     [product, countryCode, plan, billingCycle]
   );
 
-  if (unitPrice === undefined) throw new Error('Invalid plan/billing cycle.');
+  useEffect(() => {
+    let mounted = true;
+
+    async function computePricing() {
+      try {
+        // get purchasing power + (optionally) country from context
+        const pricingCtx = await getPricingContext();
+        // prefer the explicit countryCode prop when provided
+        const country = countryCode || pricingCtx.country || 'US';
+        const ppp = pricingCtx.ppp ?? 1;
+
+        // Build billing option shape expected by calculatePlanPrice
+        // We'll try to locate a matching SubscriptionPlan and BillingOption entry
+        type BillingCycleUnion = 'monthly' | 'yearly' | 'one-time';
+
+        const billingOption = {
+          billingCycle: (billingCycle ?? 'monthly') as BillingCycleUnion,
+          priceUSD: 0,
+          priceINR: 0,
+        };
+
+        const setupOption = {
+          setupCostUSD: 0,
+          setupCostINR: 0,
+        };
+
+        // Try to find the subscription plan (match by id or planName). Fallback to first plan.
+        const plans = Array.isArray(product.subscriptionPlans)
+          ? product.subscriptionPlans
+          : [];
+
+        const matchedPlan =
+          (plan &&
+            plans.find(
+              (p) => p.id === plan || (p.planName && p.planName === plan)
+            )) ||
+          plans[0];
+
+        if (matchedPlan) {
+          // billingOptions exists on the matched plan
+          const billingEntry =
+            (billingCycle &&
+              matchedPlan.billingOptions.find(
+                (b) => b.billingCycle === billingCycle
+              )) ||
+            matchedPlan.billingOptions[0];
+
+          if (billingEntry) {
+            billingOption.priceUSD = Number(billingEntry.priceUSD ?? 0);
+            billingOption.priceINR = Number(
+              billingEntry.priceINR ?? billingEntry.priceUSD ?? 0
+            );
+            billingOption.billingCycle = billingEntry.billingCycle as BillingCycleUnion;
+
+            // If the billing entry contains setup-like fields (some shapes include them),
+            // prefer them. We guard-safely with optional chaining.
+            // (your SubscriptionPlan.billingOptions may or may not include setup fields)
+            const maybeSetupUSD = (billingEntry as unknown as { setupCostUSD?: number })?.setupCostUSD;
+            const maybeSetupINR = (billingEntry as unknown as { setupCostINR?: number })?.setupCostINR;
+
+            if (typeof maybeSetupUSD === 'number') {
+              setupOption.setupCostUSD = Number(maybeSetupUSD);
+              setupOption.setupCostINR = Number(maybeSetupINR ?? maybeSetupUSD);
+            }
+          }
+        }
+
+        // fallback: product-level setup cost fields (if present)
+        if (
+          (!setupOption.setupCostUSD && !setupOption.setupCostINR) &&
+          (typeof product.setupCostUSD === 'number' || typeof product.setupCostINR === 'number')
+        ) {
+          setupOption.setupCostUSD = Number(product.setupCostUSD ?? 0);
+          setupOption.setupCostINR = Number(
+            product.setupCostINR ?? setupOption.setupCostUSD ?? 0
+          );
+        }
+
+        // If we still have zero prices (no plan shape matched), fall back to the synchronous fallback values
+        if (!billingOption.priceUSD && !billingOption.priceINR) {
+          billingOption.priceUSD = fallback.unitPrice ?? 0;
+          billingOption.priceINR = fallback.unitPrice ?? 0;
+        }
+
+        if (!setupOption.setupCostUSD && !setupOption.setupCostINR) {
+          setupOption.setupCostUSD = fallback.setupCost ?? 0;
+          setupOption.setupCostINR = fallback.setupCost ?? 0;
+        }
+
+        const planPrice = calculatePlanPrice(billingOption, country, ppp);
+        const setupPrice = calculateSetupPrice(setupOption, country, ppp);
+
+        if (!mounted) return;
+
+        setUnitPrice(Number(planPrice.amount ?? 0));
+        setSetupCost(Number(setupPrice.amount ?? 0));
+        setCurrencyCode(
+          (planPrice.currencyCode ?? setupPrice.currencyCode ?? 'USD') as Currency
+        );
+      } catch (err) {
+        console.error(
+          'Failed to compute pricing using calculatePlanPrice/calculateSetupPrice',
+          err
+        );
+        // fallback: keep synchronous values
+        setUnitPrice(fallback.unitPrice);
+        setSetupCost(fallback.setupCost ?? 0);
+        setCurrencyCode((fallback.currency ?? 'USD') as Currency);
+      }
+    }
+
+    computePricing();
+
+    return () => {
+      mounted = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, countryCode, plan, billingCycle, fallback]);
+
+  // if unitPrice still undefined, show loading or fallback values
+  const effectiveUnitPrice =
+    typeof unitPrice === 'number' ? unitPrice : fallback.unitPrice;
+  const effectiveSetupCost =
+    typeof setupCost === 'number' ? setupCost : fallback.setupCost ?? 0;
+
+  if (effectiveUnitPrice === undefined) throw new Error('Invalid plan/billing cycle.');
 
   // Price formatter
-  const formatPrice = useMemo(() => createPriceFormatter(currency), [currency]);
+  const formatPrice = useMemo(() => createPriceFormatter(currencyCode), [currencyCode]);
 
   /** Submit billing details & handle payment */
-  const onBillingSubmit = async (
-    data: BillingFormData,
-    isDiscountApplied: boolean
-  ) => {
+  const onBillingSubmit = async (data: BillingFormData, isDiscountApplied: boolean) => {
     setIsSubmitting(true);
     const referralCode = getReferralCode();
     const { originalPrice, discountedUnitPrice, subtotal, taxes, total } =
-      calculateTotals(unitPrice, setupCost, isDiscountApplied);
+      calculateTotals(effectiveUnitPrice, effectiveSetupCost, isDiscountApplied);
 
     const orderInput: CreateOrderInput = {
       productTitle: product.title,
       productThumbnail: product.thumbnail?.id || undefined,
-      currency,
+      currency: currencyCode,
       originalPrice,
       discountedPrice: discountedUnitPrice,
       subtotal,
       taxes,
       total,
-      setupCost: setupCost > 0 ? setupCost : undefined,
+      setupCost: effectiveSetupCost > 0 ? effectiveSetupCost : undefined,
       paymentMethod: 'razorpay',
       paymentStatus: 'pending',
       countryCode,
@@ -100,6 +252,12 @@ export default function CheckoutPage({
 
       const order = await res.json();
 
+      // NOTE: Many projects include @types/razorpay or a global declaration for window.Razorpay.
+      // If your project already has those types, the following will be typed properly.
+      // If you get an error here, add proper Razorpay types to the project (recommended).
+      // We intentionally avoid adding any `any` in this file.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore - rely on global Razorpay type in your environment
       const razorpay = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
         amount: order.amount,
@@ -107,7 +265,11 @@ export default function CheckoutPage({
         name: 'Viyaga',
         description: 'Product Payment',
         order_id: order.id,
-        handler: async (response) => {
+        handler: async (response: {
+          razorpay_order_id: string;
+          razorpay_payment_id: string;
+          razorpay_signature: string;
+        }) => {
           toast.success('Payment successful!');
           try {
             const orderData: CreateOrderInput = {
@@ -118,13 +280,11 @@ export default function CheckoutPage({
               paymentStatus: 'paid',
             };
             const payloadRes = await createOrder(orderData);
-            if (payloadRes.error) throw new Error('Failed to create order');
+            if ((payloadRes as { error?: unknown }).error) throw new Error('Failed to create order');
             router.push('/dashboard/collections/orders');
           } catch (error) {
             console.error('Order creation failed:', error);
-            toast.error(
-              'Failed to create order after payment. Please contact support.'
-            );
+            toast.error('Failed to create order after payment. Please contact support.');
           }
         },
         prefill: {
@@ -168,8 +328,8 @@ export default function CheckoutPage({
             <OrderSummary
               product={product}
               formatPrice={formatPrice}
-              setupCost={setupCost}
-              originalPrice={unitPrice}
+              setupCost={effectiveSetupCost}
+              originalPrice={effectiveUnitPrice}
             />
 
             <Button
