@@ -3,22 +3,42 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import countries from '@/constants/countries';
 
-const allowedOrigins = ['https://viyaga.com', 'https://www.viyaga.com', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://viyaga.com',
+  'https://www.viyaga.com',
+  'http://localhost:3000',
+];
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-
-  // CORS support for API routes
-  const origin = request.headers.get('origin') || '';
+function setCORSHeaders(response: NextResponse, origin: string) {
   if (allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin);
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS'
+    );
+    response.headers.set(
+      'Access-Control-Allow-Headers',
+      'Accept, Content-Type, Authorization'
+    );
     response.headers.set('Access-Control-Allow-Credentials', 'true');
   }
+}
+
+export function middleware(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+
+  // Handle preflight requests early
+  if (request.method === 'OPTIONS') {
+    const preflight = NextResponse.json({}, { status: 200 });
+    setCORSHeaders(preflight, origin);
+    return preflight;
+  }
+
+  const response = NextResponse.next();
+  setCORSHeaders(response, origin);
 
   const pathname = request.nextUrl.pathname;
-  const skipPaths = ['/admin', '/api', '/media'];
+  const skipPaths = ['/dashboard', '/media'];
   const shouldSkip = skipPaths.some((prefix) => pathname.startsWith(prefix));
 
   if (!shouldSkip) {
@@ -69,7 +89,6 @@ export function middleware(request: NextRequest) {
       const countryObj = countries.find(
         (c) => c.country_code.toUpperCase() === country.toUpperCase()
       );
-
       const purchasingPower = countryObj?.purchasing_power ?? 0.15;
 
       response.cookies.set('purchasing_power', purchasingPower.toString(), {
@@ -86,5 +105,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|favicon.ico|static|admin|api|media).*)'],
+  matcher: ['/((?!_next|favicon.ico|static|dashboard|media).*)'],
 };

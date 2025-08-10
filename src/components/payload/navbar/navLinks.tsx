@@ -61,6 +61,12 @@ export const navLinks = [
     roles: ["admin"],
   },
   {
+    href: "/dashboard/collections/discount-codes",
+    label: "Discount Codes",
+    icon: <Home size={16} />,
+    roles: ["admin", "affiliate"],
+  },
+  {
     href: "/dashboard/collections/affiliate-commissions",
     label: "Earnings",
     icon: <DollarSign size={16} />,

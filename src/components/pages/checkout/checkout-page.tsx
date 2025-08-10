@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { BillingDetailsForm, BillingFormData } from './billing-details-form';
 import { CheckoutProduct, CreateOrderInput, Currency } from './types';
 import { createOrder } from '@/lib/payload/orders';
-import { getReferralCode } from '@/lib/services/affiliate';
+import { getLocalStorageReferralCode } from '@/lib/services/affiliate';
 import { getCountryByCode } from '@/constants/countries';
 
 // utils (existing)
@@ -59,6 +59,7 @@ export default function CheckoutPage({
   const [unitPrice, setUnitPrice] = useState<number | undefined>(undefined);
   const [setupCost, setSetupCost] = useState<number>(0);
   const [currencyCode, setCurrencyCode] = useState<Currency>('USD');
+  const [discountReferralCode, setDiscountReferralCode] = useState<string | undefined>(undefined);
 
   // synchronous fallback using existing util so UI doesn't break while async resolves
   const fallback = useMemo(
@@ -199,7 +200,7 @@ export default function CheckoutPage({
   /** Submit billing details & handle payment */
   const onBillingSubmit = async (data: BillingFormData, isDiscountApplied: boolean) => {
     setIsSubmitting(true);
-    const referralCode = getReferralCode();
+    const localStorageReferralCode = getLocalStorageReferralCode();
     const { originalPrice, discountedUnitPrice, subtotal, taxes, total } =
       calculateTotals(effectiveUnitPrice, effectiveSetupCost, isDiscountApplied);
 
@@ -227,7 +228,7 @@ export default function CheckoutPage({
         country: data.country,
       },
       orderStatus: 'pending',
-      referralCode: referralCode || 'company',
+      referralCode: discountReferralCode || localStorageReferralCode || 'company',
       affiliate: {
         paymentStatus: 'pending',
         commissionPercentage: product.affiliateCommission || 0,
@@ -328,6 +329,7 @@ export default function CheckoutPage({
               formatPrice={formatPrice}
               setupCost={effectiveSetupCost}
               originalPrice={effectiveUnitPrice}
+              setDiscountReferralCode={setDiscountReferralCode}
             />
 
             <Button

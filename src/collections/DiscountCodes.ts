@@ -4,7 +4,7 @@ import { hasDiscountCodeAccess } from './access/discount-code-access';
 import { setCreatedBy, validateMaxUses } from './hooks/discount-code-hooks';
 
 export const DiscountCodes: CollectionConfig = {
-  slug: 'discountCodes',
+  slug: 'discount-codes',
   labels: {
     singular: 'Discount Code',
     plural: 'Discount Codes',

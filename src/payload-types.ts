@@ -79,7 +79,7 @@ export interface Config {
     'affiliate-commissions': AffiliateCommission;
     seo: Seo;
     leads: Lead;
-    discountCodes: DiscountCode;
+    'discount-codes': DiscountCode;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -98,7 +98,7 @@ export interface Config {
     'affiliate-commissions': AffiliateCommissionsSelect<false> | AffiliateCommissionsSelect<true>;
     seo: SeoSelect<false> | SeoSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
-    discountCodes: DiscountCodesSelect<false> | DiscountCodesSelect<true>;
+    'discount-codes': DiscountCodesSelect<false> | DiscountCodesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -150,10 +150,6 @@ export interface User {
    */
   name?: string | null;
   /**
-   * Auto-generated unique code used for referring others.
-   */
-  referralCode: string;
-  /**
    * Fill in your complete residential address.
    */
   address?: {
@@ -165,37 +161,46 @@ export interface User {
     country?: string | null;
   };
   /**
-   * Total earnings accumulated through referrals.
+   * All affiliate and referral related information.
    */
-  total_earned?: number | null;
-  /**
-   * Funds currently available in the user’s wallet.
-   */
-  wallet_balance?: number | null;
-  /**
-   * Extra bonuses rewarded for performance or campaigns.
-   */
-  bonus_balance?: number | null;
-  /**
-   * User’s current referral rank or status.
-   */
-  current_rank?: string | null;
-  /**
-   * Tracks the chain of referrers above this user.
-   */
-  referral_tree_ids?:
-    | {
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Referral code of the person who invited this user.
-   */
-  referred_by?: (string | null) | User;
-  /**
-   * Linked bank account(s) for payouts.
-   */
-  bank_accounts?: (string | BankDetail)[] | null;
+  affiliateDetails: {
+    /**
+     * Auto-generated unique code used for referring others.
+     */
+    referralCode: string;
+    /**
+     * Total earnings accumulated through referrals.
+     */
+    total_earned?: number | null;
+    /**
+     * Funds currently available in the user’s wallet.
+     */
+    wallet_balance?: number | null;
+    /**
+     * Extra bonuses rewarded for performance or campaigns.
+     */
+    bonus_balance?: number | null;
+    /**
+     * User’s current referral rank or status.
+     */
+    current_rank?: string | null;
+    /**
+     * Tracks the chain of referrers above this user.
+     */
+    referral_tree_ids?:
+      | {
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Referral code of the person who invited this user.
+     */
+    referred_by?: (string | null) | User;
+    /**
+     * Linked bank account(s) for payouts.
+     */
+    bank_accounts?: (string | BankDetail)[] | null;
+  };
   /**
    * Used by admins to manage account visibility.
    */
@@ -544,7 +549,7 @@ export interface Lead {
  * Manage discount codes available for checkout.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "discountCodes".
+ * via the `definition` "discount-codes".
  */
 export interface DiscountCode {
   id: string;
@@ -620,7 +625,7 @@ export interface PayloadLockedDocument {
         value: string | Lead;
       } | null)
     | ({
-        relationTo: 'discountCodes';
+        relationTo: 'discount-codes';
         value: string | DiscountCode;
       } | null);
   globalSlug?: string | null;
@@ -672,7 +677,6 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
   name?: T;
-  referralCode?: T;
   address?:
     | T
     | {
@@ -683,17 +687,22 @@ export interface UsersSelect<T extends boolean = true> {
         postalCode?: T;
         country?: T;
       };
-  total_earned?: T;
-  wallet_balance?: T;
-  bonus_balance?: T;
-  current_rank?: T;
-  referral_tree_ids?:
+  affiliateDetails?:
     | T
     | {
-        id?: T;
+        referralCode?: T;
+        total_earned?: T;
+        wallet_balance?: T;
+        bonus_balance?: T;
+        current_rank?: T;
+        referral_tree_ids?:
+          | T
+          | {
+              id?: T;
+            };
+        referred_by?: T;
+        bank_accounts?: T;
       };
-  referred_by?: T;
-  bank_accounts?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -937,7 +946,7 @@ export interface LeadsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "discountCodes_select".
+ * via the `definition` "discount-codes_select".
  */
 export interface DiscountCodesSelect<T extends boolean = true> {
   code?: T;

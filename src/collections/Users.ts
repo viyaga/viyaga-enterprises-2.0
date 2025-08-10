@@ -39,13 +39,12 @@ export const Users: CollectionConfig = {
       admin: {
         description: 'Defines the access level and permissions of the user.',
         condition: (user) => {
-
-          return user?.role === 'admin'
+          return user?.role === 'admin';
         },
       },
       access: {
-        update: isAdmin
-      }
+        update: isAdmin,
+      },
     },
     {
       name: 'name',
@@ -57,20 +56,6 @@ export const Users: CollectionConfig = {
       },
     },
     {
-      name: 'referralCode',
-      label: 'Referral Code',
-      type: 'text',
-      required: true,
-      unique: true,
-      admin: {
-        readOnly: true,
-        description: 'Auto-generated unique code used for referring others.',
-      },
-      access: {
-        read: isAdminOrAffiliate,
-      },
-    },
-    {
       name: 'address',
       label: 'Address',
       type: 'group',
@@ -78,137 +63,140 @@ export const Users: CollectionConfig = {
         description: 'Fill in your complete residential address.',
       },
       fields: [
-        {
-          name: 'houseNumber',
-          label: 'House / Flat No.',
-          type: 'text',
-        },
-        {
-          name: 'streetAndArea',
-          label: 'Street and Area',
-          type: 'text',
-        },
-        {
-          name: 'city',
-          label: 'City',
-          type: 'text',
-        },
-        {
-          name: 'state',
-          label: 'State / Province',
-          type: 'text',
-        },
-        {
-          name: 'postalCode',
-          label: 'Postal Code',
-          type: 'text',
-        },
-        {
-          name: 'country',
-          label: 'Country',
-          type: 'text',
-        },
+        { name: 'houseNumber', label: 'House / Flat No.', type: 'text' },
+        { name: 'streetAndArea', label: 'Street and Area', type: 'text' },
+        { name: 'city', label: 'City', type: 'text' },
+        { name: 'state', label: 'State / Province', type: 'text' },
+        { name: 'postalCode', label: 'Postal Code', type: 'text' },
+        { name: 'country', label: 'Country', type: 'text' },
       ],
-    }
-    ,
-    {
-      name: 'total_earned',
-      label: 'Total Earnings',
-      type: 'number',
-      defaultValue: 0,
-      access: {
-        read: isAdminOrAffiliate,
-        update: isAdmin,
-      },
-      admin: {
-        readOnly: true,
-        description: 'Total earnings accumulated through referrals.',
-      },
     },
+
+    // 🔹 Separate section for Affiliate Details
     {
-      name: 'wallet_balance',
-      label: 'Wallet Balance',
-      type: 'number',
-      defaultValue: 0,
-      access: {
-        read: isAdminOrAffiliate,
-        update: isAdmin,
-      },
+      name: 'affiliateDetails',
+      label: 'Affiliate Details',
+      type: 'group',
       admin: {
-        description: 'Funds currently available in the user’s wallet.',
+        position: 'sidebar', // moves to sidebar in admin panel
+        description: 'All affiliate and referral related information.',
       },
-    },
-    {
-      name: 'bonus_balance',
-      label: 'Bonus Balance',
-      type: 'number',
-      defaultValue: 0,
-      access: {
-        read: isAdmin,
-        update: isAdmin,
-      },
-      admin: {
-        description: 'Extra bonuses rewarded for performance or campaigns.',
-      },
-    },
-    {
-      name: 'current_rank',
-      label: 'User Rank',
-      type: 'text',
-      access: {
-        read: isAdminOrAffiliate,
-        update: isAdmin,
-      },
-      admin: {
-        placeholder: 'e.g. Bronze, Silver, Gold',
-        description: 'User’s current referral rank or status.',
-      },
-    },
-    {
-      name: 'referral_tree_ids',
-      label: 'Referral Tree (Upline)',
-      type: 'array',
-      maxRows: 3,
       fields: [
         {
-          name: 'id',
-          label: 'Upline User ID',
+          name: 'referralCode',
+          label: 'Referral Code',
           type: 'text',
+          required: true,
+          unique: true,
+          admin: {
+            readOnly: true,
+            description: 'Auto-generated unique code used for referring others.',
+          },
+          access: {
+            read: isAdminOrAffiliate,
+          },
+        },
+        {
+          name: 'total_earned',
+          label: 'Total Earnings',
+          type: 'number',
+          defaultValue: 0,
+          access: {
+            read: isAdminOrAffiliate,
+            update: isAdmin,
+          },
+          admin: {
+            readOnly: true,
+            description: 'Total earnings accumulated through referrals.',
+          },
+        },
+        {
+          name: 'wallet_balance',
+          label: 'Wallet Balance',
+          type: 'number',
+          defaultValue: 0,
+          access: {
+            read: isAdminOrAffiliate,
+            update: isAdmin,
+          },
+          admin: {
+            description: 'Funds currently available in the user’s wallet.',
+          },
+        },
+        {
+          name: 'bonus_balance',
+          label: 'Bonus Balance',
+          type: 'number',
+          defaultValue: 0,
+          access: {
+            read: isAdmin,
+            update: isAdmin,
+          },
+          admin: {
+            description: 'Extra bonuses rewarded for performance or campaigns.',
+          },
+        },
+        {
+          name: 'current_rank',
+          label: 'User Rank',
+          type: 'text',
+          access: {
+            read: isAdminOrAffiliate,
+            update: isAdmin,
+          },
+          admin: {
+            placeholder: 'e.g. Bronze, Silver, Gold',
+            description: 'User’s current referral rank or status.',
+          },
+        },
+        {
+          name: 'referral_tree_ids',
+          label: 'Referral Tree (Upline)',
+          type: 'array',
+          maxRows: 3,
+          fields: [
+            {
+              name: 'id',
+              label: 'Upline User ID',
+              type: 'text',
+            },
+          ],
+          access: {
+            read: isAdminOrAffiliate,
+          },
+          admin: {
+            description: 'Tracks the chain of referrers above this user.',
+          },
+        },
+        {
+          name: 'referred_by',
+          label: 'Referred By (Referral Code)',
+          type: 'relationship',
+          relationTo: 'users' as CollectionSlug,
+          access: {
+            read: isAdmin,
+          },
+          admin: {
+            description: 'Referral code of the person who invited this user.',
+          },
+        },
+        {
+          name: 'bank_accounts',
+          label: 'Bank Accounts',
+          type: 'relationship',
+          relationTo: 'bank-details' as CollectionSlug,
+          hasMany: true,
+          access: {
+            read: isAdminOrAffiliate,
+            update: isAdmin,
+          },
+          admin: {
+            description: 'Linked bank account(s) for payouts.',
+          },
         },
       ],
-      access: {
-        read: isAdminOrAffiliate,
-      },
-      admin: {
-        description: 'Tracks the chain of referrers above this user.',
-      },
     },
-    {
-      name: 'referred_by',
-      label: 'Referred By (Referral Code)',
-      type: 'relationship',
-      relationTo: 'users' as CollectionSlug,
-      access: {
-        read: isAdmin,
-      },
-      admin: {
-        description: 'Referral code of the person who invited this user.',
-      },
-    },
-    {
-      name: 'bank_accounts',
-      label: 'Bank Accounts',
-      type: 'relationship',
-      relationTo: 'bank-details' as CollectionSlug,
-      hasMany: true,
-      access: {
-        read: isAdminOrAffiliate,
-        update: isAdmin,
-      },
-      admin: {
-        description: 'Linked bank account(s) for payouts.',
-      },
-    },
+
     {
       name: 'status',
       label: 'Account Status',

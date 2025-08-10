@@ -1,4 +1,4 @@
-export function getReferralCode(): string | undefined {
+export function getLocalStorageReferralCode(): string | undefined {
   try {
     const stored = localStorage.getItem('affiliateInfo');
     if (!stored) return undefined;
