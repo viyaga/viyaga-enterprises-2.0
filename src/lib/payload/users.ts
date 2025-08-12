@@ -39,8 +39,10 @@ export async function redirectBasedOnRole(): Promise<void> {
   const res = await getMe();
 
   const role = res?.user?.role;
+  console.log({ role });
+  
 
-  if (role === 'customer' || role === 'affiliate') {
+  if ((role === 'customer') || (role === 'affiliate')) {
     return redirect('/dashboard/collections/orders');
   }
 

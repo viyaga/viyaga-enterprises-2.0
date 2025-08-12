@@ -1,6 +1,6 @@
 export function getLocalStorageReferralCode(): string | undefined {
   try {
-    const stored = localStorage.getItem('affiliateInfo');
+    const stored = localStorage.getItem('affiliate_info');
     if (!stored) return undefined;
 
     const affiliateInfo = JSON.parse(stored) as {
@@ -11,7 +11,7 @@ export function getLocalStorageReferralCode(): string | undefined {
 
     // Check if expired
     if (new Date(affiliateInfo.expiresAt).getTime() < Date.now()) {
-      localStorage.removeItem('affiliateInfo');
+      localStorage.removeItem('affiliate_info');
       return undefined;
     }
 

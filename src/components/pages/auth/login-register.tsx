@@ -76,7 +76,7 @@ export default function LoginRegister() {
       }
 
       toast.success(`${isLogin ? "Login" : "Register"} success!`);
-      
+
       if (isLogin) return router.push(redirect || '/dashboard')
 
       reset();

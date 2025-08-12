@@ -43,6 +43,7 @@ export const Users: CollectionConfig = {
         },
       },
       access: {
+        // read: isAdmin,
         update: isAdmin,
       },
     },
@@ -81,6 +82,9 @@ export const Users: CollectionConfig = {
         position: 'sidebar', // moves to sidebar in admin panel
         description: 'All affiliate and referral related information.',
       },
+      access: {
+        read: isAdminOrAffiliate,
+      },
       fields: [
         {
           name: 'referralCode',
@@ -91,6 +95,32 @@ export const Users: CollectionConfig = {
           admin: {
             readOnly: true,
             description: 'Auto-generated unique code used for referring others.',
+          },
+          access: {
+            read: isAdminOrAffiliate,
+          },
+        },
+        {
+          name: 'team_a_sales_volume',
+          label: 'Team A Sales Volume',
+          type: 'number',
+          defaultValue: 0,
+          min: 0,
+          admin: {
+            readOnly: true,
+          },
+          access: {
+            read: isAdminOrAffiliate,
+          },
+        },
+        {
+          name: 'team_b_sales_volume',
+          label: 'Team B Sales Volume',
+          type: 'number',
+          defaultValue: 0,
+          min: 0,
+          admin: {
+            readOnly: true,
           },
           access: {
             read: isAdminOrAffiliate,
@@ -152,21 +182,14 @@ export const Users: CollectionConfig = {
         {
           name: 'referral_tree_ids',
           label: 'Referral Tree (Upline)',
-          type: 'array',
-          maxRows: 3,
-          fields: [
-            {
-              name: 'id',
-              label: 'Upline User ID',
-              type: 'text',
-            },
-          ],
+          type: 'json',
           access: {
             read: isAdminOrAffiliate,
           },
           admin: {
             description: 'Tracks the chain of referrers above this user.',
           },
+          defaultValue: [],
         },
         {
           name: 'referred_by',
@@ -196,7 +219,6 @@ export const Users: CollectionConfig = {
         },
       ],
     },
-
     {
       name: 'status',
       label: 'Account Status',

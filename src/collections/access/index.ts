@@ -31,8 +31,6 @@ export const isCustomer = ({ req }: { req: PayloadRequest }) => {
 
 export const isAdminOrAffiliate = ({ req }: { req: PayloadRequest }) => {
     const user = req.user as User | undefined;
-    console.log({ role: Boolean(user && (user.role === 'admin' || user.role === 'affiliate')) });
-
     return Boolean(user && (user.role === 'admin' || user.role === 'affiliate'));
 };
 

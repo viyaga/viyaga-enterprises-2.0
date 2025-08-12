@@ -1,66 +1,102 @@
-import { CollectionBeforeValidateHook } from 'payload';
-import { CollectionBeforeOperationHook } from 'payload';
+import {
+  CollectionBeforeValidateHook,
+  CollectionBeforeOperationHook,
+} from 'payload';
 
-export const updateRank: CollectionBeforeOperationHook = async ({ args }) => {
-  if (!args) return;
+const REFERRAL_CODE_LENGTH = 6;
+const CHARSET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
-  const earned = args.total_earned || 0;
-
-  if (earned >= 10000) {
-    args.current_rank = 'Platinum';
-  } else if (earned >= 5000) {
-    args.current_rank = 'Gold';
-  } else if (earned >= 1000) {
-    args.current_rank = 'Silver';
-  } else if (earned >= 100) {
-    args.current_rank = 'Bronze';
-  } else {
-    args.current_rank = 'Starter';
-  }
-
-  return args;
-};
-
-
-const REFERRAL_CODE_LENGTH = 6
-const CHARSET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-
-function generateCode(length: number = REFERRAL_CODE_LENGTH): string {
-  let code = ''
+function generateCode(length = REFERRAL_CODE_LENGTH): string {
+  let code = '';
   for (let i = 0; i < length; i++) {
-    const index = Math.floor(Math.random() * CHARSET.length)
-    code += CHARSET[index]
+    const index = Math.floor(Math.random() * CHARSET.length);
+    code += CHARSET[index];
   }
-  return code
+  return code;
 }
 
-export const generateReferralCode: CollectionBeforeValidateHook = async ({ data, req, originalDoc }) => {
-  // Skip if referralCode already exists (e.g., during update)
-  if (originalDoc?.referralCode || data?.referralCode) return data
+/**
+ * Generates a unique referral code and stores it in affiliateDetails.referralCode
+ */
+export const generateReferralCode: CollectionBeforeValidateHook = async ({
+  data,
+  req,
+  originalDoc,
+}) => {
+  const originalReferral = originalDoc?.affiliateDetails?.referralCode;
+  const incomingReferral = data?.affiliateDetails?.referralCode;
 
-  const payload = req.payload
-  let referralCode = ''
-  let isUnique = false
-  const maxAttempts = 10
-  let attempts = 0
+  if (originalReferral || incomingReferral) return data;
 
-  while (!isUnique && attempts < maxAttempts) {
-    referralCode = generateCode()
+  const payload = req.payload;
+  let referralCode = '';
+  let isUnique = false;
+  let attempts = 0;
+
+  while (!isUnique && attempts < 10) {
+    referralCode = generateCode();
     const existing = await payload.find({
-      collection: "users",
-      where: { referralCode: { equals: referralCode } },
+      collection: 'users',
+      where: { 'affiliateDetails.referralCode': { equals: referralCode } },
       limit: 1,
-    })
-    isUnique = existing.totalDocs === 0
-    attempts++
+    });
+    isUnique = (existing?.totalDocs ?? 0) === 0;
+    attempts++;
   }
 
   if (!isUnique) {
-    throw new Error('Failed to generate a unique referral code after several attempts.')
+    throw new Error(
+      'Failed to generate a unique referral code after several attempts.'
+    );
   }
-
+  console.log({ referralCode });
+  
   return {
     ...data,
-    referralCode,
-  }
+    affiliateDetails: {
+      ...(data?.affiliateDetails || {}),
+      referralCode,
+    },
+  };
+};
+
+function computeRank(earned: number): string {
+  if (earned >= 10000) return 'Platinum';
+  if (earned >= 5000) return 'Gold';
+  if (earned >= 1000) return 'Silver';
+  if (earned >= 100) return 'Bronze';
+  return 'Starter';
 }
+
+/**
+ * Updates rank based on total_earned before create/update operations
+ */
+export const updateRank: CollectionBeforeOperationHook = async ({
+  args,
+  operation,
+}) => {
+  if (operation !== 'create' && operation !== 'update') return;
+
+  const { data, originalDoc } = args;
+
+  const earnedFromData = data?.affiliateDetails?.total_earned;
+  const earnedFromOriginal = originalDoc?.affiliateDetails?.total_earned;
+  const totalEarned =
+    typeof earnedFromData !== 'undefined'
+      ? Number(earnedFromData)
+      : typeof earnedFromOriginal !== 'undefined'
+      ? Number(earnedFromOriginal)
+      : 0;
+
+  const rank = computeRank(totalEarned);
+
+  args.data = {
+    ...data,
+    affiliateDetails: {
+      ...(data?.affiliateDetails || {}),
+      current_rank: rank,
+    },
+  };
+
+  return args;
+};

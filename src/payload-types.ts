@@ -168,6 +168,8 @@ export interface User {
      * Auto-generated unique code used for referring others.
      */
     referralCode: string;
+    team_a_sales_volume?: number | null;
+    team_b_sales_volume?: number | null;
     /**
      * Total earnings accumulated through referrals.
      */
@@ -189,8 +191,12 @@ export interface User {
      */
     referral_tree_ids?:
       | {
-          id?: string | null;
-        }[]
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
       | null;
     /**
      * Referral code of the person who invited this user.
@@ -691,15 +697,13 @@ export interface UsersSelect<T extends boolean = true> {
     | T
     | {
         referralCode?: T;
+        team_a_sales_volume?: T;
+        team_b_sales_volume?: T;
         total_earned?: T;
         wallet_balance?: T;
         bonus_balance?: T;
         current_rank?: T;
-        referral_tree_ids?:
-          | T
-          | {
-              id?: T;
-            };
+        referral_tree_ids?: T;
         referred_by?: T;
         bank_accounts?: T;
       };
