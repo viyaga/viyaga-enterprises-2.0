@@ -20,7 +20,7 @@ export const hasOrderAccess: Access = ({ req }: { req: PayloadRequest }) => {
 
     if (isAffiliateUser(user)) {
         const where: Where = {
-            referralCode: { equals: user.referralCode },
+            referralCode: { equals: user.affiliateDetails.referralCode },
         };
         return where;
     }

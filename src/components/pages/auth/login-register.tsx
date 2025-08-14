@@ -14,6 +14,7 @@ import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { loginUser, registerUser } from "@/lib/payload/users";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getLocalStorageAffiliateInfo } from "@/lib/services/affiliate";
 
 // -------------------------
 // Zod schema
@@ -68,7 +69,8 @@ export default function LoginRegister() {
       if (isLogin) {
         result = await loginUser(authData);
       } else {
-        result = await registerUser(authData);
+        const affInfo = getLocalStorageAffiliateInfo();
+        result = await registerUser({ ...authData, sponsorCode: affInfo?.referalCode, team: affInfo?.team });
       }
 
       if (!result || result.success === false) {

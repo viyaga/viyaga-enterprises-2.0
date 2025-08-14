@@ -5,6 +5,8 @@ import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
+import Context from "@/context";
+import ActivityTracker from "@/components/activity-tracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -81,9 +83,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <Context>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </Context>
           <Toaster />
-          <SpeedInsights/>
+          <ActivityTracker />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

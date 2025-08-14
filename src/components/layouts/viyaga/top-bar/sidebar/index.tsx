@@ -9,17 +9,19 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { navLinks, socialLinks } from "../top-bar-data";
+import { useAuth } from "@/context/auth-context";
+
+
 
 const Sidebar = ({ onClose }: { onClose: () => void }) => {
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
   const { resolvedTheme } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsDark(resolvedTheme === "dark");
   }, [resolvedTheme]);
-
-
 
   return (
     <SheetContent
@@ -67,13 +69,26 @@ const Sidebar = ({ onClose }: { onClose: () => void }) => {
               </Link>
             </li>
           ))}
-          <Button
-            asChild
-            variant="default"
-            className="inline-flex md:hidden text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-12 py-4 mt-5"
-          >
-            <Link href="/login-register">Login</Link>
-          </Button>
+
+          {user ? (
+            // If logged in → show Dashboard button
+            <Button
+              asChild
+              variant="default"
+              className="inline-flex md:hidden text-black dark:text-white bg-gradient-to-r from-green-500 to-emerald-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
+            >
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
+            // If not logged in → show Login button
+            <Button
+              asChild
+              variant="default"
+              className="inline-flex md:hidden text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-12 py-4 mt-5"
+            >
+              <Link href="/login-register">Login</Link>
+            </Button>
+          )}
         </ul>
       </div>
 

@@ -50,7 +50,7 @@ export const generateReferralCode: CollectionBeforeValidateHook = async ({
     );
   }
   console.log({ referralCode });
-  
+
   return {
     ...data,
     affiliateDetails: {
@@ -85,8 +85,8 @@ export const updateRank: CollectionBeforeOperationHook = async ({
     typeof earnedFromData !== 'undefined'
       ? Number(earnedFromData)
       : typeof earnedFromOriginal !== 'undefined'
-      ? Number(earnedFromOriginal)
-      : 0;
+        ? Number(earnedFromOriginal)
+        : 0;
 
   const rank = computeRank(totalEarned);
 
@@ -99,4 +99,52 @@ export const updateRank: CollectionBeforeOperationHook = async ({
   };
 
   return args;
+};
+
+export const setReferredBy: CollectionBeforeValidateHook = async ({ data, req, operation }) => {
+
+  if (operation !== 'create') {
+    return data;
+  }
+
+  const sponsorCode = data?.sponsorCode;
+  const team = data?.team;
+
+  if (!sponsorCode || !team) {
+    return data;
+  }
+
+  try {
+    const result = await req.payload.find({
+      collection: 'users',
+      where: {
+        'affiliateDetails.referralCode': {
+          equals: sponsorCode,
+        },
+      },
+      select: { 'id': true, 'affiliateDetails': true },
+      limit: 1,
+    });
+
+    if (result.docs.length > 0) {
+      const referringUser = result.docs[0];
+
+      // Ensure affiliateDetails object exists
+      if (!data.affiliateDetails) {
+        data.affiliateDetails = {};
+      }
+
+      // Set the referred_by field to the referrer's ID
+      data.affiliateDetails.referred_by = referringUser.id;
+      data.affiliateDetails.referred_team = team;
+    }
+
+    // Remove sponsorCode from final stored data to keep DB clean
+    delete data.sponsorCode;
+
+  } catch (err) {
+    req.payload.logger.error(`Error setting referred_by: ${err}`);
+  }
+
+  return data;
 };

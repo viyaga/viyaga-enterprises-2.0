@@ -11,11 +11,13 @@ import Sidebar from "./sidebar";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { navLinks } from "./top-bar-data";
+import { useAuth } from "@/context/auth-context";
 
 const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const { resolvedTheme } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (resolvedTheme) {
@@ -62,13 +64,26 @@ const TopBar = () => {
         <div className="flex items-center gap-3">
           <ThemeToggle />
 
-          <Button
-            asChild
-            variant="default"
-            className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
-          >
-            <Link href="/login-register">Login</Link>
-          </Button>
+
+          {user ? (
+            // If logged in → show Dashboard button
+            <Button
+              asChild
+              variant="default"
+              className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-green-500 to-emerald-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
+            >
+              <Link href="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
+            // If not logged in → show Login button
+            <Button
+              asChild
+              variant="default"
+              className="hidden md:inline-flex text-black dark:text-white bg-gradient-to-r from-blue-500 to-green-500 hover:brightness-110 transition font-semibold rounded-xl px-5 py-2"
+            >
+              <Link href="/login-register">Login</Link>
+            </Button>
+          )}
 
           {/* Mobile Drawer */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>

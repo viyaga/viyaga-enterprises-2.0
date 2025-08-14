@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload';
-import { generateReferralCode, updateRank } from '@/collections/hooks/user-hooks';
+import { generateReferralCode, setReferredBy, updateRank } from '@/collections/hooks/user-hooks';
 import { CollectionSlug } from 'payload';
 import { isAdmin, isAdminOrAffiliate } from './access';
 import { canAccessUserDetails } from './access/user-access';
@@ -20,7 +20,7 @@ export const Users: CollectionConfig = {
     delete: isAdmin,
   },
   hooks: {
-    beforeValidate: [generateReferralCode],
+    beforeValidate: [generateReferralCode, setReferredBy],
     beforeOperation: [updateRank],
   },
   fields: [
@@ -86,15 +86,33 @@ export const Users: CollectionConfig = {
         read: isAdminOrAffiliate,
       },
       fields: [
+        // {
+        //   name: 'referralCode',
+        //   label: 'Referral Code',
+        //   type: 'text',
+        //   required: true,
+        //   unique: true,
+        //   admin: {
+        //     readOnly: true,
+        //     description: 'Auto-generated unique code used for referring others.',
+        //   },
+        //   access: {
+        //     read: isAdminOrAffiliate,
+        //   },
+        // },
+        // 
         {
           name: 'referralCode',
-          label: 'Referral Code',
+          label: 'Referral Link',
           type: 'text',
           required: true,
           unique: true,
           admin: {
             readOnly: true,
-            description: 'Auto-generated unique code used for referring others.',
+            description: 'Share this link to refer others.',
+            components: {
+              Field: './components/payload/referral-link-field.tsx',
+            },
           },
           access: {
             read: isAdminOrAffiliate,
@@ -189,19 +207,29 @@ export const Users: CollectionConfig = {
           admin: {
             description: 'Tracks the chain of referrers above this user.',
           },
-          defaultValue: [],
+          defaultValue: [{ t: 'a', id: "689aa1cc01365e214c7e954f" }],
         },
         {
           name: 'referred_by',
-          label: 'Referred By (Referral Code)',
+          label: 'Referred By',
           type: 'relationship',
           relationTo: 'users' as CollectionSlug,
           access: {
             read: isAdmin,
           },
-          admin: {
-            description: 'Referral code of the person who invited this user.',
+        },
+        {
+          name: 'referred_team',
+          label: 'Referred Team',
+          type: 'select',
+          access: {
+            read: isAdmin,
           },
+          defaultValue: 'a',
+          options: [
+            { label: 'A', value: 'a' },
+            { label: 'B', value: 'b' },
+          ],
         },
         {
           name: 'bank_accounts',

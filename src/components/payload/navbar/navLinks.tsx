@@ -28,7 +28,7 @@ export const navLinks = [
     href: "/dashboard/collections/users",
     label: "Affiliates",
     icon: <Layers size={16} />,
-    roles: ["admin", "affiliate"],
+    roles: ["affiliate"],
   },
   {
     href: "/dashboard/collections/bank-details",
@@ -126,10 +126,15 @@ export const navLinks = [
     icon: <Star size={16} />,
     roles: ["admin"],
   },
+  {
+    href: "/dashboard/collections/users",
+    label: "Users",
+    icon: <Layers size={16} />,
+    roles: ["admin"],
+  },
 ];
 
 
 export function getNavLinksByRole(role: string) {
-  if (role === "admin") return navLinks;
   return navLinks.filter((link) => !link.roles || link.roles.includes(role));
 }

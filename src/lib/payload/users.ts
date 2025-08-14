@@ -5,10 +5,13 @@ import config from '@payload-config';
 import { payloadFetch } from './payloadFetch';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { User } from '@/payload-types';
 
 type AuthArgs = {
   email: string;
   password: string;
+  sponsorCode?: string;
+  team?: string;
 };
 
 export async function getUserToken(): Promise<string | null> {
@@ -17,18 +20,20 @@ export async function getUserToken(): Promise<string | null> {
   return token ?? null;
 }
 
-export async function getMe() {
+export async function getMe(): Promise<User | null> {
   const token = await getUserToken();
   if (!token) return null;
 
-  return payloadFetch({
+  const response = await payloadFetch({
     path: '/users/me',
     tags: ['users'],
     customHeaders: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  });
+  })
+
+  return response?.user || null;
 }
 
 export async function logoutAction() {
@@ -36,11 +41,9 @@ export async function logoutAction() {
 }
 
 export async function redirectBasedOnRole(): Promise<void> {
-  const res = await getMe();
+  const user = await getMe();
 
-  const role = res?.user?.role;
-  console.log({ role });
-  
+  const role = user?.role;
 
   if ((role === 'customer') || (role === 'affiliate')) {
     return redirect('/dashboard/collections/orders');
@@ -97,7 +100,7 @@ export async function loginUser({ email, password }: AuthArgs): Promise<{
 // ---------------------------
 // Register function
 // ---------------------------
-export async function registerUser({ email, password }: AuthArgs): Promise<{
+export async function registerUser({ email, password, sponsorCode, team }: AuthArgs): Promise<{
   success: boolean;
   error?: string;
 }> {
@@ -105,7 +108,7 @@ export async function registerUser({ email, password }: AuthArgs): Promise<{
   const response = await payloadFetch({
     path: '/users',
     method: 'POST',
-    body: { email, password },
+    body: { email, password, sponsorCode, team },
   });
 
   console.log('Registration response:', response);

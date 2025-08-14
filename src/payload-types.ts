@@ -198,10 +198,8 @@ export interface User {
       | number
       | boolean
       | null;
-    /**
-     * Referral code of the person who invited this user.
-     */
     referred_by?: (string | null) | User;
+    referred_team?: ('a' | 'b') | null;
     /**
      * Linked bank account(s) for payouts.
      */
@@ -705,6 +703,7 @@ export interface UsersSelect<T extends boolean = true> {
         current_rank?: T;
         referral_tree_ids?: T;
         referred_by?: T;
+        referred_team?: T;
         bank_accounts?: T;
       };
   status?: T;

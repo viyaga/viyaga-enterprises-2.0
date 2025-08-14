@@ -3,10 +3,10 @@ import { getMe } from '@/lib/payload/users'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
-const page = async() => {
-    const res = await getMe()
-    if(res?.user) redirect('/dashboard')
-        
+const page = async () => {
+    const user = await getMe()
+    if (user) redirect('/dashboard')
+
     return (
         <CustomerAuthForm />
     )
